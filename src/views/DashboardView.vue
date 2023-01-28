@@ -1,10 +1,12 @@
 <template>
-  <p>Dashboard</p>
+  <main>
+    <p>Dashboard</p>
+  </main>
 </template>
 
 <script>
 export default {
-
+  name: 'DashboardView'
 }
 </script>
 

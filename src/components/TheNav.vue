@@ -38,7 +38,6 @@ export default {
     name: 'TheNav',
     data() {
         return {
-            routeName: this.$route.name,
             isNavShown: false
         }
     },

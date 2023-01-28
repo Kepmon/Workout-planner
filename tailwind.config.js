@@ -32,7 +32,7 @@ module.exports = {
         400: '400px'
       },
       boxShadow: {
-        '3xl': '1px 1px 5px rgba(0, 0, 0, .4)',
+        '3xl': '1px 1px 5px rgba(0, 0, 0, .2)',
       },
       fontSize: {
         40: '40px'

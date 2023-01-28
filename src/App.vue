@@ -18,3 +18,21 @@ export default {
   }
 }
 </script>
+
+<style>
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    background-color: #F7B640;
+    color: #050300;
+    overflow-x: hidden;
+  }
+
+  main {
+    min-height: calc(100vh - 208px);
+  }
+</style>

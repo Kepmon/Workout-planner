@@ -1,10 +1,17 @@
 <template>
-  <p>Sign up</p>
+  <main class="flex items-center justify-center">
+    <the-form />
+  </main>
 </template>
 
 <script>
-export default {
+import TheForm from '../components/shared/TheForm.vue'
 
+export default {
+  name: 'SignUpView',
+  components: {
+    TheForm
+  }
 }
 </script>
 

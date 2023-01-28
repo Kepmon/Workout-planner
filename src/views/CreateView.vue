@@ -1,10 +1,12 @@
 <template>
-  <p>Create page</p>
+  <main>
+    <p>Create page</p>
+  </main>
 </template>
 
 <script>
 export default {
-
+  name: 'CreateView'
 }
 </script>
 

@@ -1,8 +1,10 @@
 <template>
   <div>
     <the-header />
-    <why-section />
-    <inspiration-section />
+    <main>
+      <why-section />
+      <inspiration-section />
+    </main>
   </div>
 </template>
 
