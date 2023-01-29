@@ -16,7 +16,7 @@ module.exports = {
         'light-brown': '#2E2326',
         'dark-brown': '#85410B',
         'white-color': '#E5E6E3',
-        'gray-color': '#7A6F73',
+        'black-color': '#050300',
         'bg-shadow-color': 'rgba(0, 0, 0, .75)',
         'placeholder-color': '#515151',
         'input-color': '#D9D9D9',

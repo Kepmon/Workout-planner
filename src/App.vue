@@ -21,18 +21,14 @@ export default {
 
 <style>
   * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+    @apply box-border p-0 m-0
   }
 
   body {
-    background-color: #F7B640;
-    color: #050300;
-    overflow-x: hidden;
+    @apply bg-regular-yellow text-black-color overflow-x-hidden
   }
 
   main {
-    min-height: calc(100vh - 208px);
+    @apply flex items-center justify-center py-12 min-h-[calc(100vh-208px)]
   }
 </style>
