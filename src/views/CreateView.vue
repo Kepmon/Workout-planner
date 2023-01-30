@@ -16,11 +16,11 @@
           <div class="flex gap-2">
             <label for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-regular-yellow': kgValue, 'bg-white': !kgValue }">
               kg
-              <input v-model="isClicked" id="kg" name="unit" type="radio" value="kg" class="appearance-none" />
+              <input v-model="inputValue" id="kg" name="unit" type="radio" value="kg" class="appearance-none" />
             </label> 
             <label for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-regular-yellow': lbValue, 'bg-white': !lbValue }">
               lb
-              <input v-model="isClicked" id="lb" name="unit" type="radio" value="lb" class="appearance-none" />
+              <input v-model="inputValue" id="lb" name="unit" type="radio" value="lb" class="appearance-none" />
             </label> 
           </div>
         </div>
@@ -50,15 +50,15 @@ export default {
   },
   data() {
     return {
-      isClicked: '',
+      inputValue: '',
     }
   },
   computed: {
     kgValue() {
-      return this.isClicked === 'kg' ? true : false
+      return this.inputValue === 'kg' ? true : false
     },
     lbValue() {
-      return this.isClicked === 'lb' ? true : false
+      return this.inputValue === 'lb' ? true : false
     }
   }
 }
