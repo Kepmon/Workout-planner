@@ -1,8 +1,20 @@
 <template>
   <main>
     <div class="py-12">
-      <div class="flex flex-col justify-center">
-        <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Create new workout</h2> 
+      <div v-if="isSignedIn === 'false'" class="flex flex-col items-center justify-center">
+        <h2 class="mb-20 text-3xl text-center font-bold tracking-wider">You need to sign in to create a workout</h2> 
+        <div class="flex justify-evenly px-6 mx-auto w-full">
+            <router-link :to="{ name: 'sign-in' }">
+              <the-button text="Sign in"/>
+            </router-link>
+            <router-link :to="{ name: 'sign-up' }">
+              <the-button text="Sign up"/>
+            </router-link>
+          </div>
+      </div>
+
+      <div v-if="isSignedIn === 'true'" class="flex flex-col justify-center">
+        <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Create new workout</h2>
         
         <the-form @change="showTheExercise">
           <template #inputs>
@@ -11,7 +23,9 @@
               <h3 v-show="isNameShown" class="text-xl text-center font-bold">{{ workoutName }}</h3>
             </div>
 
-            <the-exercise v-for="exercise in addedExercises" :key="exercise" :img="exercise.img" :name="exercise.name" :muscle="selectedExercise.muscle" :sets="exercise.sets" :reps="exercise.reps" :weight="`${exercise.weight} ${exercise.unit}`" :rest="exercise.rest" />
+            <the-exercise v-for="exercise in addedExercises" :key="exercise" :img="exercise.img" :name="exercise.name" :sets="exercise.sets" :reps="exercise.reps" :weight="`${exercise.weight} ${exercise.unit}`" :rest="exercise.rest">
+              <span v-for="muscle in exercise.muscles" :key="muscle" class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">{{ muscle }}</span>
+            </the-exercise>
 
             <div class="px-6">
               <div class="flex flex-col w-full">
@@ -63,8 +77,11 @@
           </template>
 
           <template #buttons>
-            <div class="px-6 mx-auto">
+            <div class="flex justify-between px-6 mx-auto w-full">
               <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
+              <router-link :to="{ name: 'dashboard' }">
+                <the-button text="Add workout"/>
+              </router-link>
             </div>
           </template>
         </the-form>
@@ -81,6 +98,7 @@ import TheExercise from '../components/shared/TheExercise.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import { mapState, mapActions } from 'pinia'
 import { useExerciseStore } from '../stores/exercises'
+import { useUserStore } from '../stores/user'
 
 export default {
   name: 'CreateView',
@@ -110,6 +128,7 @@ export default {
   },
   computed: {
     ...mapState(useExerciseStore, ['exercises', 'selectedExercises']),
+    ...mapState(useUserStore, ['isSignedIn']),
     seletedUnit() {
       return this.kgValue === true ? 'kg' : 'lb'
     },
@@ -141,6 +160,7 @@ export default {
       if (this.selectedExercise !== '') {
         this.addedExercise['name'] = this.selectedExercise.name
         this.addedExercise['img'] = this.selectedExercise.img
+        this.addedExercise['muscles'] = this.selectedExercise.muscles
       }
     },
     handleSumbit() {

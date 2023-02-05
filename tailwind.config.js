@@ -13,7 +13,7 @@ module.exports = {
         'light-yellow': '#F7C873',
         'regular-yellow': '#F7B640',
         'dark-yellow': '#DF8931',
-        'dark-brown': '#C96211',
+        'brown-color': '#C96211',
         'white-color': '#E5E6E3',
         'black-color': '#050300',
         'bg-shadow-color': 'rgba(0, 0, 0, .75)',

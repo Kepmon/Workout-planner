@@ -13,7 +13,7 @@
         </div>
 
         <div class="px-6 text-center">
-            <p v-if="$route.name === 'sign-in' || $route.name === 'sign-up'" class="mt-8 text-sm">{{ question }} <router-link :to="goTo" class="border-b-dark-yellow border-b-2 text-dark-yellow font-bold">{{ answer }}</router-link></p>
+            <p v-if="$route.name === 'sign-in' || $route.name === 'sign-up'" class="mt-8 text-sm">{{ question }} <router-link :to="goTo" class="border-b-brown-color border-b-2 text-brown-color font-bold">{{ answer }}</router-link></p>
         </div>
     </form>
 </template>

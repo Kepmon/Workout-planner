@@ -5,7 +5,12 @@
 
             <div class="flex flex-col items-center gap-y-1">
                 <p><span class="font-bold">Exercise: </span>{{ name }}</p>
-                <p><span class="font-bold">Muscle groups: </span>{{ muscle }}</p>
+                <p class="flex flex-col text-center">
+                    <span class="font-bold">Muscle groups: </span>
+                    <div>
+                        <slot></slot>
+                    </div>
+                </p>
                 <div class="flex gap-3 max-[400px]:flex-col max-[500px]:gap-1">
                     <p class="text-center"><span class="font-bold">Sets: </span>{{ sets }}</p>
                     <p class="text-center"><span class="font-bold">Reps: </span>{{ reps }}</p>
@@ -20,6 +25,6 @@
 <script>
 export default {
     name: 'TheExercise',
-    props: ['img', 'name', 'muscle', 'sets', 'reps', 'weight', 'rest']
+    props: ['img', 'name', 'sets', 'reps', 'weight', 'rest']
 }
 </script>
