@@ -1,17 +1,19 @@
 <template>
   <main>
-    <the-form>
-      <template #inputs>
-        <the-input type="text" placeholder="User name"></the-input>
-        <the-input type="password" placeholder="Password"></the-input>
-      </template>
+    <div class="py-12">
+      <the-form>
+        <template #inputs>
+          <the-input type="text" placeholder="User name"></the-input>
+          <the-input type="password" placeholder="Password"></the-input>
+        </template>
 
-      <template #buttons>
-        <div class="flex justify-center">
-          <the-button text="Sign in" />
-        </div>
-      </template>
-    </the-form>
+        <template #buttons>
+          <div class="flex justify-center">
+            <the-button text="Sign in" />
+          </div>
+        </template>
+      </the-form>
+    </div>
   </main>
 </template>
 

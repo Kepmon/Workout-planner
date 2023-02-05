@@ -1,38 +1,75 @@
 <template>
   <main>
-    <the-form>
-      <template #inputs>
-        <the-input type="text" placeholder="Workout name" />
-        <select class="pl-4 h-9 min-w-[300px] rounded-full text-sm outline-none focus:shadow-3xl max-[399px]:min-w-0">
-          <option value="" class="text-placeholder-color">Choose exercise</option>
-        </select>
-        <div class="flex justify-between">
-          <the-input type="number" placeholder="Sets" width="max-w-[140px]" />
-          <the-input type="number" placeholder="Reps" width="max-w-[140px]" />
-        </div>
-        <div class="flex justify-between">
-          <the-input type="number" placeholder="Weight" />
+    <div class="py-12">
+      <div class="flex flex-col justify-center">
+        <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Create new workout</h2> 
+        
+        <the-form @change="showTheExercise">
+          <template #inputs>
+            <div class="px-6">
+              <the-input @blur="isNameShown = true" v-model="workoutName" v-show="!isNameShown" type="text" placeholder="Workout name" width="w-full"/>
+              <h3 v-show="isNameShown" class="text-xl text-center font-bold">{{ workoutName }}</h3>
+            </div>
 
-          <div class="flex gap-2">
-            <label for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-regular-yellow': kgValue, 'bg-white': !kgValue }">
-              kg
-              <input v-model="inputValue" id="kg" name="unit" type="radio" value="kg" class="appearance-none" />
-            </label> 
-            <label for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-regular-yellow': lbValue, 'bg-white': !lbValue }">
-              lb
-              <input v-model="inputValue" id="lb" name="unit" type="radio" value="lb" class="appearance-none" />
-            </label> 
-          </div>
-        </div>
-      </template>
+            <the-exercise v-for="exercise in addedExercises" :key="exercise" :img="exercise.img" :name="exercise.name" :muscle="selectedExercise.muscle" :sets="exercise.sets" :reps="exercise.reps" :weight="`${exercise.weight} ${exercise.unit}`" :rest="exercise.rest" />
 
-      <template #buttons>
-        <div class="flex flex-col mx-auto gap-4 max-w-[240px]">
-          <the-button text="Add new exercise" />
-          <the-button text="Finish" />
-        </div>
-      </template>
-    </the-form>
+            <div class="px-6">
+              <div class="flex flex-col w-full">
+                <div @click="areExercisesDisplayed = !areExercisesDisplayed" class="flex justify-between items-center my-8 px-4 py-2 bg-white rounded-full text-sm text-placeholder-color cursor-pointer max-[399px]:min-w-0">
+                  Choose exercise 
+                  <span><img src="img/down-arrow-backup-2-svgrepo-com.svg" alt="Down arrow icon - click here to see all exercises" class="h-5"></span>
+                </div>
+
+                <div v-show="areExercisesDisplayed" class="mb-8">
+                  <the-input @input="showSelectedExercises(exerciseName)" v-show="selectedExercise === ''" v-model="exerciseName" type="text" placeholder="Search for exercises..." class=" mb-4 w-full" />
+                  <ul class="px-2 max-h-96 overflow-y-auto">
+                    <li @click="selectedExercise = exercise; addExerciseInfo()" v-for="exercise in exercisesToShow" :key="exercise.name" class="flex items-center mb-2 last:mb-0 border-2 border-black-color rounded-2xl text-sm overflow-hidden cursor-pointer">
+                      <img :src="exercise.img" alt="An exercise gif" class="w-[90px]">
+                      <div class="flex flex-col gap-1 px-4">
+                        <h4 class="my-2 font-bold text-[16px]">{{ exercise.name }}</h4>
+                        <p>Muscle groups:</p>
+                        <div class="flex flex-wrap gap-y-1 mb-2">
+                          <span v-for="muscle in exercise.muscles" :key="muscle" class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">{{ muscle }}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="flex justify-between w-full">
+                <the-input v-model="sets" type="number" placeholder="Sets" name="sets" />
+                <the-input v-model="reps" type="number" placeholder="Reps" name="reps" />
+              </div>
+              
+              <div class="flex justify-between w-full">
+                <the-input v-model="weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" />
+  
+                <div class="flex gap-2">
+                  <label @click="kgValue=true; lbValue=false" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-dark-brown': kgValue, 'bg-white': !kgValue }">
+                    kg
+                    <the-input type="radio" name="unit" />
+                  </label> 
+                  
+                  <label @click="kgValue=false; lbValue=true" for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-dark-brown': lbValue, 'bg-white': !lbValue }">
+                    lb
+                    <the-input type="radio" name="unit" />
+                  </label> 
+                </div>
+              </div>
+
+              <the-input v-model="restTime" name="rest" type="text" placeholder="Rest time" width="w-full" />
+            </div>
+          </template>
+
+          <template #buttons>
+            <div class="px-6 mx-auto">
+              <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
+            </div>
+          </template>
+        </the-form>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -40,30 +77,84 @@
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
+import TheExercise from '../components/shared/TheExercise.vue'
+import TheWorkout from '../components/shared/TheWorkout.vue'
+import { mapState, mapActions } from 'pinia'
+import { useExerciseStore } from '../stores/exercises'
 
 export default {
   name: 'CreateView',
   components: {
     TheForm,
     TheInput,
-    TheButton
+    TheButton,
+    TheExercise,
+    TheWorkout
   },
   data() {
     return {
-      inputValue: '',
+      workoutName: '',
+      exerciseName: '',
+      isNameShown: false,
+      areExercisesDisplayed: false,
+      selectedExercise: '',
+      sets: '',
+      reps: '',
+      weight: '',
+      kgValue: false,
+      lbValue: false,
+      restTime: '',
+      addedExercise: {},
+      addedExercises: []
     }
   },
   computed: {
-    kgValue() {
-      return this.inputValue === 'kg' ? true : false
+    ...mapState(useExerciseStore, ['exercises', 'selectedExercises']),
+    seletedUnit() {
+      return this.kgValue === true ? 'kg' : 'lb'
     },
-    lbValue() {
-      return this.inputValue === 'lb' ? true : false
+    exercisesToShow() {
+      if (this.exerciseName === '') {
+        if (this.selectedExercise !== '') {
+          return this.exercises.filter(exercise => this.selectedExercise === exercise)
+        }
+        else {
+          return this.exercises
+        }
+      }
+      else {
+        if (this.selectedExercise !== '') {
+          return this.exercises.filter(exercise => this.selectedExercise === exercise)
+        }
+        else {
+          return this.selectedExercises
+        }
+      }
+    }
+  },
+  methods: {
+    ...mapActions(useExerciseStore, ['showSelectedExercises']),
+    showTheExercise(e) {
+      this.addedExercise[e.target.name] = e.target.value
+    },
+    addExerciseInfo() {
+      if (this.selectedExercise !== '') {
+        this.addedExercise['name'] = this.selectedExercise.name
+        this.addedExercise['img'] = this.selectedExercise.img
+      }
+    },
+    handleSumbit() {
+      this.addedExercise['unit'] = this.seletedUnit
+      this.addedExercises.push(this.addedExercise)
+      this.exerciseName = ''
+      this.sets = ''
+      this.reps = ''
+      this.weight = ''
+      this.restTime = ''
+      this.areExercisesDisplayed = false
+      this.selectedExercise = ''
+      this.addedExercise = {}
     }
   }
 }
 </script>
-
-<style>
-
-</style>

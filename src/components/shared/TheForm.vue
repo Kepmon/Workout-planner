@@ -1,6 +1,6 @@
 <template>
-    <form class="flex flex-col items-center p-8 bg-light-yellow rounded-[32px] shadow-3xl max-[299px]:max-w-[250px]">
-        <div class="flex flex-col gap-8">
+    <form class="flex flex-col items-center py-8 bg-regular-yellow w-[460px] rounded-[32px] shadow-3xl max-[299px]:max-w-[250px]">
+        <div class="flex flex-col w-full">
             <slot name="inputs"></slot>
             <slot name="buttons"></slot>
         </div>
@@ -11,8 +11,6 @@
         </label>
 
         <p v-if="$route.name === 'sign-in' || $route.name === 'sign-up'" class="mt-8 text-sm">{{ question }} <router-link :to="goTo" class="border-b-dark-yellow border-b-2 text-dark-yellow font-bold">{{ answer }}</router-link></p>
-
-        
     </form>
 </template>
 

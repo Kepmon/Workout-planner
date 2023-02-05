@@ -1,5 +1,5 @@
 <template>
-  <section class="py-16 px-20 max-[499px]:px-8">
+  <section class="py-16 px-20 w-screen bg-regular-yellow max-[499px]:px-8">
     <div class="flex flex-col items-center mx-auto max-w-1200">
         <h2 class="pb-12 text-3xl tracking-widest text-center font-bold max-[499px]:text-2xl">Why should you have a workout plan?</h2>
         <p class="mb-8 text-2xl text-center max-[499px]:text-xl">Below you’ll find some benefits that come along with a well-structured workout plan:</p>

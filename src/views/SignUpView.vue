@@ -1,19 +1,21 @@
 <template>
   <main>
-    <the-form>
-      <template #inputs>
-        <the-input type="text" placeholder="User name"></the-input>
-        <the-input type="password" placeholder="Password"></the-input>
-        <the-input type="password" placeholder="Repeat password"></the-input>
-        <the-input type="email" placeholder="Email"></the-input>
-      </template>
-      
-      <template #buttons>
-        <div class="flex justify-center">
-          <the-button text="Sign up" />
-        </div>
-      </template>
-    </the-form>
+    <div class="py-12">
+      <the-form>
+        <template #inputs>
+          <the-input type="text" placeholder="User name"></the-input>
+          <the-input type="password" placeholder="Password"></the-input>
+          <the-input type="password" placeholder="Repeat password"></the-input>
+          <the-input type="email" placeholder="Email"></the-input>
+        </template>
+        
+        <template #buttons>
+          <div class="flex justify-center">
+            <the-button text="Sign up" />
+          </div>
+        </template>
+      </the-form>
+    </div>
   </main>
 </template>
 

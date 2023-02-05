@@ -33,7 +33,14 @@ const router = createRouter({
       name: 'sign-up',
       component: SignUpView
     }
-  ]
+  ],
+  scrollBehavior() {
+    return {
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+    }
+  }
 })
 
 export default router

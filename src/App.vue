@@ -25,10 +25,10 @@ export default {
   }
 
   body {
-    @apply bg-regular-yellow text-black-color overflow-x-hidden
+    @apply bg-light-yellow text-black-color overflow-x-hidden
   }
 
   main {
-    @apply flex items-center justify-center py-12 min-h-[calc(100vh-208px)]
+    @apply flex flex-col items-center justify-center min-h-[calc(100vh-208px)]
   }
 </style>
