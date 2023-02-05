@@ -1,16 +1,20 @@
 <template>
-    <form class="flex flex-col items-center py-8 bg-regular-yellow w-[460px] rounded-[32px] shadow-3xl max-[299px]:max-w-[250px]">
+    <form class="flex flex-col items-center mx-auto py-8 bg-regular-yellow w-[460px] rounded-[32px] shadow-3xl max-[500px]:max-w-[350px] max-[400px]:max-w-[300px] max-[350px]:max-w-[250px]">
         <div class="flex flex-col w-full">
             <slot name="inputs"></slot>
             <slot name="buttons"></slot>
         </div>
 
-        <label v-if="$route.name === 'sign-up'" class="mt-4 max-w-[300px] text-sm">
+        <div class="px-6 mt-4 text-center">
+            <label v-if="$route.name === 'sign-up'" class="mt-4 max-w-[300px] text-sm">
             <input type="checkbox" />
-            By clicking here, I state that I have read and understood the terms and conditions.
-        </label>
+                By clicking here, I state that I have read and understood the terms and conditions.
+            </label>
+        </div>
 
-        <p v-if="$route.name === 'sign-in' || $route.name === 'sign-up'" class="mt-8 text-sm">{{ question }} <router-link :to="goTo" class="border-b-dark-yellow border-b-2 text-dark-yellow font-bold">{{ answer }}</router-link></p>
+        <div class="px-6 text-center">
+            <p v-if="$route.name === 'sign-in' || $route.name === 'sign-up'" class="mt-8 text-sm">{{ question }} <router-link :to="goTo" class="border-b-dark-yellow border-b-2 text-dark-yellow font-bold">{{ answer }}</router-link></p>
+        </div>
     </form>
 </template>
 

@@ -3,8 +3,10 @@
     <div class="py-12">
       <the-form>
         <template #inputs>
-          <the-input type="text" placeholder="User name"></the-input>
-          <the-input type="password" placeholder="Password"></the-input>
+          <div class="flex flex-col px-6">
+            <the-input type="text" placeholder="User name"></the-input>
+            <the-input type="password" placeholder="Password"></the-input>
+          </div>
         </template>
 
         <template #buttons>

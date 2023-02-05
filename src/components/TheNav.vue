@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mx-auto max-w-1200 h-28">
             <router-link :to="{ name: 'home' }">
                 <div class="flex items-center p-1">
-                    <img src="img/training-gym-svgrepo-com.svg" alt="The company logo" class="h-20 max-[499px]:h-10">
+                    <img src="/img/training-gym-svgrepo-com.svg" alt="The company logo" class="h-20 max-[499px]:h-10">
                     <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
                 </div>
             </router-link>

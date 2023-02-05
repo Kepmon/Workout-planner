@@ -21,15 +21,15 @@
                 </div>
 
                 <div v-show="areExercisesDisplayed" class="mb-8">
-                  <the-input @input="showSelectedExercises(exerciseName)" v-show="selectedExercise === ''" v-model="exerciseName" type="text" placeholder="Search for exercises..." class=" mb-4 w-full" />
+                  <the-input @input="showSelectedExercises(exerciseName)" v-show="selectedExercise === ''" v-model="exerciseName" type="text" placeholder="Search for exercises..." class="mb-4 w-full" />
                   <ul class="px-2 max-h-96 overflow-y-auto">
-                    <li @click="selectedExercise = exercise; addExerciseInfo()" v-for="exercise in exercisesToShow" :key="exercise.name" class="flex items-center mb-2 last:mb-0 border-2 border-black-color rounded-2xl text-sm overflow-hidden cursor-pointer">
-                      <img :src="exercise.img" alt="An exercise gif" class="w-[90px]">
-                      <div class="flex flex-col gap-1 px-4">
-                        <h4 class="my-2 font-bold text-[16px]">{{ exercise.name }}</h4>
-                        <p>Muscle groups:</p>
-                        <div class="flex flex-wrap gap-y-1 mb-2">
-                          <span v-for="muscle in exercise.muscles" :key="muscle" class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">{{ muscle }}</span>
+                    <li @click="selectedExercise = exercise; addExerciseInfo()" v-for="exercise in exercisesToShow" :key="exercise.name" class="flex items-center mb-2 last:mb-0 border-2 border-black-color rounded-2xl text-sm overflow-hidden cursor-pointer max-[500px]:flex-col max-[500px]:py-4">
+                      <img :src="exercise.img" alt="An exercise gif" class="w-[90px] max-[500px]:rounded-xl max-[500px]:mb-1 max-[500px]:w-[70px]">
+                      <div class="flex flex-col gap-1 px-4 max-[500px]:items-center max-[500px]:gap-0">
+                        <h4 class="my-2 font-bold text-[16px] max-[500px]:my-1 max-[500px]:text-center">{{ exercise.name }}</h4>
+                        <p class="max-[500px]:mb-1">Muscle groups:</p>
+                        <div class="flex flex-wrap gap-y-1 mb-2 max-[500px]:mb-0 max-[500px]:justify-center">
+                          <span v-for="muscle in exercise.muscles" :key="muscle" class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">{{ muscle }}</span>
                         </div>
                       </div>
                     </li>
@@ -37,13 +37,13 @@
                 </div>
               </div>
               
-              <div class="flex justify-between w-full">
+              <div class="flex justify-between w-full max-[500px]:flex-col">
                 <the-input v-model="sets" type="number" placeholder="Sets" name="sets" />
                 <the-input v-model="reps" type="number" placeholder="Reps" name="reps" />
               </div>
               
-              <div class="flex justify-between w-full">
-                <the-input v-model="weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" />
+              <div class="flex justify-between w-full max-[500px]:gap-x-4">
+                <the-input v-model="weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" class="max-[500px]:w-full"/>
   
                 <div class="flex gap-2">
                   <label @click="kgValue=true; lbValue=false" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-dark-brown': kgValue, 'bg-white': !kgValue }">
