@@ -31,7 +31,7 @@
               <div class="flex flex-col w-full">
                 <div @click="areExercisesDisplayed = !areExercisesDisplayed" class="flex justify-between items-center my-8 px-4 py-2 bg-white rounded-full text-sm text-placeholder-color cursor-pointer max-[399px]:min-w-0">
                   Choose exercise 
-                  <span><img src="img/down-arrow-backup-2-svgrepo-com.svg" alt="Down arrow icon - click here to see all exercises" class="h-5"></span>
+                  <span><img src="/img/down-arrow-backup-2-svgrepo-com.svg" alt="Down arrow icon - click here to see all exercises" class="h-5"></span>
                 </div>
 
                 <div v-show="areExercisesDisplayed" class="mb-8">
