@@ -6,7 +6,7 @@
       <div v-if="isSignedIn === 'true'" class="flex flex-col justify-center">
         <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Create new workout</h2>
         
-        <the-form @change="showTheExercise">
+        <the-form @change="addExerciseValues">
           <template #inputs>
             <div class="px-6">
               <the-input @blur="isNameShown = true" v-model="workoutName" v-show="!isNameShown" type="text" placeholder="Workout name" width="w-full"/>
@@ -42,32 +42,32 @@
               </div>
               
               <div class="flex justify-between w-full max-[500px]:flex-col">
-                <the-input v-model="sets" type="number" placeholder="Sets" name="sets" />
-                <the-input v-model="reps" type="number" placeholder="Reps" name="reps" />
+                <the-input v-model="exerciseData.sets" type="number" placeholder="Sets" name="sets" />
+                <the-input v-model="exerciseData.reps" type="number" placeholder="Reps" name="reps" />
               </div>
               
               <div class="flex justify-between w-full max-[500px]:gap-x-4">
-                <the-input v-model="weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" class="max-[500px]:w-full"/>
+                <the-input v-model="exerciseData.weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" class="max-[500px]:w-full"/>
   
                 <div class="flex gap-2">
-                  <label @click="kgValue=true; lbValue=false" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': kgValue, 'bg-white': !kgValue }">
+                  <label @click="kgValue=true; lbValue=false; addUnit()" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': kgValue, 'bg-white': !kgValue }">
                     kg
                     <the-input type="radio" name="unit" />
                   </label> 
                   
-                  <label @click="kgValue=false; lbValue=true" for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': lbValue, 'bg-white': !lbValue }">
+                  <label @click="kgValue=false; lbValue=true; addUnit()" for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': lbValue, 'bg-white': !lbValue }">
                     lb
                     <the-input type="radio" name="unit" />
                   </label> 
                 </div>
               </div>
 
-              <the-input v-model="restTime" name="rest" type="text" placeholder="Rest time" width="w-full" />
+              <the-input v-model="exerciseData.rest" name="rest" type="text" placeholder="Rest time" width="w-full" />
             </div>
           </template>
 
           <template #buttons>
-            <div class="flex justify-between px-6 mx-auto w-full">
+            <div class="flex justify-between mt-8 px-6 mx-auto w-full">
               <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
               <router-link :to="{ name: 'dashboard' }">
                 <the-button text="Add workout"/>
@@ -108,12 +108,18 @@ export default {
       isNameShown: false,
       areExercisesDisplayed: false,
       selectedExercise: '',
-      sets: '',
-      reps: '',
-      weight: '',
       kgValue: false,
       lbValue: false,
-      restTime: '',
+      exerciseData: {
+        name: '',
+        img: '',
+        muscles: '',
+        sets: '',
+        reps: '',
+        weight: '',
+        unit: '',
+        rest: '',
+      },
       addedExercise: {},
       addedExercises: []
     }
@@ -121,7 +127,7 @@ export default {
   computed: {
     ...mapState(useExerciseStore, ['exercises', 'selectedExercises']),
     ...mapState(useUserStore, ['isSignedIn']),
-    seletedUnit() {
+    selectedUnit() {
       return this.kgValue === true ? 'kg' : 'lb'
     },
     exercisesToShow() {
@@ -145,27 +151,37 @@ export default {
   },
   methods: {
     ...mapActions(useExerciseStore, ['showSelectedExercises']),
-    showTheExercise(e) {
-      this.addedExercise[e.target.name] = e.target.value
+    addExerciseValues(e) {
+      this.exerciseData[e.target.name] = e.target.value
     },
     addExerciseInfo() {
       if (this.selectedExercise !== '') {
-        this.addedExercise['name'] = this.selectedExercise.name
-        this.addedExercise['img'] = this.selectedExercise.img
-        this.addedExercise['muscles'] = this.selectedExercise.muscles
+        this.exerciseData.name = this.selectedExercise.name
+        this.exerciseData.img = this.selectedExercise.img
+        this.exerciseData.muscles = this.selectedExercise.muscles
       }
     },
+    addUnit() {
+      this.exerciseData.unit = this.selectedUnit
+    },
     handleSumbit() {
-      this.addedExercise['unit'] = this.seletedUnit
-      this.addedExercises.push(this.addedExercise)
-      this.exerciseName = ''
-      this.sets = ''
-      this.reps = ''
-      this.weight = ''
-      this.restTime = ''
-      this.areExercisesDisplayed = false
-      this.selectedExercise = ''
-      this.addedExercise = {}
+      if (this.workoutName !== '' && Object.values(this.exerciseData).every(value => value !== '')) {
+        this.addedExercises.push(this.exerciseData)
+        this.exerciseName = ''
+        this.exerciseData = {
+          name: '',
+          img: '',
+          muscles: '',
+          sets: '',
+          reps: '',
+          weight: '',
+          unit: this.selectedUnit,
+          rest: '',
+        }
+        this.areExercisesDisplayed = false
+        this.selectedExercise = ''
+        this.addedExercise = {}
+      }
     }
   }
 }
