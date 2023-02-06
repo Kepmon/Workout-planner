@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-export const useExerciseStore = defineStore('user', {
+export const useExerciseStore = defineStore('exercises', {
     state: () => ({
         exercises: [
             {

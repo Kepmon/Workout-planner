@@ -1,17 +1,7 @@
 <template>
   <main>
     <div class="py-12">
-      <div v-if="isSignedIn === 'false'" class="flex flex-col items-center justify-center">
-        <h2 class="mb-20 text-3xl text-center font-bold tracking-wider">You need to sign in to create a workout</h2> 
-        <div class="flex justify-evenly px-6 mx-auto w-full">
-            <router-link :to="{ name: 'sign-in' }">
-              <the-button text="Sign in"/>
-            </router-link>
-            <router-link :to="{ name: 'sign-up' }">
-              <the-button text="Sign up"/>
-            </router-link>
-          </div>
-      </div>
+      <need-sign-in text="create a workout" />
 
       <div v-if="isSignedIn === 'true'" class="flex flex-col justify-center">
         <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Create new workout</h2>
@@ -60,12 +50,12 @@
                 <the-input v-model="weight" type="number" placeholder="Weight" name="weight" width="w-[300px]" class="max-[500px]:w-full"/>
   
                 <div class="flex gap-2">
-                  <label @click="kgValue=true; lbValue=false" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-dark-brown': kgValue, 'bg-white': !kgValue }">
+                  <label @click="kgValue=true; lbValue=false" for="kg" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': kgValue, 'bg-white': !kgValue }">
                     kg
                     <the-input type="radio" name="unit" />
                   </label> 
                   
-                  <label @click="kgValue=false; lbValue=true" for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-dark-brown': lbValue, 'bg-white': !lbValue }">
+                  <label @click="kgValue=false; lbValue=true" for="lb" class="flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2 rounded-full cursor-pointer" :class="{ 'bg-brown-color': lbValue, 'bg-white': !lbValue }">
                     lb
                     <the-input type="radio" name="unit" />
                   </label> 
@@ -96,6 +86,7 @@ import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
+import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import { mapState, mapActions } from 'pinia'
 import { useExerciseStore } from '../stores/exercises'
 import { useUserStore } from '../stores/user'
@@ -107,7 +98,8 @@ export default {
     TheInput,
     TheButton,
     TheExercise,
-    TheWorkout
+    TheWorkout,
+    NeedSignIn
   },
   data() {
     return {
