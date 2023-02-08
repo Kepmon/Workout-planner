@@ -127,7 +127,9 @@ export default {
     ...mapState(useExerciseStore, ['exercises', 'selectedExercises']),
     ...mapState(useUserStore, ['isSignedIn']),
     selectedUnit() {
-      return this.kgValue === true ? 'kg' : 'lb'
+      if (this.kgValue === true || this.lbValue === true) {
+        return this.kgValue === true ? 'kg' : 'lb'
+      }
     },
     exercisesToShow() {
       if (this.exerciseName === '') {

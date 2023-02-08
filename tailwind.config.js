@@ -35,7 +35,10 @@ module.exports = {
       },
       fontSize: {
         40: '40px'
-      }
+      },
+      content: {
+        'checked': 'url("/img/checked-svgrepo-com.svg")',
+      },
     },
   },
   plugins: [],
