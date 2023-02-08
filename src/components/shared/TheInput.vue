@@ -1,11 +1,14 @@
 <template>
-    <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :type="type" :name="name" :placeholder="placeholder" :class="[type === 'radio' ?  'radio' : 'text', width]" class="mb-8" />
+    <div class="mb-8">
+        <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :type="type" :name="name" :placeholder="placeholder" :class="[type === 'radio' ?  'radio' : 'text', width]" class="w-full" />
+        <p v-show="key === ''" class="text-sm text-red-700 font-bold">The {{ key }} is required</p>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'TheInput',
-    props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'id', 'value'],
+    props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'id', 'value', 'key'],
     emits: ['update:modelValue']
 }
 </script>
