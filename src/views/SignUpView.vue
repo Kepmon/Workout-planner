@@ -16,6 +16,19 @@
             <the-button text="Sign up" />
           </div>
         </template>
+        
+        <template #others>
+          <div class="flex justify-evenly px-6 mt-4 text-center">
+            <the-input type="checkbox" />
+            <label v-if="$route.name === 'sign-up'" class="text-sm">
+                By clicking here, I state that I have read and understood the terms and conditions.
+            </label>
+          </div>
+
+          <div class="px-6 text-center">
+            <p class="mt-8 text-sm">Already have an account? <router-link :to="{ name: 'sign-in'}" class="border-b-brown-color border-b-2 text-brown-color font-bold">Sign in</router-link></p>
+          </div>
+        </template>
       </the-form>
     </div>
   </main>
@@ -35,7 +48,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

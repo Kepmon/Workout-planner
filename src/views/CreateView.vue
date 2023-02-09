@@ -9,7 +9,7 @@
         <the-form @change="addExerciseValues">
           <template #inputs>
             <div class="px-6">
-              <the-input @blur="isNameShown = true" v-model="workoutName" v-show="!isNameShown" type="text" placeholder="Workout name" width="w-full"/>
+              <the-input @focusout="isNameShown = true" v-model="workoutName" v-show="!isNameShown" type="text" placeholder="Workout name" width="w-full"/>
               <h3 v-show="isNameShown" class="text-xl text-center font-bold">{{ workoutName }}</h3>
             </div>
 
@@ -42,7 +42,7 @@
               </div>
               
               <div class="flex justify-between w-full max-[500px]:flex-col">
-                <the-input v-model="exerciseData.sets" type="number" placeholder="Sets" name="sets" />
+                <the-input v-model="exerciseData.sets" type="number" placeholder="Sets" name="sets" :key="exerciseData.sets" />
                 <the-input v-model="exerciseData.reps" type="number" placeholder="Reps" name="reps" />
               </div>
               
@@ -120,7 +120,6 @@ export default {
         unit: '',
         rest: '',
       },
-      addedExercise: {},
       addedExercises: []
     }
   },
@@ -128,7 +127,9 @@ export default {
     ...mapState(useExerciseStore, ['exercises', 'selectedExercises']),
     ...mapState(useUserStore, ['isSignedIn']),
     selectedUnit() {
-      return this.kgValue === true ? 'kg' : 'lb'
+      if (this.kgValue === true || this.lbValue === true) {
+        return this.kgValue === true ? 'kg' : 'lb'
+      }
     },
     exercisesToShow() {
       if (this.exerciseName === '') {
@@ -180,8 +181,10 @@ export default {
         }
         this.areExercisesDisplayed = false
         this.selectedExercise = ''
-        this.addedExercise = {}
       }
+    },
+    showName() {
+      console.log(this.isNameShown);
     }
   }
 }
