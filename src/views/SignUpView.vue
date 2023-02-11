@@ -26,7 +26,13 @@
           </div>
 
           <div class="px-6 text-center">
-            <p class="mt-8 text-sm">Already have an account? <router-link :to="{ name: 'sign-in'}" class="border-b-brown-color border-b-2 text-brown-color font-bold">Sign in</router-link></p>
+            <p class="mt-8 text-sm">
+              Already have an account?
+              <router-link :to="{ name: 'sign-in'}"
+              class="border-b-brown-color border-b-2 text-brown-color font-bold">
+                Sign in
+              </router-link>
+            </p>
           </div>
         </template>
       </the-form>

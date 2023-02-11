@@ -36,9 +36,9 @@ const router = createRouter({
   ],
   scrollBehavior() {
     return {
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
     }
   }
 })

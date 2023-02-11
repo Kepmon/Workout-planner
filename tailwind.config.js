@@ -4,9 +4,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   content: ['./index.html', './src/**/*.{vue, js}'],
-  plugins: [
-    require('tailwind-scrollbar'),
-  ],
+  plugins: [],
   theme: {
     extend: {
       fontFamily: {
@@ -34,15 +32,14 @@ module.exports = {
         400: '400px'
       },
       boxShadow: {
-        '3xl': '1px 1px 5px rgba(0, 0, 0, .2)',
+        '3xl': '1px 1px 5px rgba(0, 0, 0, .2)'
       },
       fontSize: {
         40: '40px'
       },
       content: {
-        'checked': 'url("/img/checked-svgrepo-com.svg")',
-      },
-    },
-  },
-  plugins: [],
+        checked: 'url("/img/checked-svgrepo-com.svg")'
+      }
+    }
+  }
 }
