@@ -15,7 +15,11 @@
                 v-show="!isNameShown"
                 type="text"
                 placeholder="Workout name"
-                width="w-full"/>
+                width="w-full"
+                :keyValue="workoutName"
+                keyName="workout name"
+                :formSubmitted="isFormSubmitted"
+              />
               <h3 v-show="isNameShown" class="text-xl text-center font-bold">{{ workoutName }}</h3>
             </div>
 
@@ -50,19 +54,23 @@
                   </span>
                 </div>
 
-                <div v-show="areExercisesDisplayed" class="mb-8">
+                <div v-show="areExercisesDisplayed">
                   <the-input @input="showSelectedExercises(exerciseName)"
                   v-show="selectedExercise === ''"
                   v-model="exerciseName"
                   type="text"
-                  placeholder="Search for exercises..." class="mb-4 w-full" />
+                  placeholder="Search for exercises..."
+                  class="mt-8 mb-4 w-full"
+                  />
                   
                   <ul class="px-2 max-h-96 overflow-y-auto">
                     <li
                       @click="selectedExercise = exercise;
                       addExerciseInfo()" v-for="exercise in exercisesToShow"
                       :key="exercise.name"
-                      class="exercise-to-select">
+                      class="exercise-to-select"
+                      :class="{'mt-8': selectedExercise !== ''}"
+                    >
                       <img
                         :src="exercise.img"
                         alt="An exercise gif"
@@ -85,21 +93,30 @@
                     </li>
                   </ul>
                 </div>
+                <!-- eslint-disable-next-line max-len -->
+                <p v-show="isFormSubmitted && selectedExercise === ''" class="mt-1 ml-2 text-xs text-red-700 font-bold">
+                  You need to choose an exercise.
+                </p>
               </div>
 
-              <div class="flex justify-between w-full max-[500px]:flex-col">
+              <div class="flex justify-between mt-8 w-full max-[500px]:flex-col">
                 <the-input
                   v-model="exerciseData.sets"
                   type="number"
                   placeholder="Sets"
                   name="sets"
                   :keyValue="exerciseData.sets"
+                  :keyName="Object.keys(exerciseData)[3]"
+                  :formSubmitted="isFormSubmitted"
                 />
                 <the-input
                   v-model="exerciseData.reps"
                   type="number"
                   placeholder="Reps"
                   name="reps"
+                  :keyValue="exerciseData.reps"
+                  :keyName="Object.keys(exerciseData)[4]"
+                  :formSubmitted="isFormSubmitted"
                 />
               </div>
 
@@ -111,6 +128,9 @@
                   name="weight"
                   width="w-[300px]"
                   class="max-[500px]:w-full"
+                  :keyValueOne="exerciseData.weight"
+                  :keyValueTwo="exerciseData.unit"
+                  :formSubmitted="isFormSubmitted"
                 />
 
                 <div class="flex gap-2">
@@ -140,6 +160,9 @@
                 type="text"
                 placeholder="Rest time"
                 width="w-full"
+                :keyValue="exerciseData.rest"
+                :keyName="Object.keys(exerciseData)[7]"
+                :formSubmitted="isFormSubmitted"
               />
             </div>
           </template>
@@ -196,7 +219,8 @@ export default {
         unit: '',
         rest: ''
       },
-      addedExercises: []
+      addedExercises: [],
+      isFormSubmitted: false
     }
   },
   computed: {
@@ -255,8 +279,11 @@ export default {
           unit: this.selectedUnit,
           rest: ''
         }
+        this.isFormSubmitted = false
         this.areExercisesDisplayed = false
         this.selectedExercise = ''
+      } else {
+        this.isFormSubmitted = true
       }
     }
   }
@@ -265,7 +292,7 @@ export default {
 
 <style scoped>
 .choose-exercise {
-@apply flex justify-between items-center my-8 px-4 py-2 bg-white rounded-full;
+@apply flex justify-between items-center mt-8 px-4 py-2 bg-white rounded-full;
 @apply text-sm text-placeholder-color cursor-pointer max-[399px]:min-w-0
 }
 

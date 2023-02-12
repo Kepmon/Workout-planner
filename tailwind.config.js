@@ -4,7 +4,23 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   content: ['./index.html', './src/**/*.{vue, js}'],
-  plugins: [],
+  plugins: [
+    require('@gradin/tailwindcss-scrollbar')({
+      size: '10px',
+      track: {
+        background: 'white',
+        borderRadius: '40px'
+      },
+      thumb: {
+        background: '#DF8931',
+        borderRadius: '40px'
+      },
+      hover: {
+        background: '#DF8931',
+        borderRadius: '40px'
+      }
+    })
+  ],
   theme: {
     extend: {
       fontFamily: {

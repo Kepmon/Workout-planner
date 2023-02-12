@@ -10,10 +10,18 @@
           class="w-full"
         />
         <p
-          v-show="keyValue === ''"
-          class="text-sm text-red-700 font-bold"
+          v-show="formSubmitted && keyValue === ''"
+          class="mt-1 ml-2 text-xs text-red-700 font-bold"
         >
-          The {{ keyValue }} is required
+          The "{{ keyName }}" value is required.
+        </p>
+
+        <p
+          v-show="(formSubmitted && placeholder === 'Weight')
+          && (keyValueOne === '' || keyValueTwo === '')"
+          class="mt-1 ml-2 text-xs text-red-700 font-bold"
+        >
+          The "weight" value and its unit are required.
         </p>
     </div>
 </template>
@@ -21,7 +29,7 @@
 <script>
 export default {
   name: 'TheInput',
-  props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'id', 'value', 'keyValue'],
+  props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'id', 'value', 'keyValue', 'keyValueOne', 'keyValueTwo', 'keyName', 'formSubmitted'],
   emits: ['update:modelValue'],
   data() {
     return {
