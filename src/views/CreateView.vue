@@ -20,24 +20,30 @@
                 keyName="workout name"
                 :formSubmitted="isFormSubmitted"
               />
-              <h3 v-show="isNameShown" class="text-xl text-center font-bold">{{ workoutName }}</h3>
+              <transition name="title">
+                <h3 v-show="isNameShown" class="text-xl text-center font-bold">
+                  {{ workoutName }}
+                </h3>
+              </transition>
             </div>
 
-            <the-exercise
-              v-for="exercise in addedExercises"
-              :key="exercise" :img="exercise.img"
-              :name="exercise.name"
-              :sets="exercise.sets"
-              :reps="exercise.reps"
-              :weight="`${exercise.weight} ${exercise.unit}`"
-              :rest="exercise.rest">
-              <span
-                v-for="muscle in exercise.muscles"
-                :key="muscle"
-                class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
-                {{ muscle }}
-              </span>
-            </the-exercise>
+            <transition-group name="exercise">
+              <the-exercise
+                v-for="exercise in addedExercises"
+                :key="exercise" :img="exercise.img"
+                :name="exercise.name"
+                :sets="exercise.sets"
+                :reps="exercise.reps"
+                :weight="`${exercise.weight} ${exercise.unit}`"
+                :rest="exercise.rest">
+                <span
+                  v-for="muscle in exercise.muscles"
+                  :key="muscle"
+                  class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                  {{ muscle }}
+                </span>
+              </the-exercise>
+            </transition-group>
 
             <div class="px-6">
               <div class="flex flex-col w-full">
@@ -46,53 +52,58 @@
                 class="choose-exercise">
                   Choose exercise
                   <span>
-                    <img
+                    <transition name="arrow">
+                      <img
                       src="/img/down-arrow-backup-2-svgrepo-com.svg"
                       alt="Down arrow icon - click here to see all exercises"
-                      class="h-5"
-                    >
+                      class="h-5 transition duration-500"
+                      :class="{'rotate-180': areExercisesDisplayed}"
+                      >
+                    </transition>
                   </span>
                 </div>
 
-                <div v-show="areExercisesDisplayed">
-                  <the-input @input="showSelectedExercises(exerciseName)"
-                  v-show="selectedExercise === ''"
-                  v-model="exerciseName"
-                  type="text"
-                  placeholder="Search for exercises..."
-                  class="mt-8 mb-4 w-full"
-                  />
-                  
-                  <ul class="px-2 max-h-96 overflow-y-auto">
-                    <li
-                      @click="selectedExercise = exercise;
-                      addExerciseInfo()" v-for="exercise in exercisesToShow"
-                      :key="exercise.name"
-                      class="exercise-to-select"
-                      :class="{'mt-8': selectedExercise !== ''}"
-                    >
-                      <img
-                        :src="exercise.img"
-                        alt="An exercise gif"
-                        class="exercise-img"
+                <transition name="exercises">
+                  <div v-show="areExercisesDisplayed">
+                    <the-input @input="showSelectedExercises(exerciseName)"
+                    v-show="selectedExercise === ''"
+                    v-model="exerciseName"
+                    type="text"
+                    placeholder="Search for exercises..."
+                    class="mt-8 mb-4 w-full"
+                    />
+                    
+                    <ul name="list" class="px-2 max-h-96 overflow-y-auto">
+                      <li
+                        @click="selectedExercise = exercise;
+                        addExerciseInfo()" v-for="exercise in exercisesToShow"
+                        :key="exercise.name"
+                        class="exercise-to-select"
+                        :class="{'mt-8': selectedExercise !== ''}"
                       >
-                      <div class="exercise-description">
-                        <h4 class="exercise-title">
-                          {{ exercise.name }}
-                        </h4>
-                        <p class="max-[500px]:mb-1">Muscle groups:</p>
-                        <div class="exercise-muscles">
-                          <span
-                            v-for="muscle in exercise.muscles"
-                            :key="muscle"
-                            class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
-                            {{ muscle }}
-                          </span>
+                        <img
+                          :src="exercise.img"
+                          alt="An exercise gif"
+                          class="exercise-img"
+                        >
+                        <div class="exercise-description">
+                          <h4 class="exercise-title">
+                            {{ exercise.name }}
+                          </h4>
+                          <p class="max-[500px]:mb-1">Muscle groups:</p>
+                          <div class="exercise-muscles">
+                            <span
+                              v-for="muscle in exercise.muscles"
+                              :key="muscle"
+                              class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
+                              {{ muscle }}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                      </li>
+                    </ul>
+                  </div>
+                </transition>
                 <!-- eslint-disable-next-line max-len -->
                 <p v-show="isFormSubmitted && selectedExercise === ''" class="mt-1 ml-2 text-xs text-red-700 font-bold">
                   You need to choose an exercise.
@@ -126,8 +137,7 @@
                   type="number"
                   placeholder="Weight"
                   name="weight"
-                  width="w-[300px]"
-                  class="max-[500px]:w-full"
+                  class="min-[500px]:w-[300px]"
                   :keyValueOne="exerciseData.weight"
                   :keyValueTwo="exerciseData.unit"
                   :formSubmitted="isFormSubmitted"
@@ -168,7 +178,7 @@
           </template>
 
           <template #buttons>
-            <div class="flex justify-between mt-8 px-6 mx-auto w-full">
+            <div class="buttons-box">
               <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
               <router-link :to="{ name: 'dashboard' }">
                 <the-button text="Add workout"/>
@@ -320,5 +330,39 @@ export default {
 .exercise-unit {
   @apply flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2;
   @apply rounded-full cursor-pointer
+}
+
+.buttons-box {
+  @apply flex justify-between mt-8 px-6 mx-auto w-full;
+  @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-y-4
+}
+
+.title-enter-from {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.exercise-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.exercises-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.exercises-leave-to {
+  opacity: 0;
+}
+
+.title-enter-active,
+.exercises-enter-active,
+.exercise-enter-active {
+  transition: opacity .5s, transform .5s;
+}
+
+.exercises-leave-active {
+  transition: opacity .2s;
 }
 </style>

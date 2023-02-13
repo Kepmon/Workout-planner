@@ -54,60 +54,62 @@
                     class="h-12  max-[499px]:h-10"
                 >
 
-                <div
-                    class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
-                    :class="{ 'hide-nav': !isNavShown, 'show-nav': isNavShown}"
-                >
-                    <ul class="nav-items">
-                        <li>
-                            <router-link
-                            :to="{ name: 'home' }"
-                            @click="toggleNav"
-                            class="px-6 py-2"
-                            :class="{ active: $route.name === 'home' }"
-                            >
-                                Home
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link
-                            :to="{ name: 'create' }"
-                            @click="toggleNav"
-                            class="px-6 py-2"
-                            :class="{ active: $route.name === 'create' }"
-                            >
-                                Create new workout
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link
-                            :to="{ name: 'sign-in' }"
-                            @click="toggleNav"
-                            class="px-6 py-2"
-                            :class="{ active: $route.name === 'sign-in' }"
-                            >
-                                Sign in
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link
-                            :to="{ name: 'sign-up' }"
-                            @click="toggleNav"
-                            class="px-6 py-2"
-                            :class="{ active: $route.name === 'sign-up' }"
-                            >
-                                Sign up
-                            </router-link>
-                        </li>
-                    </ul>
-
-                    <img
-                        @click="toggleNav"
-                        src="/img/close-square-svgrepo-com.svg"
-                        alt="The close menu icon"
-                        class="close-btn"
+                <transition name="nav">
+                    <div
+                        v-show="isNavShown"
+                        class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
                     >
-                </div>
+                        <ul class="nav-items">
+                            <li>
+                                <router-link
+                                :to="{ name: 'home' }"
+                                @click="toggleNav"
+                                class="px-6 py-2"
+                                :class="{ active: $route.name === 'home' }"
+                                >
+                                    Home
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link
+                                :to="{ name: 'create' }"
+                                @click="toggleNav"
+                                class="px-6 py-2"
+                                :class="{ active: $route.name === 'create' }"
+                                >
+                                    Create new workout
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link
+                                :to="{ name: 'sign-in' }"
+                                @click="toggleNav"
+                                class="px-6 py-2"
+                                :class="{ active: $route.name === 'sign-in' }"
+                                >
+                                    Sign in
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link
+                                :to="{ name: 'sign-up' }"
+                                @click="toggleNav"
+                                class="px-6 py-2"
+                                :class="{ active: $route.name === 'sign-up' }"
+                                >
+                                    Sign up
+                                </router-link>
+                            </li>
+                        </ul>
+
+                        <img
+                            @click="toggleNav"
+                            src="/img/close-square-svgrepo-com.svg"
+                            alt="The close menu icon"
+                            class="close-btn"
+                        >
+                    </div>
+                </transition>
             </div>
         </div>
     </nav>
@@ -135,18 +137,21 @@ export default {
     @apply text-center max-[400px]:text-xl
 }
 .active {
-    @apply bg-white-color rounded-full font-bold
-}
-
-.hide-nav {
-    @apply hidden
-}
-
-.show-nav {
-    @apply flex
+    @apply bg-white-color rounded-full font-bold transition-colors duration-[600ms]
 }
 
 .close-btn {
     @apply absolute h-12 top-8 right-8 max-[499px]:h-10 max-[499px]:top-9 max-[499px]:right-4
+}
+
+.nav-enter-from,
+.nav-leave-to {
+    opacity: 0;
+    transform: translateX(200px);
+}
+
+.nav-enter-active,
+.nav-leave-active {
+    transition: opacity .3s, transform .3s;
 }
 </style>

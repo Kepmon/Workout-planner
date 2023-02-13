@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="py-12">
+      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign in</h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">

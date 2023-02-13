@@ -1,7 +1,13 @@
 <template>
   <div>
     <the-nav />
-    <router-view />
+    
+    <router-view v-slot="{ Component }">
+      <transition name="route" mode="out-in">
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
+
     <the-footer />
   </div>
 </template>
@@ -30,5 +36,20 @@ export default {
 
   main {
     @apply flex flex-col items-center justify-center min-h-[calc(100vh-208px)]
+  }
+
+  .route-enter-from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  .route-leave-to {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  .route-enter-active,
+  .route-leave-active {
+    transition: opacity .3s, transform .3s;
   }
 </style>
