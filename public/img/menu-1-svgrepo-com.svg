@@ -7,14 +7,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="800px"
-   height="800px"
-   viewBox="0 0 24 24"
-   fill="none"
-   version="1.1"
-   id="svg4"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
    sodipodi:docname="menu-1-svgrepo-com.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
+   id="svg4"
+   version="1.1"
+   fill="none"
+   viewBox="0 0 3 3.0014955"
+   height="100.04985"
+   width="100">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -29,29 +29,29 @@
   <defs
      id="defs8" />
   <sodipodi:namedview
-     inkscape:document-rotation="0"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1001"
-     id="namedview6"
-     showgrid="false"
-     inkscape:zoom="1.0169672"
-     inkscape:cx="400"
-     inkscape:cy="400"
-     inkscape:window-x="1911"
-     inkscape:window-y="-9"
+     inkscape:current-layer="svg4"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg4" />
+     inkscape:window-y="-9"
+     inkscape:window-x="1911"
+     inkscape:cy="333.33333"
+     inkscape:cx="333.33333"
+     inkscape:zoom="1.032052"
+     showgrid="false"
+     id="namedview6"
+     inkscape:window-height="1001"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     inkscape:document-rotation="0" />
   <path
-     d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17 17.25H7C6.59 17.25 6.25 16.91 6.25 16.5C6.25 16.09 6.59 15.75 7 15.75H17C17.41 15.75 17.75 16.09 17.75 16.5C17.75 16.91 17.41 17.25 17 17.25ZM17 12.75H7C6.59 12.75 6.25 12.41 6.25 12C6.25 11.59 6.59 11.25 7 11.25H17C17.41 11.25 17.75 11.59 17.75 12C17.75 12.41 17.41 12.75 17 12.75ZM17 8.25H7C6.59 8.25 6.25 7.91 6.25 7.5C6.25 7.09 6.59 6.75 7 6.75H17C17.41 6.75 17.75 7.09 17.75 7.5C17.75 7.91 17.41 8.25 17 8.25Z"
-     fill="#292D32"
+     style="fill:#050300;fill-opacity:1;stroke-width:0.150075"
      id="path2"
-     style="fill:#050300;fill-opacity:1" />
+     fill="#292D32"
+     d="M 2.1295611,0 H 0.8719345 C 0.3256623,0 0,0.3256623 0,0.8719345 v 1.2561259 c 0,0.5477729 0.3256623,0.8734352 0.8719345,0.8734352 h 1.2561259 c 0.5462722,0 0.8719344,-0.3256623 0.8719344,-0.8719345 V 0.8719345 C 3.0014956,0.3256623 2.6758333,0 2.1295611,0 Z M 2.2511217,2.2886404 H 0.7503739 c -0.061531,0 -0.1125561,-0.051025 -0.1125561,-0.1125561 0,-0.061531 0.051025,-0.1125561 0.1125561,-0.1125561 h 1.5007478 c 0.061531,0 0.1125561,0.051025 0.1125561,0.1125561 0,0.061531 -0.051025,0.1125561 -0.1125561,0.1125561 z m 0,-0.6753365 H 0.7503739 c -0.061531,0 -0.1125561,-0.051025 -0.1125561,-0.1125561 0,-0.061531 0.051025,-0.1125561 0.1125561,-0.1125561 h 1.5007478 c 0.061531,0 0.1125561,0.051025 0.1125561,0.1125561 0,0.061531 -0.051025,0.1125561 -0.1125561,0.1125561 z m 0,-0.6753365 H 0.7503739 c -0.061531,0 -0.1125561,-0.051025 -0.1125561,-0.1125561 0,-0.061531 0.051025,-0.1125561 0.1125561,-0.1125561 h 1.5007478 c 0.061531,0 0.1125561,0.051025 0.1125561,0.1125561 0,0.061531 -0.051025,0.1125561 -0.1125561,0.1125561 z" />
 </svg>

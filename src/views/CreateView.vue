@@ -57,7 +57,7 @@
                       <img
                       src="/img/down-arrow-backup-2-svgrepo-com.svg"
                       alt="Down arrow icon - click here to see all exercises"
-                      class="h-5 transition duration-500"
+                      class="h-3 transition duration-500"
                       :class="{'rotate-180': areExercisesDisplayed}"
                       >
                     </transition>
@@ -85,7 +85,7 @@
                         >
                           
                           <img
-                          v-show="exercisesToShow.length === 1"
+                          v-show="selectedExercise !== ''"
                           @click="selectedExercise = ''"
                           src="/img/close-square-svgrepo-com.svg"
                           alt="remove this exercise"
@@ -373,7 +373,7 @@ export default {
 }
 
 .exercises-leave-active {
-  transition: opacity .2s;
+  transition: opacity .3s;
 }
 
 .list-enter-from {

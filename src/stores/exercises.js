@@ -16,7 +16,7 @@ export const useExerciseStore = defineStore('exercises', {
       },
       {
         name: 'Assisted pull-ups',
-        img: '/img/m_a_pullup.gif',
+        img: '/img/assisted_pullup.gif',
         muscles: ['Back', 'Upperback', 'Lats', 'Biceps']
       }, {
         name: 'Barbell bent over row',
@@ -155,7 +155,7 @@ export const useExerciseStore = defineStore('exercises', {
       },
       {
         name: 'Reverse crunches',
-        img: '/img/revere_crunches.gif',
+        img: '/img/reverse_crunches.gif',
         muscles: ['Abs', 'Lower abs']
       },
       {
@@ -185,12 +185,12 @@ export const useExerciseStore = defineStore('exercises', {
       },
       {
         name: 'Trx pull-up',
-        img: '/img/Trx_pull_up.gif',
+        img: '/img/trx_pull_up.gif',
         muscles: ['Back', 'Upperback', 'Lats', 'Biceps']
       },
       {
         name: 'Walking lunges',
-        img: '/img/walking lunges.gif',
+        img: '/img/walking_lunges.gif',
         muscles: ['Legs', 'Quadriceps']
       },
       {

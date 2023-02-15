@@ -62,7 +62,7 @@
                     @click="toggleNav"
                     src="/img/menu-1-svgrepo-com.svg"
                     alt="The menu icon"
-                    class="h-12  max-[499px]:h-10"
+                    class="h-12 max-[499px]:h-10"
                 >
 
                 <transition name="nav">
