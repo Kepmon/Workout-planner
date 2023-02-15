@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="down-arrow-backup-2-svgrepo-com.svg"
-   id="svg7"
-   fill="#515151"
-   version="1.1"
+   width="17.5"
+   height="10"
+   viewBox="0 0 896 512"
    class="icon"
-   viewBox="0 0 1024 1024"
-   height="20px"
-   width="20px">
+   version="1.1"
+   fill="#515151"
+   id="svg7"
+   sodipodi:docname="down-arrow-backup-2-svgrepo-com.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
   <metadata
      id="metadata13">
     <rdf:RDF>
@@ -30,39 +30,43 @@
   <defs
      id="defs11" />
   <sodipodi:namedview
-     inkscape:current-layer="svg7"
-     inkscape:window-maximized="1"
-     inkscape:window-y="-9"
-     inkscape:window-x="1911"
-     inkscape:cy="10"
-     inkscape:cx="10"
-     inkscape:zoom="40.084118"
-     showgrid="false"
-     id="namedview9"
-     inkscape:window-height="1001"
-     inkscape:window-width="1920"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0"
-     guidetolerance="10"
-     gridtolerance="10"
-     objecttolerance="10"
-     borderopacity="1"
+     inkscape:document-rotation="0"
+     pagecolor="#ffffff"
      bordercolor="#666666"
-     pagecolor="#ffffff" />
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     id="namedview9"
+     showgrid="false"
+     inkscape:zoom="40.678691"
+     inkscape:cx="8.75"
+     inkscape:cy="4.0166842"
+     inkscape:window-x="1911"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg7" />
   <g
-     stroke-width="0"
-     id="SVGRepo_bgCarrier" />
+     transform="translate(-64,-256)"
+     id="SVGRepo_bgCarrier"
+     stroke-width="0" />
   <g
-     stroke-linejoin="round"
+     transform="translate(-64,-256)"
+     id="SVGRepo_tracerCarrier"
      stroke-linecap="round"
-     id="SVGRepo_tracerCarrier" />
+     stroke-linejoin="round" />
   <g
-     style="fill:#515151;fill-opacity:1"
-     id="SVGRepo_iconCarrier">
+     transform="translate(-64,-256)"
+     id="SVGRepo_iconCarrier"
+     style="fill:#515151;fill-opacity:1">
     <path
-       style="fill:#515151;fill-opacity:1"
-       id="path4"
+       d="M 903.232,256 960,306.432 512,768 64,306.432 120.768,256 512,659.072 Z"
        fill="#000000"
-       d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" />
+       id="path4"
+       style="fill:#515151;fill-opacity:1" />
   </g>
 </svg>
