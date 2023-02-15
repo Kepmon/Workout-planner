@@ -35,7 +35,8 @@
                 :sets="exercise.sets"
                 :reps="exercise.reps"
                 :weight="`${exercise.weight} ${exercise.unit}`"
-                :rest="exercise.rest">
+                :rest="exercise.rest"
+              >
                 <span
                   v-for="muscle in exercise.muscles"
                   :key="muscle"
@@ -73,35 +74,44 @@
                     class="mt-8 mb-4 w-full"
                     />
                     
-                    <ul name="list" class="px-2 max-h-96 overflow-y-auto">
-                      <li
-                        @click="selectedExercise = exercise;
-                        addExerciseInfo()" v-for="exercise in exercisesToShow"
-                        :key="exercise.name"
-                        class="exercise-to-select"
-                        :class="{'mt-8': selectedExercise !== ''}"
-                      >
-                        <img
-                          :src="exercise.img"
-                          alt="An exercise gif"
-                          class="exercise-img"
+                    <transition-group tag="ul" name="list" mode="out-in"
+                    class="px-2 max-h-96 overflow-y-auto">
+                        <li
+                          @click.capture="selectedExercise = exercise; addExerciseInfo()"
+                          v-for="exercise in exercisesToShow"
+                          :key="exercise.name"
+                          class="exercise-to-select"
+                          :class="{'mt-8': selectedExercise !== ''}"
                         >
-                        <div class="exercise-description">
-                          <h4 class="exercise-title">
-                            {{ exercise.name }}
-                          </h4>
-                          <p class="max-[500px]:mb-1">Muscle groups:</p>
-                          <div class="exercise-muscles">
-                            <span
-                              v-for="muscle in exercise.muscles"
-                              :key="muscle"
-                              class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
-                              {{ muscle }}
-                            </span>
+                          
+                          <img
+                          v-show="exercisesToShow.length === 1"
+                          @click="selectedExercise = ''"
+                          src="/img/close-square-svgrepo-com.svg"
+                          alt="remove this exercise"
+                          class="absolute right-2 h-8"
+                          >
+                          <img
+                            :src="exercise.img"
+                            alt="An exercise gif"
+                            class="exercise-img"
+                          >
+                          <div class="exercise-description">
+                            <h4 class="exercise-title">
+                              {{ exercise.name }}
+                            </h4>
+                            <p class="max-[500px]:mb-1">Muscle groups:</p>
+                            <div class="exercise-muscles">
+                              <span
+                                v-for="muscle in exercise.muscles"
+                                :key="muscle"
+                                class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
+                                {{ muscle }}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    </ul>
+                        </li>
+                    </transition-group>
                   </div>
                 </transition>
                 <!-- eslint-disable-next-line max-len -->
@@ -307,7 +317,7 @@ export default {
 }
 
 .exercise-to-select {
-  @apply flex items-center mb-2 last:mb-0 border-2 border-black-color rounded-2xl text-sm;
+  @apply flex items-center mb-2 last:mb-0 border-2 border-black-color relative rounded-2xl text-sm;
   @apply overflow-hidden cursor-pointer max-[500px]:flex-col max-[500px]:py-4
 }
 
@@ -364,5 +374,14 @@ export default {
 
 .exercises-leave-active {
   transition: opacity .2s;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: -20px;
+}
+
+.list-enter-active {
+  transition: opacity .3s, transform .3s;
 }
 </style>
