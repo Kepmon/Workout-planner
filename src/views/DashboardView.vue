@@ -3,7 +3,7 @@
     <div class="py-12">
       <need-sign-in text="see your dashboard" />
 
-      <div v-if="isSignedIn === 'true'" class="flex flex-col justify-center">
+      <div v-if="isSignedIn" class="flex flex-col justify-center">
           <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">
             See your workouts below
           </h2>

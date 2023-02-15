@@ -12,11 +12,11 @@ module.exports = {
         borderRadius: '40px'
       },
       thumb: {
-        background: '#DF8931',
+        background: '#888',
         borderRadius: '40px'
       },
       hover: {
-        background: '#DF8931',
+        background: '#888',
         borderRadius: '40px'
       }
     })

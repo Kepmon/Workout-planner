@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isSignedIn === 'false'" class="flex flex-col items-center justify-center">
+    <div v-if="!isSignedIn" class="flex flex-col items-center justify-center">
         <h2 class="mb-20 text-3xl text-center font-bold tracking-wider">
           You need to sign in to {{ text }}
         </h2>

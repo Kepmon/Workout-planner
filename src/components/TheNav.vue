@@ -22,26 +22,37 @@
                 </li>
                 <li>
                     <router-link :to="{ name: 'create' }"
-                    :class="{ active: $route.name === 'create' }" class="px-6 py-2">
+                    :class="{ active: $route.name === 'create' }" class="px-6 py-2"
+                    >
                         Create new workout
                     </router-link>
                 </li>
                 <li>
                     <router-link :to="{ name: 'dashboard' }"
-                    :class="{ active: $route.name === 'dashboard' }" class="px-6 py-2">
+                    :class="{ active: $route.name === 'dashboard' }" class="px-6 py-2"
+                    >
                         Dashboard
                     </router-link>
                 </li>
-                <li>
+                <li v-show="!isSignedIn">
                     <router-link :to="{ name: 'sign-in' }"
-                    :class="{ active: $route.name === 'sign-in' }" class="px-6 py-2">
+                    :class="{ active: $route.name === 'sign-in' }" class="px-6 py-2"
+                    >
                         Sign in
                     </router-link>
                 </li>
-                <li>
+                <li v-show="!isSignedIn">
                     <router-link :to="{ name: 'sign-up' }"
-                    :class="{ active: $route.name === 'sign-up' }" class="px-6 py-2">
+                    :class="{ active: $route.name === 'sign-up' }" class="px-6 py-2"
+                    >
                         Sign up
+                    </router-link>
+                </li>
+                <li @click="signOut" v-show="isSignedIn">
+                    <router-link :to="{ name: 'home' }"
+                    class="px-6 py-2"
+                    >
+                        Sign out
                     </router-link>
                 </li>
             </ul>
@@ -60,44 +71,56 @@
                         class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
                     >
                         <ul class="nav-items">
-                            <li>
+                            <li @click="toggleNav">
                                 <router-link
                                 :to="{ name: 'home' }"
-                                @click="toggleNav"
                                 class="px-6 py-2"
                                 :class="{ active: $route.name === 'home' }"
                                 >
                                     Home
                                 </router-link>
                             </li>
-                            <li>
+                            <li @click="toggleNav">
                                 <router-link
                                 :to="{ name: 'create' }"
-                                @click="toggleNav"
-                                class="px-6 py-2"
                                 :class="{ active: $route.name === 'create' }"
+                                class="px-6 py-2"
                                 >
                                     Create new workout
                                 </router-link>
                             </li>
-                            <li>
+                            <li @click="toggleNav">
+                                <router-link :to="{ name: 'dashboard' }"
+                                :class="{ active: $route.name === 'dashboard' }"
+                                class="px-6 py-2"
+                                >
+                                    Dashboard
+                                </router-link>
+                            </li>
+                            <li @click="toggleNav" v-show="!isSignedIn">
                                 <router-link
                                 :to="{ name: 'sign-in' }"
-                                @click="toggleNav"
                                 class="px-6 py-2"
                                 :class="{ active: $route.name === 'sign-in' }"
                                 >
                                     Sign in
                                 </router-link>
                             </li>
-                            <li>
+                            <li @click="toggleNav" v-show="!isSignedIn">
                                 <router-link
                                 :to="{ name: 'sign-up' }"
-                                @click="toggleNav"
                                 class="px-6 py-2"
                                 :class="{ active: $route.name === 'sign-up' }"
                                 >
                                     Sign up
+                                </router-link>
+                            </li>
+                            <li @click="toggleNav(); signOut()" v-show="isSignedIn">
+                                <router-link
+                                :to="{ name: 'home' }"
+                                class="px-6 py-2"
+                                >
+                                    Sign out
                                 </router-link>
                             </li>
                         </ul>
@@ -116,6 +139,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
+import { useUserStore } from '../stores/user'
+
 export default {
   name: 'TheNav',
   data() {
@@ -123,7 +149,11 @@ export default {
       isNavShown: false
     }
   },
+  computed: {
+    ...mapState(useUserStore, ['isSignedIn'])
+  },
   methods: {
+    ...mapActions(useUserStore, ['signOut']),
     toggleNav() {
       this.isNavShown = !this.isNavShown
     }
