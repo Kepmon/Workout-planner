@@ -22,7 +22,12 @@
           <div class="flex justify-evenly px-6 mt-4 text-center">
             <the-input type="checkbox" />
             <label v-if="$route.name === 'sign-up'" class="text-sm">
-                By clicking here, I state that I have read and understood the terms and conditions.
+                By clicking here, I state that I have read and understood the
+                <span class="border-b-brown-color border-b-2 text-brown-color font-bold">
+                  <router-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+                    Privacy Policy<!--
+                  --></router-link>
+                </span>.
             </label>
           </div>
 
