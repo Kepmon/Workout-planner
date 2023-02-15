@@ -5,7 +5,21 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: ['./index.html', './src/**/*.{vue, js}'],
   plugins: [
-    require('tailwind-scrollbar'),
+    require('@gradin/tailwindcss-scrollbar')({
+      size: '10px',
+      track: {
+        background: 'white',
+        borderRadius: '40px'
+      },
+      thumb: {
+        background: '#888',
+        borderRadius: '40px'
+      },
+      hover: {
+        background: '#888',
+        borderRadius: '40px'
+      }
+    })
   ],
   theme: {
     extend: {
@@ -34,15 +48,14 @@ module.exports = {
         400: '400px'
       },
       boxShadow: {
-        '3xl': '1px 1px 5px rgba(0, 0, 0, .2)',
+        '3xl': '1px 1px 5px rgba(0, 0, 0, .2)'
       },
       fontSize: {
         40: '40px'
       },
       content: {
-        'checked': 'url("/img/checked-svgrepo-com.svg")',
-      },
-    },
-  },
-  plugins: [],
+        checked: 'url("/img/checked-svgrepo-com.svg")'
+      }
+    }
+  }
 }

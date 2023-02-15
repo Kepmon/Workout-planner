@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="py-12">
+      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign in</h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
@@ -17,7 +18,13 @@
 
         <template #others>
           <div class="px-6 text-center">
-            <p class="mt-8 text-sm">Don't have an account? <router-link :to="{ name: 'sign-up'}" class="border-b-brown-color border-b-2 text-brown-color font-bold">Create one</router-link></p>
+            <p class="mt-8 text-sm">
+              Don't have an account?
+              <router-link :to="{ name: 'sign-up'}"
+              class="border-b-brown-color border-b-2 text-brown-color font-bold">
+                Create one
+              </router-link>
+            </p>
           </div>
         </template>
       </the-form>
@@ -39,7 +46,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

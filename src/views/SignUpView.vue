@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="py-12">
+      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign up</h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
@@ -21,12 +22,23 @@
           <div class="flex justify-evenly px-6 mt-4 text-center">
             <the-input type="checkbox" />
             <label v-if="$route.name === 'sign-up'" class="text-sm">
-                By clicking here, I state that I have read and understood the terms and conditions.
+                By clicking here, I state that I have read and understood the
+                <span class="border-b-brown-color border-b-2 text-brown-color font-bold">
+                  <router-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+                    Privacy Policy<!--
+                  --></router-link>
+                </span>.
             </label>
           </div>
 
           <div class="px-6 text-center">
-            <p class="mt-8 text-sm">Already have an account? <router-link :to="{ name: 'sign-in'}" class="border-b-brown-color border-b-2 text-brown-color font-bold">Sign in</router-link></p>
+            <p class="mt-8 text-sm">
+              Already have an account?
+              <router-link :to="{ name: 'sign-in'}"
+              class="border-b-brown-color border-b-2 text-brown-color font-bold">
+                Sign in
+              </router-link>
+            </p>
           </div>
         </template>
       </the-form>

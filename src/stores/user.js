@@ -1,7 +1,13 @@
-import { defineStore } from "pinia"
+import { defineStore } from 'pinia'
 
+// eslint-disable-next-line import/prefer-default-export
 export const useUserStore = defineStore('user', {
-    state: () => ({
-        isSignedIn: 'true'
-    })
+  state: () => ({
+    isSignedIn: false
+  }),
+  actions: {
+    signOut() {
+      this.isSignedIn = false
+    }
+  }
 })
