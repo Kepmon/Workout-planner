@@ -52,4 +52,14 @@ export default {
   .route-leave-active {
     transition: opacity .3s, transform .3s;
   }
+
+.error-enter-from,
+.error-leave-to {
+  opacity: 0;
+}
+
+.error-enter-active,
+.error-leave-active {
+  transition: opacity .5s;
+}
 </style>

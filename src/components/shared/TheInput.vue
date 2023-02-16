@@ -9,20 +9,24 @@
           :class="[className, width]"
           class="w-full"
         />
-        <p
-          v-show="formSubmitted && keyValue === ''"
-          class="mt-1 ml-2 text-xs text-red-700 font-bold"
-        >
-          The "{{ keyName }}" value is required.
-        </p>
+        <transition name="error">
+          <p
+            v-show="formSubmitted && keyValue === ''"
+            class="mt-1 ml-2 text-xs text-red-700 font-bold"
+          >
+            The "{{ keyName }}" value is required.
+          </p>
+        </transition>
 
-        <p
-          v-show="(formSubmitted && placeholder === 'Weight')
-          && (keyValueOne === '' || keyValueTwo === '')"
-          class="mt-1 ml-2 text-xs text-red-700 font-bold"
-        >
-          The "weight" value and its unit are required.
-        </p>
+        <transition name="error">
+          <p
+            v-show="(formSubmitted && placeholder === 'Weight')
+            && (keyValueOne === '' || keyValueTwo === '')"
+            class="mt-1 ml-2 text-xs text-red-700 font-bold"
+          >
+            The "weight" value and its unit are required.
+          </p>
+        </transition>
     </div>
 </template>
 
@@ -53,8 +57,8 @@ export default {
 }
 
 .checkbox {
-    @apply flex items-center justify-center appearance-none mr-1 h-4 w-4 relative top-[2px];
-    @apply bg-white rounded-[5px] checked:bg-brown-color checked:after:content-checked;
-    @apply after:absolute after:top-0 after:left-[1px]
+  @apply flex items-center justify-center appearance-none mr-1 h-4 w-4 relative top-[2px];
+  @apply bg-white rounded-[5px] checked:bg-brown-color checked:after:content-checked;
+  @apply after:absolute after:top-0 after:left-[1px]
 }
 </style>
