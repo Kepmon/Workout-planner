@@ -6,25 +6,13 @@
           :type="type"
           :name="name"
           :placeholder="placeholder"
+          :id="idValue"
           :class="[className, width]"
           class="w-full"
         />
         <transition name="error">
-          <p
-            v-show="formSubmitted && keyValue === ''"
-            class="mt-1 ml-2 text-xs text-red-700 font-bold"
-          >
-            The "{{ keyName }}" value is required.
-          </p>
-        </transition>
-
-        <transition name="error">
-          <p
-            v-show="(formSubmitted && placeholder === 'Weight')
-            && (keyValueOne === '' || keyValueTwo === '')"
-            class="mt-1 ml-2 text-xs text-red-700 font-bold"
-          >
-            The "weight" value and its unit are required.
+          <p v-show="conditions" class="mt-1 ml-2 text-xs text-red-700 font-bold">
+            {{ errorText }}
           </p>
         </transition>
     </div>
@@ -33,7 +21,7 @@
 <script>
 export default {
   name: 'TheInput',
-  props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'id', 'value', 'keyValue', 'keyValueOne', 'keyValueTwo', 'keyName', 'formSubmitted'],
+  props: ['type', 'placeholder', 'width', 'modelValue', 'name', 'value', 'idValue', 'conditions', 'errorText'],
   emits: ['update:modelValue'],
   data() {
     return {

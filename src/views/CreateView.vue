@@ -15,10 +15,8 @@
                 v-show="!isNameShown"
                 type="text"
                 placeholder="Workout name"
-                width="w-full"
-                :keyValue="workoutName"
-                keyName="workout name"
-                :formSubmitted="isFormSubmitted"
+                :conditions="isFormSubmitted && workoutName === ''"
+                errorText='The "Workout name" value is required.'
               />
               <transition name="title">
                 <h3 v-show="isNameShown" class="text-xl text-center font-bold">
@@ -126,18 +124,16 @@
                   type="number"
                   placeholder="Sets"
                   name="sets"
-                  :keyValue="exerciseData.sets"
-                  :keyName="Object.keys(exerciseData)[3]"
-                  :formSubmitted="isFormSubmitted"
+                  :conditions="isFormSubmitted && exerciseData.sets === ''"
+                  errorText='The "Sets" value is required.'
                 />
                 <the-input
                   v-model="exerciseData.reps"
                   type="number"
                   placeholder="Reps"
                   name="reps"
-                  :keyValue="exerciseData.reps"
-                  :keyName="Object.keys(exerciseData)[4]"
-                  :formSubmitted="isFormSubmitted"
+                  :conditions="isFormSubmitted && exerciseData.reps === ''"
+                  errorText='The "Reps" value is required.'
                 />
               </div>
 
@@ -148,9 +144,9 @@
                   placeholder="Weight"
                   name="weight"
                   class="min-[500px]:w-[300px]"
-                  :keyValueOne="exerciseData.weight"
-                  :keyValueTwo="exerciseData.unit"
-                  :formSubmitted="isFormSubmitted"
+                  :conditions="isFormSubmitted
+                  && (exerciseData.weight === '' || exerciseData.unit === '')"
+                  errorText='The "Weight" value and its unit are required.'
                 />
 
                 <div class="flex gap-2">
@@ -180,9 +176,8 @@
                 type="text"
                 placeholder="Rest time"
                 width="w-full"
-                :keyValue="exerciseData.rest"
-                :keyName="Object.keys(exerciseData)[7]"
-                :formSubmitted="isFormSubmitted"
+                :conditions="isFormSubmitted && exerciseData.rest === ''"
+                errorText='The "Rest time" value is required.'
               />
             </div>
           </template>

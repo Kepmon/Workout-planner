@@ -60,6 +60,6 @@ export default {
 
 .error-enter-active,
 .error-leave-active {
-  transition: opacity .5s;
+  transition: opacity .3s;
 }
 </style>

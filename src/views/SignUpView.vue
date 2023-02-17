@@ -2,91 +2,63 @@
   <main>
     <div class="py-12">
       <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign up</h2>
-      <the-form @change="isFormSubmitted = false">
+      <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
             <the-input
             v-model="userData.name"
             type="text"
             placeholder="User name"
-            :formSubmitted="isFormSubmitted"
-            keyName="user name"
-            :keyValue="userData.name"
-            :class="{ 'mb-0': isFormSubmitted && isNameCorrect }"
+            :conditions="isFormSubmitted && nameError !== ''"
+            :errorText="nameError"
             >
             </the-input>
-            <p
-            v-show="isFormSubmitted && isNameCorrect"
-            class="mt-1 ml-2 mb-8 text-xs text-red-700 font-bold"
-            >
-              {{ isNameCorrect }}
-            </p>
             <the-input
             v-model="userData.passOne"
             type="password"
             placeholder="Password"
-            :formSubmitted="isFormSubmitted"
-            keyName="password"
-            :keyValue="userData.passOne"
-            :class="{ 'mb-0': isFormSubmitted
-            && isPasswordCorrect === 'Password must have at least 8 characters.' }"
+            :conditions="isFormSubmitted && passOneError !== ''"
+            :errorText="passOneError"
             >
             </the-input>
-            <p
-            v-show="isFormSubmitted
-            && isPasswordCorrect === 'Password must have at least 8 characters.'"
-            class="mt-1 ml-2 mb-8 text-xs text-red-700 font-bold"
-            >
-              {{ isPasswordCorrect }}
-            </p>
             <the-input
             v-model="userData.passTwo"
             type="password"
             placeholder="Repeat password"
-            :formSubmitted="isFormSubmitted"
-            keyName="repeated password"
-            :keyValue="userData.passTwo"
-            :class="{ 'mb-0': isFormSubmitted && isPasswordCorrect === passTwoError }"
+            :conditions="isFormSubmitted && passTwoError !== ''"
+            :errorText="passTwoError"
             >
             </the-input>
-            <p
-            v-show="isFormSubmitted && isPasswordCorrect === passTwoError"
-            class="mt-1 ml-2 mb-8 text-xs text-red-700 font-bold"
-            >
-              {{ passTwoError }}
-            </p>
             <the-input
             v-model="userData.email"
             type="email"
             placeholder="Email"
-            :formSubmitted="isFormSubmitted"
-            :keyValue="userData.email"
-            keyName="email"
-            :class="{ 'mb-0': isFormSubmitted && isEmailCorrect === emailError }"
+            :conditions="isFormSubmitted && emailError !== ''"
+            :errorText="emailError"
             >
             </the-input>
-            <p
-            v-show="isFormSubmitted && isEmailCorrect === emailError"
+            <!-- <p
+            v-show="isFormSubmitted && emailError !== ''"
             class="mt-1 ml-2 mb-8 text-xs text-red-700 font-bold"
             >
               {{ emailError }}
-            </p>
+            </p> -->
           </div>
         </template>
         
         <template #buttons>
           <div class="flex justify-center">
-            <the-button @click.prevent="isFormSubmitted = true" text="Sign up" />
+            <the-button @click.prevent="checkForm" text="Sign up" />
           </div>
         </template>
         
         <template #others>
           <div class="flex justify-evenly px-6 mt-8 text-center">
-            <the-input v-model="isCheckboxChecked" type="checkbox" />
-            <label v-if="$route.name === 'sign-up'" class="text-sm">
+            <the-input v-model="isCheckboxChecked" type="checkbox" idValue="privacy" />
+            <label v-if="$route.name === 'sign-up'" for="privacy" class="text-sm">
                 By clicking here, I state that I have read and understood the
                 <span class="border-b-brown-color border-b-2 text-brown-color font-bold">
-                  <router-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+                  <router-link :to="{ name: 'privacy-policy' }" target="_blank">
                     Privacy Policy<!--
                   --></router-link>
                 </span>.
@@ -139,41 +111,49 @@ export default {
       },
       isCheckboxChecked: false,
       isFormSubmitted: false,
-      emailError: 'The provided input is not a valid email address.',
+      nameError: '',
       passOneError: '',
-      passTwoError: "Passwords don't match."
-    }
-  },
-  computed: {
-    isNameCorrect() {
-      return this.checkLength(this.userData.name, 5, 'User name')
-    },
-    isPasswordCorrect() {
-      if (this.userData.passOne !== '' && this.userData.passTwo !== '' && this.userData.passOne !== this.userData.passTwo) {
-        return this.passTwoError
-      }
-
-      return this.checkLength(this.userData.passOne, 8, 'Password')
-    },
-    isEmailCorrect() {
-      // eslint-disable-next-line no-useless-escape
-      const emailConditions = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-
-      if (this.userData.email !== '' && !emailConditions.test(this.userData.email)) {
-        return this.emailError
-      }
-
-      return this.userData.email
+      passTwoError: '',
+      emailError: ''
     }
   },
   methods: {
     // eslint-disable-next-line consistent-return
-    checkLength(value, minChar, label) {
-      if (value !== '' && value.length < minChar) {
-        // eslint-disable-next-line no-param-reassign
-        value = `${label} must have at least ${minChar} characters.`
-        return value
+    checkLength(input, minChar, label) {
+      if (input === '') {
+        return `The "${label}" value is required.`
       }
+
+      if (input !== '' && input.length < minChar) {
+        return `${label} must have at least ${minChar} characters.`
+      }
+    },
+    checkName() {
+      this.nameError = this.checkLength(this.userData.name, 5, 'User name')
+    },
+    checkPassword() {
+      this.passOneError = this.checkLength(this.userData.passOne, 8, 'Password')
+      this.passTwoError = this.checkLength(this.userData.passTwo, 0, 'Repeat password')
+
+      if (this.userData.passOne !== '' && this.userData.passTwo !== '' && this.userData.passOne !== this.userData.passTwo) {
+        this.passTwoError = "Passwords don't match."
+      }
+    },
+    checkEmail() {
+      this.emailError = this.checkLength(this.userData.email, 0, 'Email')
+      const emailConditions = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+
+      if (this.userData.email !== '' && !emailConditions.test(this.userData.email)) {
+        this.emailError = 'The provided input is not a valid email address.'
+      }
+
+      return this.emailError
+    },
+    checkForm() {
+      this.isFormSubmitted = true
+      this.checkName()
+      this.checkPassword()
+      this.checkEmail()
     }
   }
 }

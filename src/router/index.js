@@ -35,8 +35,8 @@ const router = createRouter({
       component: SignUpView
     },
     {
-      path: '/terms-and-conditions',
-      name: 'terms-and-conditions',
+      path: '/privacy-policy',
+      name: 'privacy-policy',
       component: PrivacyPolicy
     }
   ],
