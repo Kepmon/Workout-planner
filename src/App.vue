@@ -38,28 +38,23 @@ export default {
     @apply flex flex-col items-center justify-center min-h-[calc(100vh-208px)]
   }
 
-  .route-enter-from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
+  .route-enter-from,
   .route-leave-to {
-    opacity: 0;
-    transform: translateX(50px);
+    @apply opacity-0 -translate-x-12
   }
 
   .route-enter-active,
   .route-leave-active {
-    transition: opacity .3s, transform .3s;
+    @apply transition-all duration-300
   }
 
 .error-enter-from,
 .error-leave-to {
-  opacity: 0;
+  @apply opacity-0
 }
 
 .error-enter-active,
 .error-leave-active {
-  transition: opacity .3s;
+  @apply transition-opacity duration-300
 }
 </style>

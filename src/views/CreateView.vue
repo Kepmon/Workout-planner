@@ -343,40 +343,36 @@ export default {
 }
 
 .title-enter-from {
-  opacity: 0;
-  transform: scale(0.5);
+  @apply opacity-0 scale-50
 }
 
 .exercise-enter-from {
-  opacity: 0;
-  transform: translateY(30px);
+  @apply opacity-0 translate-y-7
 }
 
 .exercises-enter-from {
-  opacity: 0;
-  transform: translateY(-20px);
+  @apply opacity-0 -translate-y-5
 }
 
 .exercises-leave-to {
-  opacity: 0;
+  @apply opacity-0
 }
 
 .title-enter-active,
 .exercises-enter-active,
 .exercise-enter-active {
-  transition: opacity .5s, transform .5s;
+  @apply transition-all duration-500
 }
 
 .exercises-leave-active {
-  transition: opacity .3s;
+  @apply transition-opacity duration-300
 }
 
 .list-enter-from {
-  opacity: 0;
-  transform: -20px;
+  @apply opacity-0 -translate-y-5
 }
 
 .list-enter-active {
-  transition: opacity .3s, transform .3s;
+  @apply transition-all duration-300
 }
 </style>

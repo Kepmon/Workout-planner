@@ -57,7 +57,7 @@
                 </li>
             </ul>
 
-            <div class="min-[999px]:hidden cursor-pointer">
+            <div class="cursor-pointer z-10 min-[999px]:hidden">
                 <img
                     @click="toggleNav"
                     src="/img/menu-1-svgrepo-com.svg"
@@ -176,12 +176,11 @@ export default {
 
 .nav-enter-from,
 .nav-leave-to {
-    opacity: 0;
-    transform: translateX(200px);
+    @apply opacity-0 translate-x-48
 }
 
 .nav-enter-active,
 .nav-leave-active {
-    transition: opacity .3s, transform .3s;
+    @apply transition-all duration-300
 }
 </style>
