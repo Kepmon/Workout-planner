@@ -32,6 +32,6 @@ export default {
 <style scoped>
 .exercise {
     @apply flex justify-center items-center gap-6;
-    @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-4 max-[500px]:text-sm
+    @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-4 max-[500px]:text-sm;
 }
 </style>

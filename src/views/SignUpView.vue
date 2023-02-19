@@ -8,35 +8,14 @@
         <template #inputs>
           <div class="flex flex-col px-6">
             <the-input
-            v-model="userData.name"
-            type="text"
-            placeholder="User name"
-            :conditions="isFormSubmitted && errorMessages.nameError !== ''"
-            :errorText="errorMessages.nameError"
-            >
-            </the-input>
-            <the-input
-            v-model="userData.passOne"
-            type="password"
-            placeholder="Password"
-            :conditions="isFormSubmitted && errorMessages.passOneError !== ''"
-            :errorText="errorMessages.passOneError"
-            >
-            </the-input>
-            <the-input
-            v-model="userData.passTwo"
-            type="password"
-            placeholder="Repeat password"
-            :conditions="isFormSubmitted && errorMessages.passTwoError !== ''"
-            :errorText="errorMessages.passTwoError"
-            >
-            </the-input>
-            <the-input
-            v-model="userData.email"
-            type="email"
-            placeholder="Email"
-            :conditions="isFormSubmitted && errorMessages.emailError !== ''"
-            :errorText="errorMessages.emailError"
+              v-for="(input, index) in inputs"
+              :key="index"
+              v-model="input.model"
+              :type="input.type"
+              :placeholder="input.placeholder"
+              class="text w-full"
+              :conditions="input.conditions"
+              :errorText="input.error"
             >
             </the-input>
           </div>
@@ -53,7 +32,8 @@
             <the-input
             @input.capture="isCheckboxChecked = !isCheckboxChecked"
             type="checkbox"
-            idValue="privacy"
+            id="privacy"
+            class="checkbox"
             />
             <label v-if="$route.name === 'sign-up'" for="privacy" class="text-sm">
                 By clicking here, I state that I have read and understood the
@@ -125,9 +105,42 @@ export default {
       isToastShown: false
     }
   },
+  computed: {
+    inputs() {
+      return [
+        {
+          model: this.userData.name,
+          type: 'text',
+          placeholder: 'User name',
+          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
+          error: this.errorMessages.nameError
+        },
+        {
+          model: this.userData.name,
+          type: 'password',
+          placeholder: 'Password',
+          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
+          error: this.errorMessages.passOneError
+        },
+        {
+          model: this.userData.name,
+          type: 'password',
+          placeholder: 'Repeat password',
+          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
+          error: this.errorMessages.passTwoError
+        },
+        {
+          model: this.userData.name,
+          type: 'email',
+          placeholder: 'Email',
+          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
+          error: this.errorMessages.emailError
+        }
+      ]
+    }
+  },
   methods: {
-    ...mapActions(useUserStore, ['singUp']),
-    // eslint-disable-next-line consistent-return
+    ...mapActions(useUserStore, ['signUp']),
     checkLength(input, minChar, label) {
       if (input === '') {
         return `The "${label}" value is required.`
@@ -175,8 +188,10 @@ export default {
       this.checkBox()
     },
     async signUpUser() {
+      this.checkForm()
+
       if (Object.values(this.errorMessages).every((value) => value === '')) {
-        const isSignedUp = await this.singUp(this.userData.email, this.userData.passOne)
+        const isSignedUp = await this.signUp(this.userData.email, this.userData.passOne)
 
         if (!isSignedUp) {
           this.isToastShown = true
@@ -185,8 +200,6 @@ export default {
             this.isToastShown = false
           }, 3000)
         }
-      } else {
-        this.checkForm()
       }
     }
   }

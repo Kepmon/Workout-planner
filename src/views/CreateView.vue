@@ -15,8 +15,9 @@
                 v-show="!isNameShown"
                 type="text"
                 placeholder="Workout name"
-                :conditions="isFormSubmitted && workoutName === ''"
-                errorText='The "Workout name" value is required.'
+                class="text w-full"
+                :conditions="errors.exerciseName.conditions"
+                :errorText="errors.exerciseName.text"
               />
               <transition name="title">
                 <h3 v-show="isNameShown" class="text-xl text-center font-bold">
@@ -69,7 +70,7 @@
                     v-model="exerciseName"
                     type="text"
                     placeholder="Search for exercises..."
-                    class="mt-8 mb-4 w-full"
+                    class="text mt-8 mb-4 w-full"
                     />
                     
                     <transition-group tag="ul" name="list" mode="out-in"
@@ -124,16 +125,18 @@
                   type="number"
                   placeholder="Sets"
                   name="sets"
-                  :conditions="isFormSubmitted && exerciseData.sets === ''"
-                  errorText='The "Sets" value is required.'
+                  class="text"
+                  :conditions="errors.sets.conditions"
+                  :errorText="errors.sets.text"
                 />
                 <the-input
                   v-model="exerciseData.reps"
                   type="number"
                   placeholder="Reps"
                   name="reps"
-                  :conditions="isFormSubmitted && exerciseData.reps === ''"
-                  errorText='The "Reps" value is required.'
+                  class="text"
+                  :conditions="errors.reps.conditions"
+                  :errorText="errors.reps.text"
                 />
               </div>
 
@@ -143,10 +146,9 @@
                   type="number"
                   placeholder="Weight"
                   name="weight"
-                  class="min-[500px]:w-[300px]"
-                  :conditions="isFormSubmitted
-                  && (exerciseData.weight === '' || exerciseData.unit === '')"
-                  errorText='The "Weight" value and its unit are required.'
+                  class="text min-[500px]:w-[300px]"
+                  :conditions="errors.weight.conditions"
+                  :errorText="errors.weight.text"
                 />
 
                 <div class="flex gap-2">
@@ -156,7 +158,7 @@
                     class="exercise-unit"
                     :class="{ 'bg-brown-color': kgValue, 'bg-white': !kgValue }">
                     kg
-                    <the-input type="radio" name="unit" />
+                    <the-input type="radio" name="unit" class="radio"/>
                   </label>
 
                   <label
@@ -165,7 +167,7 @@
                     class="exercise-unit"
                     :class="{ 'bg-brown-color': lbValue, 'bg-white': !lbValue }">
                     lb
-                    <the-input type="radio" name="unit" />
+                    <the-input type="radio" name="unit" class="radio"/>
                   </label>
                 </div>
               </div>
@@ -175,9 +177,9 @@
                 name="rest"
                 type="text"
                 placeholder="Rest time"
-                width="w-full"
-                :conditions="isFormSubmitted && exerciseData.rest === ''"
-                errorText='The "Rest time" value is required.'
+                class="text w-full"
+                :conditions="errors.rest.conditions"
+                :errorText="errors.rest.text"
               />
             </div>
           </template>
@@ -263,6 +265,30 @@ export default {
       }
 
       return selectedExercises
+    },
+    errors() {
+      return {
+        exerciseName: {
+          conditions: this.isFormSubmitted && this.workoutName === '',
+          text: 'The "Workout name" value is required.'
+        },
+        sets: {
+          conditions: this.isFormSubmitted && this.exerciseData.sets === '',
+          text: 'The "Sets" value is required.'
+        },
+        reps: {
+          conditions: this.isFormSubmitted && this.exerciseData.reps === '',
+          text: 'The "Reps" value is required.'
+        },
+        weight: {
+          conditions: this.isFormSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
+          text: 'The "Weight" value and its unit are required.'
+        },
+        rest: {
+          conditions: this.isFormSubmitted && this.exerciseData.rest === '',
+          text: 'The "Rest time" value is required.'
+        }
+      }
     }
   },
   methods: {
@@ -308,71 +334,71 @@ export default {
 <style scoped>
 .choose-exercise {
 @apply flex justify-between items-center mt-8 px-4 py-2 bg-white rounded-full;
-@apply text-sm text-placeholder-color cursor-pointer max-[399px]:min-w-0
+@apply text-sm text-placeholder-color cursor-pointer max-[399px]:min-w-0;
 }
 
 .exercise-to-select {
   @apply flex items-center mb-2 last:mb-0 border-2 border-black-color relative rounded-2xl text-sm;
-  @apply overflow-hidden cursor-pointer max-[500px]:flex-col max-[500px]:py-4
+  @apply overflow-hidden cursor-pointer max-[500px]:flex-col max-[500px]:py-4;
 }
 
 .exercise-img {
-  @apply w-[90px] max-[500px]:rounded-xl max-[500px]:mb-1 max-[500px]:w-[70px]
+  @apply w-[90px] max-[500px]:rounded-xl max-[500px]:mb-1 max-[500px]:w-[70px];
 }
 
 .exercise-description {
-  @apply flex flex-col gap-1 px-4 max-[500px]:items-center max-[500px]:gap-0
+  @apply flex flex-col gap-1 px-4 max-[500px]:items-center max-[500px]:gap-0;
 }
 
 .exercise-title {
-  @apply my-2 font-bold text-[16px] max-[500px]:my-1 max-[500px]:text-center
+  @apply my-2 font-bold text-[16px] max-[500px]:my-1 max-[500px]:text-center;
 }
 
 .exercise-muscles {
-  @apply flex flex-wrap gap-y-1 mb-2 max-[500px]:mb-0 max-[500px]:justify-center
+  @apply flex flex-wrap gap-y-1 mb-2 max-[500px]:mb-0 max-[500px]:justify-center;
 }
 
 .exercise-unit {
   @apply flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2;
-  @apply rounded-full cursor-pointer
+  @apply rounded-full cursor-pointer;
 }
 
 .buttons-box {
   @apply flex justify-between mt-8 px-6 mx-auto w-full;
-  @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-y-4
+  @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-y-4;
 }
 
 .title-enter-from {
-  @apply opacity-0 scale-50
+  @apply opacity-0 scale-50;
 }
 
 .exercise-enter-from {
-  @apply opacity-0 translate-y-7
+  @apply opacity-0 translate-y-7;
 }
 
 .exercises-enter-from {
-  @apply opacity-0 -translate-y-5
+  @apply opacity-0 -translate-y-5;
 }
 
 .exercises-leave-to {
-  @apply opacity-0
+  @apply opacity-0;
 }
 
 .title-enter-active,
 .exercises-enter-active,
 .exercise-enter-active {
-  @apply transition-all duration-500
+  @apply transition-all duration-500;
 }
 
 .exercises-leave-active {
-  @apply transition-opacity duration-300
+  @apply transition-opacity duration-300;
 }
 
 .list-enter-from {
-  @apply opacity-0 -translate-y-5
+  @apply opacity-0 -translate-y-5;
 }
 
 .list-enter-active {
-  @apply transition-all duration-300
+  @apply transition-all duration-300;
 }
 </style>

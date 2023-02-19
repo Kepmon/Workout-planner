@@ -5,6 +5,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: ['./index.html', './src/**/*.{vue, js}'],
   plugins: [
+    // eslint-disable-next-line import/no-extraneous-dependencies
     require('@gradin/tailwindcss-scrollbar')({
       size: '10px',
       track: {

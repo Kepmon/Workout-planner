@@ -5,8 +5,8 @@
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
-            <the-input type="text" placeholder="User name"></the-input>
-            <the-input type="password" placeholder="Password"></the-input>
+            <the-input type="text" placeholder="User name" class="text w-full"></the-input>
+            <the-input type="password" placeholder="Password" class="text w-full"></the-input>
           </div>
         </template>
 

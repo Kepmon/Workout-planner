@@ -164,23 +164,23 @@ export default {
 <style scoped>
 .nav-items {
     @apply flex flex-col items-center justify-center gap-20 absolute top-0 left-0 right-0 h-full;
-    @apply text-center max-[400px]:text-xl
+    @apply text-center max-[400px]:text-xl;
 }
 .active {
-    @apply bg-white-color rounded-full font-bold transition-colors duration-[600ms]
+    @apply bg-white-color rounded-full font-bold transition-colors duration-[600ms];
 }
 
 .close-btn {
-    @apply absolute h-12 top-8 right-8 max-[499px]:h-10 max-[499px]:top-9 max-[499px]:right-4
+    @apply absolute h-12 top-8 right-8 max-[499px]:h-10 max-[499px]:top-9 max-[499px]:right-4;
 }
 
 .nav-enter-from,
 .nav-leave-to {
-    @apply opacity-0 translate-x-48
+    @apply opacity-0 translate-x-48;
 }
 
 .nav-enter-active,
 .nav-leave-active {
-    @apply transition-all duration-300
+    @apply transition-all duration-300;
 }
 </style>
