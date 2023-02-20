@@ -50,7 +50,7 @@ export default {
   }
 
   .radio {
-    @apply appearance-none pl-0
+    @apply appearance-none pl-0;
   }
 
   .route-enter-from,

@@ -1,6 +1,11 @@
 <template>
-  <main>
-    <error-toast v-show="isToastShown" text="Ooops, something went wrong. Try again." />
+  <main class="relative">
+    <the-toast
+    v-show="isToastShown"
+    :text="toast.text"
+    :background="toast.color"
+    />
+    <privacy-policy v-show="isPolicyShown" @click="isPolicyShown = false" />
 
     <div class="py-12">
       <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign up</h2>
@@ -8,14 +13,39 @@
         <template #inputs>
           <div class="flex flex-col px-6">
             <the-input
-              v-for="(input, index) in inputs"
-              :key="index"
-              v-model="input.model"
-              :type="input.type"
-              :placeholder="input.placeholder"
-              class="text w-full"
-              :conditions="input.conditions"
-              :errorText="input.error"
+            v-model="userData.name"
+            type="text"
+            placeholder="User name"
+            class="text w-full"
+            :conditions="isFormSubmitted && errorMessages.nameError !== ''"
+            :errorText="errorMessages.nameError"
+            >
+            </the-input>
+            <the-input
+            v-model="userData.passOne"
+            type="password"
+            placeholder="Password"
+            class="text w-full"
+            :conditions="isFormSubmitted && errorMessages.passOneError !== ''"
+            :errorText="errorMessages.passOneError"
+            >
+            </the-input>
+            <the-input
+            v-model="userData.passTwo"
+            type="password"
+            placeholder="Repeat password"
+            class="text w-full"
+            :conditions="isFormSubmitted && errorMessages.passTwoError !== ''"
+            :errorText="errorMessages.passTwoError"
+            >
+            </the-input>
+            <the-input
+            v-model="userData.email"
+            type="email"
+            placeholder="Email"
+            class="text w-full"
+            :conditions="isFormSubmitted && errorMessages.emailError !== ''"
+            :errorText="errorMessages.emailError"
             >
             </the-input>
           </div>
@@ -37,10 +67,10 @@
             />
             <label v-if="$route.name === 'sign-up'" for="privacy" class="text-sm">
                 By clicking here, I state that I have read and understood the
-                <span class="border-b-brown-color border-b-2 text-brown-color font-bold">
-                  <router-link :to="{ name: 'privacy-policy' }" target="_blank">
-                    Privacy Policy<!--
-                  --></router-link>
+                <span
+                  @click="showModal"
+                  class="border-b-brown-color border-b-2 text-brown-color font-bold cursor-pointer">
+                  Privacy Policy
                 </span>.
             </label>
           </div>
@@ -75,7 +105,8 @@ import { useUserStore } from '../stores/user'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
-import ErrorToast from '../components/shared/ErrorToast.vue'
+import TheToast from '../components/shared/TheToast.vue'
+import PrivacyPolicy from '../components/PrivacyPolicy.vue'
 
 export default {
   name: 'SignUpView',
@@ -83,7 +114,8 @@ export default {
     TheForm,
     TheInput,
     TheButton,
-    ErrorToast
+    TheToast,
+    PrivacyPolicy
   },
   data() {
     return {
@@ -102,41 +134,23 @@ export default {
       },
       isCheckboxChecked: false,
       isFormSubmitted: false,
-      isToastShown: false
+      isError: false,
+      isToastShown: false,
+      isPolicyShown: false
     }
   },
   computed: {
-    inputs() {
-      return [
-        {
-          model: this.userData.name,
-          type: 'text',
-          placeholder: 'User name',
-          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
-          error: this.errorMessages.nameError
-        },
-        {
-          model: this.userData.name,
-          type: 'password',
-          placeholder: 'Password',
-          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
-          error: this.errorMessages.passOneError
-        },
-        {
-          model: this.userData.name,
-          type: 'password',
-          placeholder: 'Repeat password',
-          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
-          error: this.errorMessages.passTwoError
-        },
-        {
-          model: this.userData.name,
-          type: 'email',
-          placeholder: 'Email',
-          conditions: this.isFormSubmitted && this.errorMessages.nameError !== '',
-          error: this.errorMessages.emailError
+    toast() {
+      if (!this.isError) {
+        return {
+          text: "You've signed up successfully. Now, you may sign in into your account.",
+          color: 'bg-toast-info'
         }
-      ]
+      }
+      return {
+        text: 'Ooops, something went wrong. Try again.',
+        color: 'bg-toast-error'
+      }
     }
   },
   methods: {
@@ -193,14 +207,29 @@ export default {
       if (Object.values(this.errorMessages).every((value) => value === '')) {
         const isSignedUp = await this.signUp(this.userData.email, this.userData.passOne)
 
-        if (!isSignedUp) {
-          this.isToastShown = true
+        this.isToastShown = true
           
-          setTimeout(() => {
-            this.isToastShown = false
-          }, 3000)
+        setTimeout(() => {
+          this.isToastShown = false
+        }, 3000)
+
+        if (!isSignedUp) {
+          this.isError = true
+        } else {
+          this.isError = false
         }
       }
+
+      setTimeout(() => {
+        this.$router.push({ name: 'sign-in' })
+      }, 3500)
+    },
+    showModal() {
+      this.isPolicyShown = true
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }

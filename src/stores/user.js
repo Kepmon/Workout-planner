@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', {
     isSignedIn: false
   }),
   actions: {
+    // eslint-disable-next-line consistent-return
     async signUp(email, password) {
       try {
         const { error } = await supabase.auth.signUp({
@@ -16,9 +17,9 @@ export const useUserStore = defineStore('user', {
   
         if (error) {
           throw new Error()
-        } else {
-          this.$router.push({ name: 'sign-in' })
         }
+        
+        return true
       } catch (error) {
         return false
       }
