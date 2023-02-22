@@ -83,6 +83,6 @@ export default {
 
 .privacy-enter-active,
 .privacy-leave-active {
-    @apply transition-all duration-300
+    @apply transition-all duration-300;
 }
 </style>

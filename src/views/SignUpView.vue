@@ -59,19 +59,26 @@
         
         <template #others>
           <div class="flex justify-evenly px-6 mt-8 text-center">
-            <the-input
-            @input.capture="isCheckboxChecked = !isCheckboxChecked"
-            type="checkbox"
-            id="privacy"
-            class="checkbox"
-            />
-            <label v-if="$route.name === 'sign-up'" for="privacy" class="text-sm">
-                By clicking here, I state that I have read and understood the
-                <span
-                  @click="showModal"
-                  class="border-b-brown-color border-b-2 text-brown-color font-bold cursor-pointer">
-                  Privacy Policy
-                </span>.
+            <!-- <the-input
+              @input.capture="isCheckboxChecked = !isCheckboxChecked"
+              type="checkbox"
+              id="privacy"
+              class="checkbox"
+            /> -->
+            <label v-if="$route.name === 'sign-up'" class="flex text-sm">
+              <the-input
+                @input.capture="isCheckboxChecked = !isCheckboxChecked"
+                type="checkbox"
+                class="checkbox"
+              />
+                <span>
+                  By clicking here, I state that I have read and understood the
+                  <span
+                    @click="showModal"
+                    class="privacy">
+                    Privacy Policy.
+                  </span>
+                </span>
             </label>
           </div>
 
@@ -88,7 +95,7 @@
             <p class="mt-8 text-sm">
               Already have an account?
               <router-link :to="{ name: 'sign-in'}"
-              class="border-b-brown-color border-b-2 text-brown-color font-bold">
+              class="sign-in">
                 Sign in
               </router-link>
             </p>
@@ -217,12 +224,11 @@ export default {
           this.isError = true
         } else {
           this.isError = false
+          setTimeout(() => {
+            this.$router.push({ name: 'sign-in' })
+          }, 3500)
         }
       }
-
-      setTimeout(() => {
-        this.$router.push({ name: 'sign-in' })
-      }, 3500)
     },
     showModal() {
       this.isPolicyShown = true
@@ -234,3 +240,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.privacy {
+  @apply border-b-brown-color border-b-2 text-brown-color font-bold cursor-pointer;
+  @apply selection:bg-light-yellow;
+}
+
+.sign-in {
+  @apply border-b-brown-color border-b-2 text-brown-color font-bold selection:bg-light-yellow;
+}
+</style>

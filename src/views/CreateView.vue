@@ -267,26 +267,28 @@ export default {
       return selectedExercises
     },
     errors() {
+      const getErrorValue = (name) => `The "${name}" value is required.`
+
       return {
         exerciseName: {
           conditions: this.isFormSubmitted && this.workoutName === '',
-          text: 'The "Workout name" value is required.'
+          text: getErrorValue('Workout name')
         },
         sets: {
           conditions: this.isFormSubmitted && this.exerciseData.sets === '',
-          text: 'The "Sets" value is required.'
+          text: getErrorValue('Sets')
         },
         reps: {
           conditions: this.isFormSubmitted && this.exerciseData.reps === '',
-          text: 'The "Reps" value is required.'
+          text: getErrorValue('Reps')
         },
         weight: {
           conditions: this.isFormSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
-          text: 'The "Weight" value and its unit are required.'
+          text: (this.exerciseData.weight === '' ? getErrorValue('Weight') : getErrorValue('Unit'))
         },
         rest: {
           conditions: this.isFormSubmitted && this.exerciseData.rest === '',
-          text: 'The "Rest time" value is required.'
+          text: getErrorValue('Rest time')
         }
       }
     }

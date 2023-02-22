@@ -46,11 +46,15 @@ export default {
   .checkbox {
     @apply flex items-center justify-center appearance-none mr-1 h-4 w-4 relative top-[2px];
     @apply bg-white rounded-[5px] checked:bg-brown-color checked:after:content-checked;
-    @apply after:absolute after:-top-1 after:left-[1px];
+    @apply after:absolute after:top-0 after:left-[1px];
   }
 
   .radio {
     @apply appearance-none pl-0;
+  }
+
+  ::selection {
+    @apply bg-brown-color
   }
 
   .route-enter-from,
