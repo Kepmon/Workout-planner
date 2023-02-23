@@ -73,7 +73,8 @@ export default {
         email: ''
       },
       isToastShown: false,
-      isError: true
+      isError: true,
+      userStore: useUserStore()
     }
   },
   computed: {
@@ -92,9 +93,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signIn']),
     async signInUser() {
-      const isSignedInCorrectly = await this.signIn(this.userData.email, this.userData.password)
+      const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
 
       this.isToastShown = true
         
@@ -102,11 +102,11 @@ export default {
         this.isToastShown = false
       }, 3000)
 
-      if (!isSignedInCorrectly) {
+      if (!isSuccessful) {
         this.isError = true
       } else {
         this.isError = false
-        this.isSignedIn = true
+        this.userStore.isSignedIn = true
         setTimeout(() => {
           this.$router.push({ name: 'dashboard' })
         }, 3500)

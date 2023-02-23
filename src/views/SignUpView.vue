@@ -212,7 +212,7 @@ export default {
       this.checkForm()
 
       if (Object.values(this.errorMessages).every((value) => value === '')) {
-        const isSignedUp = await this.signUp(this.userData.email, this.userData.passOne)
+        const isSuccessful = await this.signUp(this.userData.email, this.userData.passOne)
 
         this.isToastShown = true
           
@@ -220,7 +220,7 @@ export default {
           this.isToastShown = false
         }, 3000)
 
-        if (!isSignedUp) {
+        if (!isSuccessful) {
           this.isError = true
         } else {
           this.isError = false

@@ -13,46 +13,16 @@
             </router-link>
 
             <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
-                <li>
-                    <router-link :to="{ name: 'home' }"
-                    :class="{ active: $route.name === 'home' }"
-                    class="px-6 py-2">
-                        Home
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{ name: 'create' }"
-                    :class="{ active: $route.name === 'create' }" class="px-6 py-2"
-                    >
-                        Create new workout
-                    </router-link>
-                </li>
-                <li>
-                    <router-link :to="{ name: 'dashboard' }"
-                    :class="{ active: $route.name === 'dashboard' }" class="px-6 py-2"
-                    >
-                        Dashboard
-                    </router-link>
-                </li>
-                <li v-show="!isSignedIn">
-                    <router-link :to="{ name: 'sign-in' }"
-                    :class="{ active: $route.name === 'sign-in' }" class="px-6 py-2"
-                    >
-                        Sign in
-                    </router-link>
-                </li>
-                <li v-show="!isSignedIn">
-                    <router-link :to="{ name: 'sign-up' }"
-                    :class="{ active: $route.name === 'sign-up' }" class="px-6 py-2"
-                    >
-                        Sign up
-                    </router-link>
-                </li>
-                <li @click="signOut" v-show="isSignedIn">
-                    <router-link :to="{ name: 'home' }"
-                    class="px-6 py-2"
-                    >
-                        Sign out
+                <li
+                    v-for="item in navItems"
+                    :key="item"
+                    v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
+                >
+                    <router-link
+                        :to="item.path"
+                        :class="{ active: $route.name === item.activeCondition }"
+                        class="px-6 py-2">
+                        {{ item.content }}
                     </router-link>
                 </li>
             </ul>
@@ -71,56 +41,17 @@
                         class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
                     >
                         <ul class="nav-items">
-                            <li @click="toggleNav">
+                            <li
+                                @click="toggleNav(); item.function"
+                                v-for="item in navItems"
+                                :key="item"
+                                v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
+                            >
                                 <router-link
-                                :to="{ name: 'home' }"
-                                class="px-6 py-2"
-                                :class="{ active: $route.name === 'home' }"
-                                >
-                                    Home
-                                </router-link>
-                            </li>
-                            <li @click="toggleNav">
-                                <router-link
-                                :to="{ name: 'create' }"
-                                :class="{ active: $route.name === 'create' }"
-                                class="px-6 py-2"
-                                >
-                                    Create new workout
-                                </router-link>
-                            </li>
-                            <li @click="toggleNav">
-                                <router-link :to="{ name: 'dashboard' }"
-                                :class="{ active: $route.name === 'dashboard' }"
-                                class="px-6 py-2"
-                                >
-                                    Dashboard
-                                </router-link>
-                            </li>
-                            <li @click="toggleNav" v-show="!isSignedIn">
-                                <router-link
-                                :to="{ name: 'sign-in' }"
-                                class="px-6 py-2"
-                                :class="{ active: $route.name === 'sign-in' }"
-                                >
-                                    Sign in
-                                </router-link>
-                            </li>
-                            <li @click="toggleNav" v-show="!isSignedIn">
-                                <router-link
-                                :to="{ name: 'sign-up' }"
-                                class="px-6 py-2"
-                                :class="{ active: $route.name === 'sign-up' }"
-                                >
-                                    Sign up
-                                </router-link>
-                            </li>
-                            <li @click="toggleNav(); signOut()" v-show="isSignedIn">
-                                <router-link
-                                :to="{ name: 'home' }"
-                                class="px-6 py-2"
-                                >
-                                    Sign out
+                                    :to="item.path"
+                                    :class="{ active: $route.name === item.activeCondition }"
+                                    class="px-6 py-2">
+                                    {{ item.content }}
                                 </router-link>
                             </li>
                         </ul>
@@ -146,7 +77,57 @@ export default {
   name: 'TheNav',
   data() {
     return {
-      isNavShown: false
+      isNavShown: false,
+      navItems: [
+        {
+          path: { name: 'home' },
+          activeCondition: 'home',
+          content: 'Home',
+          conditionOne: true,
+          conditionTwo: false,
+          function: ''
+        },
+        {
+          path: { name: 'create' },
+          activeCondition: 'create',
+          content: 'Create new workout',
+          conditionOne: true,
+          conditionTwo: false,
+          function: ''
+        },
+        {
+          path: { name: 'dashboard' },
+          activeCondition: 'dashboard',
+          content: 'Dashboard',
+          conditionOne: true,
+          conditionTwo: false,
+          function: ''
+        },
+        {
+          path: { name: 'sign-in' },
+          activeCondition: 'sign-in',
+          content: 'Sign in',
+          conditionOne: false,
+          conditionTwo: false,
+          function: ''
+        },
+        {
+          path: { name: 'sign-up' },
+          activeCondition: 'sign-up',
+          content: 'Sign up',
+          conditionOne: false,
+          conditionTwo: false,
+          function: ''
+        },
+        {
+          path: { name: 'home' },
+          activeCondition: false,
+          content: 'Sign out',
+          conditionOne: true,
+          conditionTwo: true,
+          function: this.signOut()
+        }
+      ]
     }
   },
   computed: {
