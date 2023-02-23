@@ -54,7 +54,7 @@ export default {
   }
 
   ::selection {
-    @apply bg-brown-color
+    @apply bg-brown-color;
   }
 
   .route-enter-from,
