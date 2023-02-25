@@ -13,18 +13,21 @@
             </router-link>
 
             <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
-                <li
-                    v-for="item in navItems"
-                    :key="item"
-                    v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
-                >
-                    <router-link
-                        :to="item.path"
-                        :class="{ active: $route.name === item.activeCondition }"
-                        class="px-6 py-2">
-                        {{ item.content }}
-                    </router-link>
-                </li>
+              <li
+              @click="item.callback"
+              v-for="item in navItems"
+              :key="item"
+              v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
+              >
+                <transition name="nav-items" mode="out-in">
+                  <router-link
+                      :to="item.path"
+                      :class="{ active: $route.name === item.activeCondition }"
+                      class="px-6 py-2">
+                      {{ item.content }}
+                  </router-link>
+                </transition>
+              </li>
             </ul>
 
             <div class="cursor-pointer z-10 min-[999px]:hidden">
@@ -42,7 +45,7 @@
                     >
                         <ul class="nav-items">
                             <li
-                                @click="toggleNav(); item.callback()"
+                                @click="toggleNav(item.callback)"
                                 v-for="item in navItems"
                                 :key="item"
                                 v-show="isSignedIn === item.conditionOne
@@ -85,40 +88,35 @@ export default {
           activeCondition: 'home',
           content: 'Home',
           conditionOne: true,
-          conditionTwo: false,
-          callback: ''
+          conditionTwo: false
         },
         {
           path: { name: 'create' },
           activeCondition: 'create',
           content: 'Create new workout',
           conditionOne: true,
-          conditionTwo: false,
-          callback: ''
+          conditionTwo: false
         },
         {
           path: { name: 'dashboard' },
           activeCondition: 'dashboard',
           content: 'Dashboard',
           conditionOne: true,
-          conditionTwo: false,
-          callback: ''
+          conditionTwo: false
         },
         {
           path: { name: 'sign-in' },
           activeCondition: 'sign-in',
           content: 'Sign in',
           conditionOne: false,
-          conditionTwo: false,
-          callback: ''
+          conditionTwo: false
         },
         {
           path: { name: 'sign-up' },
           activeCondition: 'sign-up',
           content: 'Sign up',
           conditionOne: false,
-          conditionTwo: false,
-          callback: ''
+          conditionTwo: false
         },
         {
           path: { name: 'home' },
@@ -136,8 +134,12 @@ export default {
   },
   methods: {
     ...mapActions(useUserStore, ['signOut']),
-    toggleNav() {
+    toggleNav(cb) {
       this.isNavShown = !this.isNavShown
+
+      if (cb) {
+        cb()
+      }
     }
   }
 }
@@ -145,24 +147,34 @@ export default {
 
 <style scoped>
 .nav-items {
-    @apply flex flex-col items-center justify-center gap-20 absolute top-0 left-0 right-0 h-full;
-    @apply text-center max-[400px]:text-xl;
+  @apply flex flex-col items-center justify-center gap-20 absolute top-0 left-0 right-0 h-full;
+  @apply text-center max-[400px]:text-xl;
 }
 .active {
-    @apply bg-white-color rounded-full font-bold transition-colors duration-[600ms];
+  @apply bg-white-color rounded-full font-bold transition-colors duration-[600ms];
 }
 
 .close-btn {
-    @apply absolute h-12 top-8 right-8 max-[499px]:h-10 max-[499px]:top-9 max-[499px]:right-4;
+  @apply absolute h-12 top-8 right-8 max-[499px]:h-10 max-[499px]:top-9 max-[499px]:right-4;
 }
 
 .nav-enter-from,
 .nav-leave-to {
-    @apply opacity-0 translate-x-48;
+  @apply opacity-0 translate-x-48;
 }
 
 .nav-enter-active,
 .nav-leave-active {
-    @apply transition-all duration-300;
+  @apply transition-all duration-300;
+}
+
+.nav-items-enter-from,
+.nav-items-leave-to {
+  @apply opacity-0
+}
+
+.nav-items-enter-active,
+.nav-items-leave-active {
+  @apply transition-opacity duration-300;
 }
 </style>
