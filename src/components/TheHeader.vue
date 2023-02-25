@@ -21,10 +21,10 @@ export default {
 <style scoped>
 .header-bg {
   @apply h-400 w-screen bg-[url('/img/gym_photo.png')] bg-center bg-cover bg-fixed;
-  @apply max-[599px]:bg-[url('/img/gym_photo_small.png')]
+  @apply max-[599px]:bg-[url('/img/gym_photo_small.png')];
 }
 
 h1 {
-  @apply text-6xl font-normal text-white-color max-[899px]:text-5xl max-[699px]:text-40
+  @apply text-6xl font-normal text-white-color max-[899px]:text-5xl max-[699px]:text-40;
 }
 </style>

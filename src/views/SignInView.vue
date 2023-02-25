@@ -1,18 +1,36 @@
 <template>
   <main>
+    <the-toast
+    v-show="isToastShown"
+    :text="toast.text"
+    :background="toast.color"
+    />
+
     <div class="py-12">
       <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign in</h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
-            <the-input type="text" placeholder="User name"></the-input>
-            <the-input type="password" placeholder="Password"></the-input>
+            <the-input
+              v-model="userData.email"
+              type="email"
+              placeholder="Email"
+              class="text w-full"
+            >
+            </the-input>
+            <the-input
+              v-model="userData.password"
+              type="password"
+              placeholder="Password"
+              class="text w-full"
+            >
+            </the-input>
           </div>
         </template>
 
         <template #buttons>
           <div class="flex justify-center">
-            <the-button text="Sign in" />
+            <the-button @click.prevent="signInUser" text="Sign in" />
           </div>
         </template>
 
@@ -33,16 +51,67 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'pinia'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
+import TheToast from '../components/shared/TheToast.vue'
+import { useUserStore } from '../stores/user'
 
 export default {
   name: 'SignInView',
   components: {
     TheForm,
     TheInput,
-    TheButton
+    TheButton,
+    TheToast
+  },
+  data() {
+    return {
+      userData: {
+        password: '',
+        email: ''
+      },
+      isToastShown: false,
+      isError: true
+    }
+  },
+  computed: {
+    ...mapState(useUserStore, ['isSignedIn']),
+    toast() {
+      if (!this.isError) {
+        return {
+          text: "You've signed in successfully. Go, see your dashboard.",
+          color: 'bg-toast-info'
+        }
+      }
+      return {
+        text: 'The entered data are incorrect. Try again.',
+        color: 'bg-toast-error'
+      }
+    }
+  },
+  methods: {
+    ...mapActions(useUserStore, ['signIn']),
+    async signInUser() {
+      const isSignedInCorrectly = await this.signIn(this.userData.email, this.userData.password)
+
+      this.isToastShown = true
+        
+      setTimeout(() => {
+        this.isToastShown = false
+      }, 3000)
+
+      if (!isSignedInCorrectly) {
+        this.isError = true
+      } else {
+        this.isError = false
+        this.isSignedIn = true
+        setTimeout(() => {
+          this.$router.push({ name: 'dashboard' })
+        }, 3500)
+      }
+    }
   }
 }
 </script>

@@ -22,6 +22,6 @@ export default {
 <style scoped>
 p {
   @apply flex items-center justify-center px-6 bg-dark-yellow w-screen h-24 text-center;
-  @apply max-[499px]:text-sm
+  @apply max-[499px]:text-sm;
 }
 </style>

@@ -27,29 +27,53 @@ export default {
 
 <style>
   * {
-    @apply box-border p-0 m-0
+    @apply box-border p-0 m-0;
   }
 
   body {
-    @apply bg-light-yellow text-black-color overflow-x-hidden
+    @apply bg-light-yellow text-black-color overflow-x-hidden;
   }
 
   main {
-    @apply flex flex-col items-center justify-center min-h-[calc(100vh-208px)]
+    @apply flex flex-col items-center justify-center min-h-[calc(100vh-208px)];
   }
 
-  .route-enter-from {
-    opacity: 0;
-    transform: translateX(-50px);
+  .text {
+    @apply pl-4 h-9 rounded-full text-sm outline-none focus:shadow-3xl;
+    @apply placeholder:text-placeholder-color max-[399px]:min-w-0;
   }
 
+  .checkbox {
+    @apply flex items-center justify-center appearance-none mr-1 h-4 w-4 relative top-[2px];
+    @apply bg-white rounded-[5px] checked:bg-brown-color checked:after:content-checked;
+    @apply after:absolute after:top-0 after:left-[1px];
+  }
+
+  .radio {
+    @apply appearance-none pl-0;
+  }
+
+  ::selection {
+    @apply bg-brown-color
+  }
+
+  .route-enter-from,
   .route-leave-to {
-    opacity: 0;
-    transform: translateX(50px);
+    @apply opacity-0 -translate-x-12;
   }
 
   .route-enter-active,
   .route-leave-active {
-    transition: opacity .3s, transform .3s;
+    @apply transition-all duration-300;
   }
+
+.error-enter-from,
+.error-leave-to {
+  @apply opacity-0;
+}
+
+.error-enter-active,
+.error-leave-active {
+  @apply transition-opacity duration-300;
+}
 </style>

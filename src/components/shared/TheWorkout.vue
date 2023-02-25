@@ -14,6 +14,6 @@ export default {
 
 <style scoped>
 div {
-  @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full
+  @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
 }
 </style>
