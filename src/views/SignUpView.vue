@@ -59,12 +59,6 @@
         
         <template #others>
           <div class="flex justify-evenly px-6 mt-8 text-center">
-            <!-- <the-input
-              @input.capture="isCheckboxChecked = !isCheckboxChecked"
-              type="checkbox"
-              id="privacy"
-              class="checkbox"
-            /> -->
             <label v-if="$route.name === 'sign-up'" class="flex text-sm">
               <the-input
                 @input.capture="isCheckboxChecked = !isCheckboxChecked"
@@ -82,14 +76,16 @@
             </label>
           </div>
 
-          <transition name="error">
-            <p
-            v-show="isFormSubmitted && errorMessages.checkboxError !== ''"
-            class="text-xs text-center text-red-700 font-bold"
-            >
-              {{ errorMessages.checkboxError }}
-            </p>
-          </transition>
+          <div class="relative">
+            <transition name="error">
+              <p
+                v-show="isFormSubmitted && errorMessages.checkboxError !== ''"
+                class="checkbox-error"
+              >
+                {{ errorMessages.checkboxError }}
+              </p>
+            </transition>
+          </div>
 
           <div class="px-6 text-center">
             <p class="mt-8 text-sm">
@@ -242,6 +238,9 @@ export default {
 </script>
 
 <style scoped>
+.checkbox-error {
+  @apply absolute -top-2 left-1/2 -translate-x-1/2 text-xs text-center text-red-700 font-bold;
+}
 .privacy {
   @apply border-b-brown-color border-b-2 text-brown-color font-bold cursor-pointer;
   @apply selection:bg-light-yellow;

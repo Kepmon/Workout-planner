@@ -10,7 +10,7 @@
           <template #inputs>
             <div class="px-6">
               <the-input
-                @focusout="isNameShown = true"
+                @focusout="displayWorkoutTitle"
                 v-model="workoutName"
                 v-show="!isNameShown"
                 type="text"
@@ -113,10 +113,15 @@
                     </transition-group>
                   </div>
                 </transition>
-                <!-- eslint-disable-next-line max-len -->
-                <p v-show="isFormSubmitted && selectedExercise === ''" class="mt-1 ml-2 text-xs text-red-700 font-bold">
-                  You need to choose an exercise.
-                </p>
+                  <div class="mb-2 relative">
+                    <transition name="error">
+                      <p
+                        v-show="isFormSubmitted && selectedExercise === ''"
+                        class="mt-1 ml-2 absolute text-xs text-red-700 font-bold">
+                        You need to choose an exercise.
+                      </p>
+                    </transition>
+                  </div>
               </div>
 
               <div class="flex justify-between mt-8 w-full max-[500px]:flex-col">
@@ -295,6 +300,12 @@ export default {
   },
   methods: {
     ...mapActions(useExerciseStore, ['showSelectedExercises']),
+    displayWorkoutTitle() {
+      if (this.workoutName === '') {
+        return
+      }
+      this.isNameShown = true
+    },
     addExerciseValues(e) {
       this.exerciseData[e.target.name] = e.target.value
     },
@@ -307,6 +318,9 @@ export default {
     },
     addUnit() {
       this.exerciseData.unit = this.selectedUnit
+    },
+    checkEmpty(label) {
+      return `The "${label}" value is required.`
     },
     handleSumbit() {
       if (this.workoutName !== '' && Object.values(this.exerciseData).every((value) => value !== '')) {

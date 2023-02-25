@@ -1,12 +1,12 @@
 <template>
-    <div class="mb-8">
+    <div class="mb-10 relative">
         <input
           :value="modelValue"
           @input="$emit('update:modelValue', $event.target.value)"
           v-bind="$attrs"
         />
         <transition name="error">
-          <p v-show="conditions" class="mt-1 ml-2 text-xs text-red-700 font-bold">
+          <p v-show="conditions" class="mt-1 ml-2 absolute text-xs text-red-700 font-bold">
             {{ errorText }}
           </p>
         </transition>

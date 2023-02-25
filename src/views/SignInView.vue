@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
@@ -78,7 +77,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useUserStore, ['isSignedIn']),
     toast() {
       if (!this.isError) {
         return {
@@ -97,7 +95,7 @@ export default {
       const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
 
       this.isToastShown = true
-        
+      
       setTimeout(() => {
         this.isToastShown = false
       }, 3000)
@@ -108,7 +106,13 @@ export default {
         this.isError = false
         this.userStore.isSignedIn = true
         setTimeout(() => {
-          this.$router.push({ name: 'dashboard' })
+          const lastPath = this.$router.options.history.state.back
+
+          if (lastPath === '/create') {
+            this.$router.push({ name: 'create' })
+          } else {
+            this.$router.push({ name: 'dashboard' })
+          }
         }, 3500)
       }
     }

@@ -42,10 +42,11 @@
                     >
                         <ul class="nav-items">
                             <li
-                                @click="toggleNav(); item.function"
+                                @click="toggleNav(); item.callback()"
                                 v-for="item in navItems"
                                 :key="item"
-                                v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
+                                v-show="isSignedIn === item.conditionOne
+                                || isSignedIn === item.conditionTwo"
                             >
                                 <router-link
                                     :to="item.path"
@@ -85,7 +86,7 @@ export default {
           content: 'Home',
           conditionOne: true,
           conditionTwo: false,
-          function: ''
+          callback: ''
         },
         {
           path: { name: 'create' },
@@ -93,7 +94,7 @@ export default {
           content: 'Create new workout',
           conditionOne: true,
           conditionTwo: false,
-          function: ''
+          callback: ''
         },
         {
           path: { name: 'dashboard' },
@@ -101,7 +102,7 @@ export default {
           content: 'Dashboard',
           conditionOne: true,
           conditionTwo: false,
-          function: ''
+          callback: ''
         },
         {
           path: { name: 'sign-in' },
@@ -109,7 +110,7 @@ export default {
           content: 'Sign in',
           conditionOne: false,
           conditionTwo: false,
-          function: ''
+          callback: ''
         },
         {
           path: { name: 'sign-up' },
@@ -117,7 +118,7 @@ export default {
           content: 'Sign up',
           conditionOne: false,
           conditionTwo: false,
-          function: ''
+          callback: ''
         },
         {
           path: { name: 'home' },
@@ -125,7 +126,7 @@ export default {
           content: 'Sign out',
           conditionOne: true,
           conditionTwo: true,
-          function: this.signOut()
+          callback: this.signOut
         }
       ]
     }
