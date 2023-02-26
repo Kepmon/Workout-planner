@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'overflow-y-hidden': isNavShown }">
+  <div>
     <the-nav />
     
     <router-view v-slot="{ Component }">

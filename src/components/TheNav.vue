@@ -14,7 +14,7 @@
 
             <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
               <li
-                @click="callback"
+                v-on="{ click: callback ? callback : null }"
                 v-for="{ path, content, callback } in navItems"
                 :key="path"
               >
