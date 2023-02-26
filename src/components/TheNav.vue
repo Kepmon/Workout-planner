@@ -14,19 +14,16 @@
 
             <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
               <li
-              @click="item.callback"
-              v-for="item in navItems"
-              :key="item"
-              v-show="isSignedIn === item.conditionOne || isSignedIn === item.conditionTwo"
+                @click="callback"
+                v-for="{ path, content, callback } in navItems"
+                :key="path"
               >
-                <transition name="nav-items" mode="out-in">
-                  <router-link
-                      :to="item.path"
-                      :class="{ active: $route.name === item.activeCondition }"
-                      class="px-6 py-2">
-                      {{ item.content }}
-                  </router-link>
-                </transition>
+                <router-link
+                    :to="path"
+                    :active-class="content !== 'Sign out' ? 'active' : ''"
+                    class="px-6 py-2">
+                    {{ content }}
+                </router-link>
               </li>
             </ul>
 
@@ -44,24 +41,22 @@
                         class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
                     >
                         <ul class="nav-items">
-                            <li
-                                @click="toggleNav(item.callback)"
-                                v-for="item in navItems"
-                                :key="item"
-                                v-show="isSignedIn === item.conditionOne
-                                || isSignedIn === item.conditionTwo"
-                            >
-                                <router-link
-                                    :to="item.path"
-                                    :class="{ active: $route.name === item.activeCondition }"
-                                    class="px-6 py-2">
-                                    {{ item.content }}
-                                </router-link>
-                            </li>
+                          <li
+                            @click="toggleNav(callback)"
+                            v-for="{ path, content, callback } in navItems"
+                            :key="path"
+                          >
+                            <router-link
+                                :to="path"
+                                :active-class="content !== 'Sign out' ? 'active' : ''"
+                                class="px-6 py-2">
+                                {{ content }}
+                            </router-link>
+                          </li>
                         </ul>
 
                         <img
-                            @click="toggleNav"
+                            @click="toggleNav()"
                             src="/img/close-square-svgrepo-com.svg"
                             alt="The close menu icon"
                             class="close-btn"
@@ -82,55 +77,50 @@ export default {
   data() {
     return {
       isNavShown: false,
-      navItems: [
+      routes: [
         {
           path: { name: 'home' },
           activeCondition: 'home',
-          content: 'Home',
-          conditionOne: true,
-          conditionTwo: false
+          content: 'Home'
         },
         {
           path: { name: 'create' },
           activeCondition: 'create',
-          content: 'Create new workout',
-          conditionOne: true,
-          conditionTwo: false
+          content: 'Create new workout'
         },
         {
           path: { name: 'dashboard' },
           activeCondition: 'dashboard',
-          content: 'Dashboard',
-          conditionOne: true,
-          conditionTwo: false
+          content: 'Dashboard'
         },
         {
           path: { name: 'sign-in' },
           activeCondition: 'sign-in',
-          content: 'Sign in',
-          conditionOne: false,
-          conditionTwo: false
+          content: 'Sign in'
         },
         {
           path: { name: 'sign-up' },
           activeCondition: 'sign-up',
-          content: 'Sign up',
-          conditionOne: false,
-          conditionTwo: false
+          content: 'Sign up'
         },
         {
           path: { name: 'home' },
           activeCondition: false,
           content: 'Sign out',
-          conditionOne: true,
-          conditionTwo: true,
+          protected: true,
           callback: this.signOut
         }
       ]
     }
   },
   computed: {
-    ...mapState(useUserStore, ['isSignedIn'])
+    ...mapState(useUserStore, ['isSignedIn']),
+    navItems() {
+      if (!this.isSignedIn) {
+        return this.routes.filter((route) => route.protected == null)
+      }
+      return this.routes.filter((route) => route.path.name.includes('sign') === false)
+    }
   },
   methods: {
     ...mapActions(useUserStore, ['signOut']),
@@ -168,13 +158,13 @@ export default {
   @apply transition-all duration-300;
 }
 
-.nav-items-enter-from,
-.nav-items-leave-to {
+.nav-desktop-enter-from,
+.nav-desktop-leave-to {
   @apply opacity-0
 }
 
-.nav-items-enter-active,
-.nav-items-leave-active {
+.nav-desktop-enter-active,
+.nav-desktop-leave-active {
   @apply transition-opacity duration-300;
 }
 </style>

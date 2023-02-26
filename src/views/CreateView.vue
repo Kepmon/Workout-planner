@@ -130,7 +130,7 @@
                   type="number"
                   placeholder="Sets"
                   name="sets"
-                  class="text"
+                  class="text w-full"
                   :conditions="errors.sets.conditions"
                   :errorText="errors.sets.text"
                 />
@@ -139,7 +139,7 @@
                   type="number"
                   placeholder="Reps"
                   name="reps"
-                  class="text"
+                  class="text w-full"
                   :conditions="errors.reps.conditions"
                   :errorText="errors.reps.text"
                 />
@@ -151,7 +151,7 @@
                   type="number"
                   placeholder="Weight"
                   name="weight"
-                  class="text min-[500px]:w-[300px]"
+                  class="text w-[290px] max-[400px]:w-28"
                   :conditions="errors.weight.conditions"
                   :errorText="errors.weight.text"
                 />
@@ -377,6 +377,7 @@ export default {
 .exercise-unit {
   @apply flex justify-center items-center text-sm text-placeholder-color h-9 w-9 p-2;
   @apply rounded-full cursor-pointer;
+  @apply max-[300px]:w-8 max-[300px]:h-8 max-[300px]:translate-y-1;
 }
 
 .buttons-box {
