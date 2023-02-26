@@ -4,9 +4,9 @@
             <router-link :to="{ name: 'home' }">
                 <div class="flex items-center p-1">
                     <img
-                        src="/img/training-gym-svgrepo-com.svg"
-                        alt="The company logo"
-                        class="h-20 max-[499px]:h-10"
+                      src="/img/training-gym-svgrepo-com.svg"
+                      alt="The company logo"
+                      class="h-20 max-[499px]:h-10"
                     >
                     <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
                 </div>
@@ -19,47 +19,47 @@
                 :key="path"
               >
                 <router-link
-                    :to="path"
-                    :active-class="content !== 'Sign out' ? 'active' : ''"
-                    class="px-6 py-2">
-                    {{ content }}
+                  :to="path"
+                  :active-class="content !== 'Sign out' ? 'active' : ''"
+                  class="px-6 py-2">
+                  {{ content }}
                 </router-link>
               </li>
             </ul>
 
             <div class="cursor-pointer z-10 min-[999px]:hidden">
                 <img
-                    @click="toggleNav"
-                    src="/img/menu-1-svgrepo-com.svg"
-                    alt="The menu icon"
-                    class="h-12 max-[499px]:h-10"
+                  @click="() => toggleNav()"
+                  src="/img/menu-1-svgrepo-com.svg"
+                  alt="The menu icon"
+                  class="h-12 max-[499px]:h-10"
                 >
 
                 <transition name="nav">
                     <div
-                        v-show="isNavShown"
-                        class="absolute top-0 left-0 right-0 h-screen bg-dark-yellow text-2xl"
+                      v-show="isNavShown"
+                      class="absolute inset-0 h-screen bg-dark-yellow text-2xl"
                     >
                         <ul class="nav-items">
                           <li
-                            @click="toggleNav(callback)"
+                            @click="() => toggleNav(callback)"
                             v-for="{ path, content, callback } in navItems"
                             :key="path"
                           >
                             <router-link
-                                :to="path"
-                                :active-class="content !== 'Sign out' ? 'active' : ''"
-                                class="px-6 py-2">
-                                {{ content }}
+                              :to="path"
+                              :active-class="content !== 'Sign out' ? 'active' : ''"
+                              class="px-6 py-2">
+                              {{ content }}
                             </router-link>
                           </li>
                         </ul>
 
                         <img
-                            @click="toggleNav()"
-                            src="/img/close-square-svgrepo-com.svg"
-                            alt="The close menu icon"
-                            class="close-btn"
+                          @click="() => toggleNav()"
+                          src="/img/close-square-svgrepo-com.svg"
+                          alt="The close menu icon"
+                          class="close-btn"
                         >
                     </div>
                 </transition>

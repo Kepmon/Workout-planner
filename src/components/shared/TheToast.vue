@@ -1,6 +1,6 @@
 <template>
   <transition name="toast">
-    <p :class="background" class="z-10">{{ text }}</p>
+    <p :class="background" class="text-center z-10">{{ text }}</p>
   </transition>
 </template>
 

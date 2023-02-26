@@ -80,7 +80,7 @@ export default {
     toast() {
       if (!this.isError) {
         return {
-          text: "You've signed in successfully. Go, see your dashboard.",
+          text: this.$router.options.history.state.back === '/create' ? "You've signed in successfully. Let's create some workout." : "You've signed in successfully. Let's see your dashboard.",
           color: 'bg-toast-info'
         }
       }
