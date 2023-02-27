@@ -7,7 +7,6 @@ export const useUserStore = defineStore('user', {
     isSignedIn: false
   }),
   actions: {
-    // eslint-disable-next-line consistent-return
     async signUp(email, password) {
       try {
         const { error } = await supabase.auth.signUp({

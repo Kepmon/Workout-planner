@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
@@ -73,15 +72,15 @@ export default {
         email: ''
       },
       isToastShown: false,
-      isError: true
+      isError: true,
+      userStore: useUserStore()
     }
   },
   computed: {
-    ...mapState(useUserStore, ['isSignedIn']),
     toast() {
       if (!this.isError) {
         return {
-          text: "You've signed in successfully. Go, see your dashboard.",
+          text: this.$router.options.history.state.back === '/create' ? "You've signed in successfully. Let's create some workout." : "You've signed in successfully. Let's see your dashboard.",
           color: 'bg-toast-info'
         }
       }
@@ -92,23 +91,28 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signIn']),
     async signInUser() {
-      const isSignedInCorrectly = await this.signIn(this.userData.email, this.userData.password)
+      const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
 
       this.isToastShown = true
-        
+      
       setTimeout(() => {
         this.isToastShown = false
       }, 3000)
 
-      if (!isSignedInCorrectly) {
+      if (!isSuccessful) {
         this.isError = true
       } else {
         this.isError = false
-        this.isSignedIn = true
+        this.userStore.isSignedIn = true
         setTimeout(() => {
-          this.$router.push({ name: 'dashboard' })
+          const lastPath = this.$router.options.history.state.back
+
+          if (lastPath === '/create') {
+            this.$router.push({ name: 'create' })
+          } else {
+            this.$router.push({ name: 'dashboard' })
+          }
         }, 3500)
       }
     }
