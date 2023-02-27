@@ -56,6 +56,7 @@ import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheToast from '../components/shared/TheToast.vue'
 import { useUserStore } from '../stores/user'
+import { supabase } from '../supabase'
 
 export default {
   name: 'SignInView',
@@ -92,7 +93,8 @@ export default {
   },
   methods: {
     async signInUser() {
-      const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
+      // eslint-disable-next-line max-len
+      const isSuccessful = await this.userStore.authenticateUser(this.userData.email, this.userData.password, supabase.auth.signInWithPassword)
 
       this.isToastShown = true
       

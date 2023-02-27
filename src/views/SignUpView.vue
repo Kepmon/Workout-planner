@@ -110,6 +110,7 @@ import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheToast from '../components/shared/TheToast.vue'
 import PrivacyPolicy from '../components/PrivacyPolicy.vue'
+import { supabase } from '../supabase'
 
 export default {
   name: 'SignUpView',
@@ -157,7 +158,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signUp']),
+    ...mapActions(useUserStore, ['authenticateUser']),
     checkLength(input, minChar, label) {
       if (input === '') {
         return `The "${label}" value is required.`
@@ -208,7 +209,8 @@ export default {
       this.checkForm()
 
       if (Object.values(this.errorMessages).every((value) => value === '')) {
-        const isSuccessful = await this.signUp(this.userData.email, this.userData.passOne)
+        // eslint-disable-next-line max-len
+        const isSuccessful = await this.authenticateUser(this.userData.email, this.userData.passOne, supabase.auth.signUp)
 
         this.isToastShown = true
           
