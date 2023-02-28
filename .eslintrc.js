@@ -7,8 +7,6 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'airbnb-base'
   ],
-  overrides: [
-  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
@@ -19,6 +17,7 @@ module.exports = {
   rules: {
     semi: ['error', 'never'],
     'no-trailing-spaces': ['error', { skipBlankLines: true }],
-    'comma-dangle': ['error', 'never']
+    'comma-dangle': ['error', 'never'],
+    'linebreak-style': ['error', 'windows']
   }
 }

@@ -13,18 +13,20 @@
             </router-link>
 
             <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
-              <li
-                v-on="{ click: callback ? callback : null }"
-                v-for="{ path, content, callback } in navItems"
-                :key="path"
-              >
-                <router-link
-                  :to="path"
-                  :active-class="content !== 'Sign out' ? 'active' : ''"
-                  class="px-6 py-2">
-                  {{ content }}
-                </router-link>
-              </li>
+              <transition-group name="nav-desktop">
+                <li
+                    v-on="{ click: callback ? callback : null }"
+                    v-for="{ path, content, callback } in navItems"
+                    :key="path"
+                >
+                        <router-link
+                            :to="path"
+                            :active-class="content !== 'Sign out' ? 'active' : ''"
+                            class="px-6 py-2">
+                            {{ content }}
+                        </router-link>
+                    </li>
+              </transition-group>
             </ul>
 
             <div class="cursor-pointer z-10 min-[999px]:hidden">
@@ -163,8 +165,15 @@ export default {
   @apply opacity-0
 }
 
-.nav-desktop-enter-active,
+.nav-desktop-enter-active {
+  @apply transition-opacity duration-500;
+}
+
+.nav-desktop-move {
+  @apply transition-all duration-500;
+}
+
 .nav-desktop-leave-active {
-  @apply transition-opacity duration-300;
+  @apply transition-opacity duration-[0ms];
 }
 </style>

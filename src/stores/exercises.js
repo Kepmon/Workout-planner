@@ -18,7 +18,8 @@ export const useExerciseStore = defineStore('exercises', {
         name: 'Assisted pull-ups',
         img: '/img/assisted_pullup.gif',
         muscles: ['Back', 'Upperback', 'Lats', 'Biceps']
-      }, {
+      },
+      {
         name: 'Barbell bent over row',
         img: '/img/barbell_row.gif',
         muscles: ['Back', 'Upperback', 'Lats']

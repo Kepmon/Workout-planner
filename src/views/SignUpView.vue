@@ -216,7 +216,7 @@ export default {
           this.isToastShown = false
         }, 3000)
 
-        if (!isSuccessful) {
+        if (isSuccessful !== true) {
           this.isError = true
         } else {
           this.isError = false
