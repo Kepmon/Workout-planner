@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-nav />
+    <the-nav @toggle-nav="handleBody($event)" />
     
     <router-view v-slot="{ Component }">
       <transition name="route" mode="out-in">
@@ -21,6 +21,16 @@ export default {
   components: {
     TheNav,
     TheFooter
+  },
+  data() {
+    return {
+      isBodyLocked: false
+    }
+  },
+  methods: {
+    handleBody(isLocked) {
+      this.isBodyLocked = isLocked
+    }
   }
 }
 </script>

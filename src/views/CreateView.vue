@@ -78,7 +78,7 @@
                         <li
                           @click.capture="selectedExercise = exercise; addExerciseInfo()"
                           v-for="exercise in exercisesToShow"
-                          :key="exercise.name"
+                          :key="exercise.id"
                           class="exercise-to-select"
                           :class="{'mt-8': selectedExercise !== ''}"
                         >
@@ -91,18 +91,18 @@
                           class="absolute right-2 h-8"
                           >
                           <img
-                            :src="exercise.img"
+                            :src="exercise.exercise.img"
                             alt="An exercise gif"
                             class="exercise-img"
                           >
                           <div class="exercise-description">
                             <h4 class="exercise-title">
-                              {{ exercise.name }}
+                              {{ exercise.exercise.name }}
                             </h4>
                             <p class="max-[500px]:mb-1">Muscle groups:</p>
                             <div class="exercise-muscles">
                               <span
-                                v-for="muscle in exercise.muscles"
+                                v-for="muscle in exercise.exercise.muscles"
                                 :key="muscle"
                                 class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
                                 {{ muscle }}
@@ -198,20 +198,21 @@
             </div>
           </template>
         </the-form>
+
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState } from 'pinia'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
-import { useExerciseStore } from '../stores/exercises'
 import { useUserStore } from '../stores/user'
+import { supabase } from '../supabase'
 
 export default {
   name: 'CreateView',
@@ -224,6 +225,7 @@ export default {
   },
   data() {
     return {
+      allExercises: [],
       workoutName: '',
       exerciseName: '',
       isNameShown: false,
@@ -246,7 +248,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useExerciseStore, ['exercises']),
     ...mapState(useUserStore, ['isSignedIn']),
     selectedUnit() {
       if (this.kgValue === true || this.lbValue === true) {
@@ -259,14 +260,14 @@ export default {
       
       if (this.exerciseName === '') {
         if (this.selectedExercise !== '') {
-          return this.exercises.filter((exercise) => this.selectedExercise === exercise)
+          return this.allExercises.filter((exercise) => this.selectedExercise === exercise)
         }
 
-        return this.exercises
+        return this.allExercises
       }
 
       if (this.selectedExercise !== '') {
-        return this.exercises.filter((exercise) => this.selectedExercise === exercise)
+        return this.allExercises.filter((exercise) => this.selectedExercise === exercise)
       }
 
       return selectedExercises
@@ -299,7 +300,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useExerciseStore, ['showSelectedExercises']),
+    showSelectedExercises(value) {
+      // eslint-disable-next-line max-len
+      return this.allExercises.filter((exercise) => exercise.exercise.name.toLowerCase().includes(value))
+    },
     displayWorkoutTitle() {
       if (this.workoutName === '') {
         return
@@ -343,6 +347,17 @@ export default {
         this.isFormSubmitted = true
       }
     }
+  },
+  mounted() {
+    const fetchExercises = async () => {
+      const { data } = await supabase
+        .from('Exercises')
+        .select()
+
+      this.allExercises = data
+    }
+
+    fetchExercises()
   }
 }
 </script>
