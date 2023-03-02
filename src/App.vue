@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-nav />
+    <the-nav @toggle-nav="handleLock($event)" />
     
     <router-view v-slot="{ Component }">
       <transition name="route" mode="out-in">
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useScrollLock } from '@vueuse/core'
 import TheNav from './components/TheNav.vue'
 import TheFooter from './components/TheFooter.vue'
 
@@ -21,6 +23,12 @@ export default {
   components: {
     TheNav,
     TheFooter
+  },
+  methods: {
+    handleLock(isLocked) {
+      const scrollLock = useScrollLock(document.body)
+      scrollLock.value = isLocked
+    }
   }
 }
 </script>

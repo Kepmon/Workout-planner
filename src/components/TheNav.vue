@@ -115,6 +115,7 @@ export default {
       ]
     }
   },
+  emits: ['toggleNav'],
   computed: {
     ...mapState(useUserStore, ['isSignedIn']),
     navItems() {
@@ -128,6 +129,7 @@ export default {
     ...mapActions(useUserStore, ['signOut']),
     toggleNav(cb) {
       this.isNavShown = !this.isNavShown
+      this.$emit('toggleNav', this.isNavShown)
 
       if (cb) {
         cb()
