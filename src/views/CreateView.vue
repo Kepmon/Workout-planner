@@ -1,5 +1,11 @@
 <template>
   <main>
+    <the-toast
+      v-show="isToastShown"
+      text="An error has occurred when fetching exercises. Try again later."
+      background="bg-toast-error"
+    />
+
     <div class="py-12">
       <need-sign-in text="create a workout" />
 
@@ -57,7 +63,7 @@
                       src="/img/down-arrow-backup-2-svgrepo-com.svg"
                       alt="Down arrow icon - click here to see all exercises"
                       class="h-3 transition duration-500"
-                      :class="{'rotate-180': areExercisesDisplayed}"
+                      :class="{ 'rotate-180': areExercisesDisplayed }"
                       >
                     </transition>
                   </span>
@@ -211,6 +217,7 @@ import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
+import TheToast from '../components/shared/TheToast.vue'
 import { useUserStore } from '../stores/user'
 import { supabase } from '../supabase'
 
@@ -221,11 +228,12 @@ export default {
     TheInput,
     TheButton,
     TheExercise,
-    NeedSignIn
+    NeedSignIn,
+    TheToast
   },
   data() {
     return {
-      allExercises: [],
+      exercises: [],
       workoutName: '',
       exerciseName: '',
       isNameShown: false,
@@ -244,7 +252,8 @@ export default {
         rest: ''
       },
       addedExercises: [],
-      isFormSubmitted: false
+      isFormSubmitted: false,
+      isToastShown: false
     }
   },
   computed: {
@@ -260,14 +269,14 @@ export default {
       
       if (this.exerciseName === '') {
         if (this.selectedExercise !== '') {
-          return this.allExercises.filter((exercise) => this.selectedExercise === exercise)
+          return this.exercises.filter((exercise) => this.selectedExercise === exercise)
         }
 
-        return this.allExercises
+        return this.exercises
       }
 
       if (this.selectedExercise !== '') {
-        return this.allExercises.filter((exercise) => this.selectedExercise === exercise)
+        return this.exercises.filter((exercise) => this.selectedExercise === exercise)
       }
 
       return selectedExercises
@@ -302,7 +311,7 @@ export default {
   methods: {
     showSelectedExercises(value) {
       // eslint-disable-next-line max-len
-      return this.allExercises.filter((exercise) => exercise.exercise.name.toLowerCase().includes(value))
+      return this.exercises.filter((exercise) => exercise.exercise.name.toLowerCase().includes(value))
     },
     displayWorkoutTitle() {
       if (this.workoutName === '') {
@@ -348,16 +357,22 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     const fetchExercises = async () => {
-      const { data } = await supabase
-        .from('Exercises')
-        .select()
-
-      this.allExercises = data
+      const response = await supabase.from('Exercises').select()
+      
+      if (response.error === null) {
+        this.exercises = response.data
+      } else {
+        this.isToastShown = true
+      
+        setTimeout(() => {
+          this.isToastShown = false
+        }, 3000)
+      }
     }
 
-    fetchExercises()
+    await fetchExercises()
   }
 }
 </script>
