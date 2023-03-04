@@ -84,31 +84,31 @@
                         <li
                           @click.capture="selectedExercise = exercise; addExerciseInfo()"
                           v-for="exercise in exercisesToShow"
-                          :key="exercise.id"
+                          :key="exercise.name"
                           class="exercise-to-select"
                           :class="{'mt-8': selectedExercise !== ''}"
                         >
                           
                           <img
-                          v-show="selectedExercise !== ''"
-                          @click="selectedExercise = ''"
-                          src="/img/close-square-svgrepo-com.svg"
-                          alt="remove this exercise"
-                          class="absolute right-2 h-8"
+                            v-show="selectedExercise !== ''"
+                            @click="selectedExercise = ''"
+                            src="/img/close-square-svgrepo-com.svg"
+                            alt="remove this exercise"
+                            class="absolute right-2 h-8"
                           >
                           <img
-                            :src="exercise.exercise.img"
+                            :src="exercise.img"
                             alt="An exercise gif"
                             class="exercise-img"
                           >
                           <div class="exercise-description">
                             <h4 class="exercise-title">
-                              {{ exercise.exercise.name }}
+                              {{ exercise.name }}
                             </h4>
                             <p class="max-[500px]:mb-1">Muscle groups:</p>
                             <div class="exercise-muscles">
                               <span
-                                v-for="muscle in exercise.exercise.muscles"
+                                v-for="muscle in exercise.muscles"
                                 :key="muscle"
                                 class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full ">
                                 {{ muscle }}
@@ -310,8 +310,7 @@ export default {
   },
   methods: {
     showSelectedExercises(value) {
-      // eslint-disable-next-line max-len
-      return this.exercises.filter((exercise) => exercise.exercise.name.toLowerCase().includes(value))
+      return this.exercises.filter((exercise) => exercise.name.toLowerCase().includes(value))
     },
     displayWorkoutTitle() {
       if (this.workoutName === '') {
@@ -358,21 +357,28 @@ export default {
     }
   },
   async mounted() {
-    const fetchExercises = async () => {
-      const response = await supabase.from('Exercises').select()
-      
-      if (response.error === null) {
-        this.exercises = response.data
-      } else {
-        this.isToastShown = true
-      
-        setTimeout(() => {
-          this.isToastShown = false
-        }, 3000)
-      }
-    }
+    if (this.isSignedIn) {
+      const fetchExercises = async () => {
+        const response = await supabase.from('Exercises').select()
+        
+        if (response.error === null) {
+          const { data } = response
 
-    await fetchExercises()
+          data.forEach((item) => {
+            const { img, muscles, name } = item.exercise
+            this.exercises.push({ img, muscles, name })
+          })
+        } else {
+          this.isToastShown = true
+        
+          setTimeout(() => {
+            this.isToastShown = false
+          }, 3000)
+        }
+      }
+  
+      await fetchExercises()
+    }
   }
 }
 </script>
