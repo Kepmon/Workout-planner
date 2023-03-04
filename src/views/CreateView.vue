@@ -373,9 +373,9 @@ export default {
               workout_name: this.workoutName,
               exercises: this.addedExercises
             }
-            
           }
         ])
+        .select()
   
       if (data) {
         this.isInsertionError = false
