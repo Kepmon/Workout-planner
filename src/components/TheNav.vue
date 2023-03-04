@@ -131,12 +131,7 @@ export default {
     ...mapActions(useUserStore, ['signOut']),
     toggleNav(cb) {
       this.isNavShown = !this.isNavShown
-      
-      if (this.isNavShown) {
-        this.isLocked = true
-      } else {
-        this.isLocked = false
-      }
+      this.isLocked = this.isNavShown
 
       if (cb) {
         cb()
