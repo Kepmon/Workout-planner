@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h3 class="mb-8 text-2xl text-dark-violet font-bold max-[499px]:text-xl">Plan's name</h3>
+    <div class="max-w-[450px]">
+        <h3 class="mb-8 text-2xl text-dark-violet font-bold max-[499px]:text-xl">{{ title }}</h3>
 
         <slot></slot>
     </div>
@@ -8,7 +8,8 @@
 
 <script>
 export default {
-  name: 'TheWorkout'
+  name: 'TheWorkout',
+  props: ['title']
 }
 </script>
 
