@@ -1,5 +1,11 @@
 <template>
   <main>
+    <the-toast
+      v-show="isToastShown"
+      :text="toast.text"
+      :background="toast.color"
+    />
+
     <div class="py-12">
       <need-sign-in text="create a workout" />
 
@@ -192,9 +198,7 @@
           <template #buttons>
             <div class="buttons-box">
               <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
-              <router-link :to="{ name: 'dashboard' }">
-                <the-button text="Add workout"/>
-              </router-link>
+              <the-button @click.prevent="submitWorkout" text="Add workout"/>
             </div>
           </template>
         </the-form>
@@ -210,8 +214,10 @@ import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
+import TheToast from '../components/shared/TheToast.vue'
 import { useExerciseStore } from '../stores/exercises'
 import { useUserStore } from '../stores/user'
+import { supabase } from '../supabase'
 
 export default {
   name: 'CreateView',
@@ -220,7 +226,8 @@ export default {
     TheInput,
     TheButton,
     TheExercise,
-    NeedSignIn
+    NeedSignIn,
+    TheToast
   },
   data() {
     return {
@@ -242,7 +249,9 @@ export default {
         rest: ''
       },
       addedExercises: [],
-      isFormSubmitted: false
+      isFormSubmitted: false,
+      isToastShown: false,
+      isInsertionError: false
     }
   },
   computed: {
@@ -296,6 +305,18 @@ export default {
           text: getErrorValue('Rest time')
         }
       }
+    },
+    toast() {
+      if (!this.isInsertionError) {
+        return {
+          text: "Your workout has been added. Let's see it on your dashboard.",
+          color: 'bg-toast-info'
+        }
+      }
+      return {
+        text: 'Ooops, something went wrong. Try again.',
+        color: 'bg-toast-error'
+      }
     }
   },
   methods: {
@@ -342,6 +363,34 @@ export default {
       } else {
         this.isFormSubmitted = true
       }
+    },
+    async submitWorkout() {
+      const { data, error } = await supabase
+        .from('Workouts')
+        .insert([
+          {
+            workout: {
+              workout_name: this.workoutName,
+              exercises: this.addedExercises
+            }
+            
+          }
+        ])
+  
+      if (data) {
+        this.isInsertionError = false
+        setTimeout(() => {
+          this.$router.push({ name: 'dashboard' })
+        }, 3500)
+      } else if (error) {
+        this.isInsertionError = true
+      }
+
+      this.isToastShown = true
+      
+      setTimeout(() => {
+        this.isToastShown = false
+      }, 3000)
     }
   }
 }
