@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 .exercise {
-    @apply flex justify-between items-center px-12 gap-6;
-    @apply max-[500px]:flex-col max-[500px]:items-center max-[500px]:gap-4 max-[500px]:text-sm;
+    @apply flex justify-between items-center px-12 gap-6 max-[400px]:px-2;
+    @apply max-[600px]:flex-col max-[500px]:items-center max-[500px]:gap-4 max-[500px]:text-sm;
 }
 </style>

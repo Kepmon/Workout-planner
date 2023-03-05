@@ -8,23 +8,37 @@
             {{ message }}
         </p>
 
-        <div class="grid grid-cols-2 gap-8 max-[799px]:grid-cols-1">
-            <the-workout v-for="workout in workouts" :key="workout" :title="workout.workout_name">
-                <the-exercise
-                    v-for="exercise in workout.exercises"
-                    :key="exercise" :img="exercise.img"
-                    :name="exercise.name" :sets="exercise.sets"
-                    :reps="exercise.reps"
-                    :weight="exercise.weight"
-                    :rest="exercise.rest">
-                    <span
+        <div class="flex justify-between w-full gap-x-10 max-[500px]:gap-6 max-[400px]:gap-4">
+            <img
+                @click="decreaseWorkoutNumber"
+                class="w-8 max-[500px]:w-5"
+                src="/img/chevrons-left-alt-svgrepo-com.svg"
+                alt="previous workout"
+            >
+            <transition name="workout">
+                <the-workout :title="workouts[workoutNumber].workout_name">
+                    <the-exercise
+                        v-for="exercise in workouts[workoutNumber].exercises"
+                        :key="exercise" :img="exercise.img"
+                        :name="exercise.name" :sets="exercise.sets"
+                        :reps="exercise.reps"
+                        :weight="exercise.weight"
+                        :rest="exercise.rest">
+                        <span
                         v-for="muscle in exercise.muscles"
                         :key="muscle"
                         class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
                         {{ muscle }}
-                    </span>
-                </the-exercise>
-            </the-workout>
+                        </span>
+                    </the-exercise>
+                </the-workout>
+            </transition>
+            <img
+                @click="increaseWorkoutNumber"
+                class="w-8 max-[500px]:w-5"
+                src="/img/chevrons-right-alt-svgrepo-com.svg"
+                alt="next workout"
+            >
         </div>
 
         <div class="mt-20">
@@ -52,12 +66,21 @@ export default {
   data() {
     return {
       workouts: [],
-      isError: false
+      isError: false,
+      workoutNumber: 0
     }
   },
   computed: {
     message() {
       return this.isError ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!'
+    }
+  },
+  methods: {
+    increaseWorkoutNumber() {
+      this.workoutNumber += 1
+    },
+    decreaseWorkoutNumber() {
+      this.workoutNumber -= 1
     }
   },
   async mounted() {
@@ -85,5 +108,18 @@ export default {
 <style scoped>
 .workout-title {
     @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
+}
+
+.workout-enter-from {
+    @apply translate-x-5
+}
+
+.workout-leave-to {
+    @apply -translate-x-5
+}
+
+.workout-enter-active,
+.workout-leave-active {
+    @apply transition-transform duration-500
 }
 </style>
