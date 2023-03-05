@@ -3,65 +3,43 @@
     <div class="py-12 px-8">
       <need-sign-in text="see your dashboard" />
 
-      <div v-if="isSignedIn" class="flex flex-col justify-center">
-          <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">
-            See your workouts below
+      <div v-if="isSignedIn" class="flex flex-col">
+          <h2
+            v-show="userWorkouts.length !== 0"
+            class="mb-8 text-3xl text-center font-bold tracking-wider">
+            Hello
+            <span class="text-brown-color">{{ userName }}</span>,
+            you can see your workouts below
+          </h2>
+          <h2
+            v-show="userWorkouts.length === 0"
+            class="mb-8 text-3xl text-center font-bold tracking-wider">
+            Looks empty here...
           </h2>
 
-          <div class="workout-title">
-              <h3 class="mb-8 text-2xl text-dark-violet font-bold max-[499px]:text-xl">
-                Plan's name
-              </h3>
-
-              <the-exercise
-              img="/img/barbell_squat.gif"
-              name="Barbell full squat"
-              muscle="Legs"
-              sets="3"
-              reps="5"
-              weight="45 kg"
-              rest="01:00" />
-              <the-exercise
-              img="/img/b_hip_thrust.gif"
-              name="Barbell hip thrust"
-              muscle="Glutes, Legs"
-              sets="3"
-              reps="8"
-              weight="85 kg"
-              rest="01:00" />
-              <the-exercise
-              img="/img/cable_pullldown.gif"
-              name="Cable pulldown"
-              muscle="Back"
-              sets="3"
-              reps="12"
-              weight="25 kg"
-              rest="01:00" />
-              <the-exercise
-              img="/img/assisted_dips.gif"
-              name="Machine assisted dips"
-              muscle="Chest, Triceps"
-              sets="3"
-              reps="10"
-              weight="25 kg"
-              rest="01:00" />
-              <the-exercise
-              img="/img/calf_raise.gif"
-              name="Calf raises"
-              muscle="Calfs"
-              sets="3"
-              reps="15"
-              weight="75 kg"
-              rest="01:00" />
-              <the-exercise
-              img="/img/ab_wheel.gif"
-              name="Ab-wheel rollout"
-              muscle="Abs"
-              sets="3"
-              reps="10"
-              weight="none"
-              rest="01:00" />
+          <div class="flex justify-center items-start gap-12">
+            <the-workout
+              v-for="workout in userWorkouts"
+              :key="workout.workout_name"
+              :title="workout.workout_name">
+                <the-exercise
+                  v-for="exercise in workout.exercises"
+                  :key="exercise" :img="exercise.img"
+                  :name="exercise.name" :sets="exercise.sets"
+                  :reps="exercise.reps"
+                  :weight="exercise.weight"
+                  :rest="exercise.rest">
+                  <span
+                  v-for="muscle in exercise.muscles"
+                  :key="muscle"
+                  class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                  {{ muscle }}
+                  </span>
+                </the-exercise>
+            </the-workout>
           </div>
+
+          <the-button text="Add new workout" class="self-center mt-12" />
       </div>
     </div>
   </main>
@@ -71,16 +49,50 @@
 import { mapState } from 'pinia'
 import { useUserStore } from '../stores/user'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
+import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
+import TheButton from '../components/shared/TheButton.vue'
+import { supabase } from '../supabase'
 
 export default {
   name: 'DashboardView',
   components: {
     NeedSignIn,
-    TheExercise
+    TheWorkout,
+    TheExercise,
+    TheButton
+  },
+  data() {
+    return {
+      userName: '',
+      userID: '',
+      userWorkouts: []
+    }
   },
   computed: {
     ...mapState(useUserStore, ['isSignedIn'])
+  },
+  async mounted() {
+    if (this.isSignedIn) {
+      const { data: { user } } = await supabase.auth.getUser()
+      const profile = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single()
+
+      const { data } = await supabase
+        .from('Workouts')
+        .select()
+        
+      this.userName = profile.data.username
+      this.userID = user.id
+
+      const allUserWorkouts = data.filter((item) => item.user_id === this.userID)
+
+      // eslint-disable-next-line max-len
+      this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
+    }
   }
 }
 </script>

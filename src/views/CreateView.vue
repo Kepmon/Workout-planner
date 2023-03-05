@@ -198,7 +198,7 @@
           <template #buttons>
             <div class="buttons-box">
               <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
-              <the-button @click.prevent="submitWorkout" text="Add workout"/>
+              <the-button @click.prevent="submitWorkout()" text="Add workout"/>
             </div>
           </template>
         </the-form>
@@ -365,6 +365,7 @@ export default {
       }
     },
     async submitWorkout() {
+      const { data: { user } } = await supabase.auth.getUser()
       const { data, error } = await supabase
         .from('Workouts')
         .insert([
@@ -372,7 +373,8 @@ export default {
             workout: {
               workout_name: this.workoutName,
               exercises: this.addedExercises
-            }
+            },
+            user_id: user.id
           }
         ])
         .select()

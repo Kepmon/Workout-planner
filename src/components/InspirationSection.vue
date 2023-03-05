@@ -102,11 +102,9 @@ export default {
       const response = await supabase.from('Workouts').select()
       if (response.error === null) {
         const { data } = response
-    
-        data.forEach((item) => {
-          const { workout } = item
-          this.workouts.push(workout)
-        })
+
+        // eslint-disable-next-line max-len
+        this.workouts = data.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
 
         this.isError = false
       } else {

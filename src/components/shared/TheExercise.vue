@@ -5,7 +5,7 @@
 
             <div class="flex flex-col items-center gap-y-1">
                 <p class="text-center"><span class="font-bold">Exercise: </span>{{ name }}</p>
-                <div class="mb-1">
+                <div class="mb-1 text-center">
                     <span class="font-bold">Muscle groups: </span>
                     <div class="flex flex-wrap justify-center gap-1">
                         <slot></slot>
