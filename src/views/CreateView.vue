@@ -157,7 +157,7 @@
                   type="number"
                   placeholder="Weight"
                   name="weight"
-                  class="text w-[290px] max-[400px]:w-28"
+                  class="text w-[290px] max-[500px]:w-28"
                   :conditions="errors.weight.conditions"
                   :errorText="errors.weight.text"
                 />
@@ -364,9 +364,9 @@ export default {
         if (response.error === null) {
           const { data } = response
 
-          data.forEach((item) => {
+          this.exercises = data.map((item) => {
             const { img, muscles, name } = item.exercise
-            this.exercises.push({ img, muscles, name })
+            return { img, muscles, name }
           })
         } else {
           this.isToastShown = true
