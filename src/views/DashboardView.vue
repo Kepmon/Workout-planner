@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="py-12">
+    <div class="py-12 px-8">
       <need-sign-in text="see your dashboard" />
 
       <div v-if="isSignedIn" class="flex flex-col justify-center">

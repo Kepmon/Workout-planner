@@ -39,7 +39,8 @@ module.exports = {
         'input-color': '#D9D9D9',
         'toast-info': '#7DA532',
         'toast-error': '#C2554E',
-        'footer-color': '#0E0014'
+        'footer-color': '#0E0014',
+        'button-hover': '#970000'
       },
       maxWidth: {
         1200: '1200px'

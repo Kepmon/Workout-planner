@@ -10,32 +10,35 @@
 
         <div class="flex justify-between w-full gap-x-10 max-[500px]:gap-6 max-[400px]:gap-4">
             <img
-                @click="decreaseWorkoutNumber"
-                class="w-8 max-[500px]:w-5"
-                src="/img/chevrons-left-alt-svgrepo-com.svg"
-                alt="previous workout"
+              @click="decreaseWorkoutNumber"
+              class="w-8 cursor-pointer max-[500px]:w-5"
+              src="/img/chevrons-left-alt-svgrepo-com.svg"
+              alt="previous workout"
             >
-            <transition name="workout">
-                <the-workout :title="workouts[workoutNumber].workout_name">
-                    <the-exercise
-                        v-for="exercise in workouts[workoutNumber].exercises"
-                        :key="exercise" :img="exercise.img"
-                        :name="exercise.name" :sets="exercise.sets"
-                        :reps="exercise.reps"
-                        :weight="exercise.weight"
-                        :rest="exercise.rest">
-                        <span
-                        v-for="muscle in exercise.muscles"
-                        :key="muscle"
-                        class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
-                        {{ muscle }}
-                        </span>
-                    </the-exercise>
-                </the-workout>
-            </transition>
+            <transition-group name="workout">
+              <the-workout
+                v-for="workout in currentWorkout"
+                :key="workout.workout_name"
+                :title="workout.workout_name">
+                  <the-exercise
+                    v-for="exercise in workout.exercises"
+                    :key="exercise" :img="exercise.img"
+                    :name="exercise.name" :sets="exercise.sets"
+                    :reps="exercise.reps"
+                    :weight="exercise.weight"
+                    :rest="exercise.rest">
+                    <span
+                    v-for="muscle in exercise.muscles"
+                    :key="muscle"
+                    class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                    {{ muscle }}
+                    </span>
+                  </the-exercise>
+              </the-workout>
+            </transition-group>
             <img
                 @click="increaseWorkoutNumber"
-                class="w-8 max-[500px]:w-5"
+                class="w-8 cursor-pointer max-[500px]:w-5"
                 src="/img/chevrons-right-alt-svgrepo-com.svg"
                 alt="next workout"
             >
@@ -73,14 +76,25 @@ export default {
   computed: {
     message() {
       return this.isError ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!'
+    },
+    currentWorkout() {
+      return this.workouts.filter((workout) => workout === this.workouts[this.workoutNumber])
     }
   },
   methods: {
     increaseWorkoutNumber() {
       this.workoutNumber += 1
+
+      if (!this.workouts[this.workoutNumber]) {
+        this.workoutNumber = 0
+      }
     },
     decreaseWorkoutNumber() {
       this.workoutNumber -= 1
+
+      if (!this.workouts[this.workoutNumber]) {
+        this.workoutNumber = this.workouts.length - 1
+      }
     }
   },
   async mounted() {
@@ -107,19 +121,14 @@ export default {
 
 <style scoped>
 .workout-title {
-    @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
+  @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
 }
 
 .workout-enter-from {
-    @apply translate-x-5
+  @apply translate-x-32 opacity-0;
 }
 
-.workout-leave-to {
-    @apply -translate-x-5
-}
-
-.workout-enter-active,
-.workout-leave-active {
-    @apply transition-transform duration-500
+.workout-enter-active {
+  @apply transition-all duration-500;
 }
 </style>

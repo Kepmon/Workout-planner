@@ -4,10 +4,12 @@
             <img :src="img" alt="An exercise gif" class="w-24 rounded-xl max-[500px]:w-[70px]">
 
             <div class="flex flex-col items-center gap-y-1">
-                <p><span class="font-bold">Exercise: </span>{{ name }}</p>
-                <div>
+                <p class="text-center"><span class="font-bold">Exercise: </span>{{ name }}</p>
+                <div class="mb-1">
                     <span class="font-bold">Muscle groups: </span>
-                    <slot></slot>
+                    <div class="flex flex-wrap justify-center gap-1">
+                        <slot></slot>
+                    </div>
                 </div>
                 <div class="flex gap-3 max-[400px]:flex-col max-[500px]:gap-1">
                     <p class="text-center"><span class="font-bold">Sets: </span>{{ sets }}</p>
