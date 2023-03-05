@@ -71,6 +71,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useScrollLock } from '@vueuse/core'
+import { ref } from 'vue'
 import { mapState, mapActions } from 'pinia'
 import { useUserStore } from '../stores/user'
 
@@ -128,11 +131,18 @@ export default {
     ...mapActions(useUserStore, ['signOut']),
     toggleNav(cb) {
       this.isNavShown = !this.isNavShown
+      this.isLocked = this.isNavShown
 
       if (cb) {
         cb()
       }
     }
+  },
+  setup() {
+    const el = ref(document.body)
+    const isLocked = useScrollLock(el)
+
+    return { isLocked }
   }
 }
 </script>
