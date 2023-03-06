@@ -364,10 +364,8 @@ export default {
         if (response.error === null) {
           const { data } = response
 
-          this.exercises = data.map((item) => {
-            const { img, muscles, name } = item.exercise
-            return { img, muscles, name }
-          })
+          // eslint-disable-next-line max-len
+          this.exercises = data.map(({ exercise: { muscles, img, name } }) => ({ muscles, img, name }))
         } else {
           this.isToastShown = true
         
