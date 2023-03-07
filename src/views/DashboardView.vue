@@ -3,7 +3,7 @@
     <div class="py-12 px-8">
       <need-sign-in text="see your dashboard" />
 
-      <div v-if="isSignedIn" class="flex flex-col">
+      <div v-if="isSignedIn" class="flex flex-col items-center">
           <h2
             v-show="userWorkouts.length !== 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
@@ -17,18 +17,20 @@
             Looks empty here...
           </h2>
 
-          <div class="flex justify-center items-start gap-12">
+          <div class="flex flex-wrap justify-center items-start gap-12">
             <the-workout
               v-for="workout in userWorkouts"
               :key="workout.workout_name"
-              :title="workout.workout_name">
+              :title="workout.workout_name"
+            >
                 <the-exercise
                   v-for="exercise in workout.exercises"
                   :key="exercise" :img="exercise.img"
                   :name="exercise.name" :sets="exercise.sets"
                   :reps="exercise.reps"
                   :weight="exercise.weight"
-                  :rest="exercise.rest">
+                  :rest="exercise.rest"
+                >
                   <span
                   v-for="muscle in exercise.muscles"
                   :key="muscle"
@@ -39,7 +41,9 @@
             </the-workout>
           </div>
 
-          <the-button text="Add new workout" class="self-center mt-12" />
+          <router-link :to="{ name: 'create' }">
+            <the-button text="Add new workout" class="self-center mt-12" />
+          </router-link>
       </div>
     </div>
   </main>

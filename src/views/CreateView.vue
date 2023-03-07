@@ -122,7 +122,7 @@
                   <div class="mb-2 relative">
                     <transition name="error">
                       <p
-                        v-show="isFormSubmitted && selectedExercise === ''"
+                        v-show="isExerciseSubmitted && selectedExercise === ''"
                         class="mt-1 ml-2 absolute text-xs text-red-700 font-bold">
                         You need to choose an exercise.
                       </p>
@@ -249,7 +249,7 @@ export default {
         rest: ''
       },
       addedExercises: [],
-      isFormSubmitted: false,
+      isExerciseSubmitted: false,
       isToastShown: false,
       isInsertionError: false
     }
@@ -285,23 +285,23 @@ export default {
 
       return {
         exerciseName: {
-          conditions: this.isFormSubmitted && this.workoutName === '',
+          conditions: this.isExerciseSubmitted && this.workoutName === '',
           text: getErrorValue('Workout name')
         },
         sets: {
-          conditions: this.isFormSubmitted && this.exerciseData.sets === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.sets === '',
           text: getErrorValue('Sets')
         },
         reps: {
-          conditions: this.isFormSubmitted && this.exerciseData.reps === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.reps === '',
           text: getErrorValue('Reps')
         },
         weight: {
-          conditions: this.isFormSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
+          conditions: this.isExerciseSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
           text: (this.exerciseData.weight === '' ? getErrorValue('Weight') : getErrorValue('Unit'))
         },
         rest: {
-          conditions: this.isFormSubmitted && this.exerciseData.rest === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.rest === '',
           text: getErrorValue('Rest time')
         }
       }
@@ -328,7 +328,9 @@ export default {
       this.isNameShown = true
     },
     addExerciseValues(e) {
-      this.exerciseData[e.target.name] = e.target.value
+      if (this.exerciseData[e.target.name]) {
+        this.exerciseData[e.target.name] = e.target.value
+      }
     },
     addExerciseInfo() {
       if (this.selectedExercise !== '') {
@@ -357,11 +359,11 @@ export default {
           unit: this.selectedUnit,
           rest: ''
         }
-        this.isFormSubmitted = false
+        this.isExerciseSubmitted = false
         this.areExercisesDisplayed = false
         this.selectedExercise = ''
       } else {
-        this.isFormSubmitted = true
+        this.isExerciseSubmitted = true
       }
     },
     async submitWorkout() {
@@ -446,7 +448,7 @@ export default {
 }
 
 .exercise-enter-from {
-  @apply opacity-0 translate-y-7;
+  @apply opacity-0 scale-50;
 }
 
 .exercises-enter-from {
