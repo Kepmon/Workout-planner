@@ -20,8 +20,8 @@
           <div class="flex flex-wrap justify-center items-start gap-12">
             <the-workout
               v-for="workout in userWorkouts"
-              :key="workout.workout_name"
-              :title="workout.workout_name"
+              :key="workout.id"
+              :title="workout.name"
             >
                 <the-exercise
                   v-for="exercise in workout.exercises"
@@ -94,8 +94,9 @@ export default {
 
       const allUserWorkouts = data.filter((item) => item.user_id === this.userID)
 
-      // eslint-disable-next-line max-len
-      this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
+      this.userWorkouts = allUserWorkouts.map(
+        ({ workout: { workout_name, exercises }, id }) => ({ exercises, name: workout_name, id })
+      )
     }
   }
 }
