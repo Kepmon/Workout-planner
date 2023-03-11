@@ -14,32 +14,34 @@
           <h2
             v-show="userWorkouts.length === 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
-            Looks empty here...
+            {{ startMessage }}
           </h2>
-
-          <div class="flex flex-wrap justify-center items-start gap-12">
-            <the-workout
-              v-for="workout in userWorkouts"
-              :key="workout.workout_name"
-              :title="workout.workout_name"
-            >
-                <the-exercise
-                  v-for="exercise in workout.exercises"
-                  :key="exercise" :img="exercise.img"
-                  :name="exercise.name" :sets="exercise.sets"
-                  :reps="exercise.reps"
-                  :weight="exercise.weight"
-                  :rest="exercise.rest"
-                >
-                  <span
-                  v-for="muscle in exercise.muscles"
-                  :key="muscle"
-                  class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
-                  {{ muscle }}
-                  </span>
-                </the-exercise>
-            </the-workout>
-          </div>
+          
+          <masonry-wall :items="userWorkouts" :column-width="columnWidth" :gap="32">
+            <template #default="{ item }">
+                <div>
+                  <the-workout
+                    :title="item.workout_name"
+                  >
+                      <the-exercise
+                        v-for="exercise in item.exercises"
+                        :key="exercise" :img="exercise.img"
+                        :name="exercise.name" :sets="exercise.sets"
+                        :reps="exercise.reps"
+                        :weight="exercise.weight"
+                        :rest="exercise.rest"
+                      >
+                        <span
+                        v-for="muscle in exercise.muscles"
+                        :key="muscle"
+                        class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                        {{ muscle }}
+                        </span>
+                      </the-exercise>
+                  </the-workout>
+                </div>
+            </template>
+          </masonry-wall>
 
           <router-link :to="{ name: 'create' }">
             <the-button text="Add new workout" class="self-center mt-12" />
@@ -70,32 +72,58 @@ export default {
     return {
       userName: '',
       userID: '',
-      userWorkouts: []
+      userWorkouts: [],
+      isLoading: true,
+      columnWidth: 0
     }
   },
   computed: {
-    ...mapState(useUserStore, ['isSignedIn'])
+    ...mapState(useUserStore, ['isSignedIn']),
+    startMessage() {
+      return this.isLoading && this.userWorkouts.length === 0 ? 'Loading' : 'Looks empty here...'
+    }
   },
   async mounted() {
     if (this.isSignedIn) {
+      const loader = this.$loading.show({
+        backgroundColor: '#F7C873',
+        canCancel: false,
+        color: '#C96211',
+        width: 80,
+        height: 80,
+        opacity: 1,
+        loader: 'dots'
+      })
+
       const { data: { user } } = await supabase.auth.getUser()
+
       const profile = await supabase
         .from('profiles')
         .select('username')
         .eq('id', user.id)
         .single()
 
+      if (!profile.error) {
+        this.userName = profile.data.username
+        this.userID = user.id
+      }
+
       const { data } = await supabase
         .from('Workouts')
         .select()
-        
-      this.userName = profile.data.username
-      this.userID = user.id
-
+      
       const allUserWorkouts = data.filter((item) => item.user_id === this.userID)
+      allUserWorkouts.sort((a, b) => b.id - a.id)
 
       // eslint-disable-next-line max-len
       this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
+      
+      setTimeout(() => {
+        this.columnWidth = 400
+      }, 1)
+      
+      loader.hide()
+      this.isLoading = false
     }
   }
 }

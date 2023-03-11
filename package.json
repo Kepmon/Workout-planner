@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.8.0",
+    "@yeger/vue-masonry-wall": "^3.4.4",
     "autoprefixer": "^10.4.13",
     "pinia": "^2.0.28",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4",
     "vue": "^3.2.45",
+    "vue-loading-overlay": "^6.0.3",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
