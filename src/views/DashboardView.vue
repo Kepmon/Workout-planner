@@ -1,5 +1,11 @@
 <template>
   <main>
+    <the-toast
+      v-show="isToastShown"
+      :text="toast.text"
+      :background="toast.color"
+    />
+
     <div class="py-12 px-8">
       <need-sign-in text="see your dashboard" />
 
@@ -19,27 +25,36 @@
           
           <masonry-wall :items="userWorkouts" :column-width="columnWidth" :gap="32">
             <template #default="{ item }">
-                <div>
-                  <the-workout
-                    :title="item.workout_name"
-                  >
-                      <the-exercise
-                        v-for="exercise in item.exercises"
-                        :key="exercise" :img="exercise.img"
-                        :name="exercise.name" :sets="exercise.sets"
-                        :reps="exercise.reps"
-                        :weight="exercise.weight"
-                        :rest="exercise.rest"
-                      >
-                        <span
-                        v-for="muscle in exercise.muscles"
-                        :key="muscle"
-                        class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
-                        {{ muscle }}
-                        </span>
-                      </the-exercise>
-                  </the-workout>
-                </div>
+              <transition name="workout" appear mode="out-in">
+                <div class="relative">
+                    <img
+                      @click="() => deleteWorkout(item.id)"
+                      src="/img/bin-svgrepo-com.svg"
+                      alt="Delete workout"
+                      title="Delete this workout"
+                      class="absolute top-3 right-3 w-8 p-2 cursor-pointer"
+                    >
+                    <the-workout
+                      :title="item.workout_name"
+                    >
+                        <the-exercise
+                          v-for="exercise in item.exercises"
+                          :key="exercise" :img="exercise.img"
+                          :name="exercise.name" :sets="exercise.sets"
+                          :reps="exercise.reps"
+                          :weight="exercise.weight"
+                          :rest="exercise.rest"
+                        >
+                          <span
+                          v-for="muscle in exercise.muscles"
+                          :key="muscle"
+                          class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                          {{ muscle }}
+                          </span>
+                        </the-exercise>
+                    </the-workout>
+                  </div>
+              </transition>
             </template>
           </masonry-wall>
 
@@ -58,6 +73,7 @@ import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import TheButton from '../components/shared/TheButton.vue'
+import TheToast from '../components/shared/TheToast.vue'
 import { supabase } from '../supabase'
 
 export default {
@@ -66,7 +82,8 @@ export default {
     NeedSignIn,
     TheWorkout,
     TheExercise,
-    TheButton
+    TheButton,
+    TheToast
   },
   data() {
     return {
@@ -74,13 +91,57 @@ export default {
       userID: '',
       userWorkouts: [],
       isLoading: true,
-      columnWidth: 0
+      columnWidth: 0,
+      isToastShown: false,
+      isError: false
     }
   },
   computed: {
     ...mapState(useUserStore, ['isSignedIn']),
     startMessage() {
       return this.isLoading && this.userWorkouts.length === 0 ? 'Loading' : 'Looks empty here...'
+    },
+    toast() {
+      if (this.isError) {
+        return {
+          text: 'Ooops, something went wrong. Try again.',
+          color: 'bg-toast-error'
+        }
+      }
+      return {
+        text: 'The selected workout has been successfully deleted.',
+        color: 'bg-toast-info'
+      }
+    }
+  },
+  methods: {
+    async deleteWorkout(el) {
+      const { data, error } = await supabase
+        .from('Workouts')
+        .delete()
+        .select()
+        .eq('id', el)
+
+      if (data) {
+        this.isError = false
+
+        this.userWorkouts = this.userWorkouts.filter((workout) => workout.id !== el)
+      }
+
+      if (error) {
+        this.isError = true
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+
+      this.isToastShown = true
+
+      setTimeout(() => {
+        this.isToastShown = false
+      }, 3500)
     }
   },
   async mounted() {
@@ -116,7 +177,7 @@ export default {
       allUserWorkouts.sort((a, b) => b.id - a.id)
 
       // eslint-disable-next-line max-len
-      this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
+      this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises }, id }) => ({ workout_name, exercises, id }))
       
       setTimeout(() => {
         this.columnWidth = 400
@@ -129,8 +190,14 @@ export default {
 }
 </script>
 
-<style>
-.workout-title {
-  @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
+<style scoped>
+.workout-enter-from,
+.workout-leave-to {
+  @apply scale-0 opacity-0
+}
+
+.workout-enter-active,
+.workout-leave-active {
+  @apply transition-all duration-500
 }
 </style>
