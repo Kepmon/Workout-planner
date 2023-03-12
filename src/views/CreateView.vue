@@ -63,7 +63,7 @@
                       src="/img/down-arrow-backup-2-svgrepo-com.svg"
                       alt="Down arrow icon - click here to see all exercises"
                       class="h-3 transition duration-500"
-                      :class="{'rotate-180': areExercisesDisplayed}"
+                      :class="{ 'rotate-180': areExercisesDisplayed }"
                       >
                     </transition>
                   </span>
@@ -90,11 +90,11 @@
                         >
                           
                           <img
-                          v-show="selectedExercise !== ''"
-                          @click="selectedExercise = ''"
-                          src="/img/close-square-svgrepo-com.svg"
-                          alt="remove this exercise"
-                          class="absolute right-2 h-8"
+                            v-show="selectedExercise !== ''"
+                            @click="selectedExercise = ''"
+                            src="/img/close-square-svgrepo-com.svg"
+                            alt="remove this exercise"
+                            class="absolute right-2 h-8"
                           >
                           <img
                             :src="exercise.img"
@@ -157,7 +157,7 @@
                   type="number"
                   placeholder="Weight"
                   name="weight"
-                  class="text w-[290px] max-[400px]:w-28"
+                  class="text w-[290px] max-[500px]:w-28"
                   :conditions="errors.weight.conditions"
                   :errorText="errors.weight.text"
                 />
@@ -202,20 +202,20 @@
             </div>
           </template>
         </the-form>
+
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia'
+import { mapState } from 'pinia'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheToast from '../components/shared/TheToast.vue'
-import { useExerciseStore } from '../stores/exercises'
 import { useUserStore } from '../stores/user'
 import { supabase } from '../supabase'
 
@@ -231,6 +231,7 @@ export default {
   },
   data() {
     return {
+      exercises: [],
       workoutName: '',
       exerciseName: '',
       isNameShown: false,
@@ -255,7 +256,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useExerciseStore, ['exercises']),
     ...mapState(useUserStore, ['isSignedIn']),
     selectedUnit() {
       if (this.kgValue === true || this.lbValue === true) {
@@ -328,7 +328,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useExerciseStore, ['showSelectedExercises']),
+    showSelectedExercises(value) {
+      return this.exercises.filter((exercise) => exercise.name.toLowerCase().includes(value))
+    },
     displayWorkoutTitle() {
       if (this.workoutName === '') {
         return
@@ -412,6 +414,28 @@ export default {
       setTimeout(() => {
         this.isToastShown = false
       }, 3000)
+    }
+  },
+  async mounted() {
+    if (this.isSignedIn) {
+      const fetchExercises = async () => {
+        const response = await supabase.from('Exercises').select()
+        
+        if (response.error === null) {
+          const { data } = response
+
+          // eslint-disable-next-line max-len
+          this.exercises = data.map(({ exercise: { muscles, img, name } }) => ({ muscles, img, name }))
+        } else {
+          this.isToastShown = true
+        
+          setTimeout(() => {
+            this.isToastShown = false
+          }, 3000)
+        }
+      }
+  
+      await fetchExercises()
     }
   }
 }
