@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     async signInUser() {
-      // eslint-disable-next-line max-len
       const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
 
       this.isToastShown = true

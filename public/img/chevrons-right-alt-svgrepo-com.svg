@@ -8,34 +8,37 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="checked-svgrepo-com.svg"
-   id="svg10"
-   class="si-glyph si-glyph-checked"
+   sodipodi:docname="chevrons-right-alt-svgrepo-com.svg"
+   id="svg6"
    version="1.1"
-   viewBox="0 -0.5 17 17"
-   height="13px"
-   width="13px">
+   fill="none"
+   viewBox="0 0 3 3.2692841"
+   height="108.97614"
+   width="100">
   <metadata
-     id="metadata14">
+     id="metadata12">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <defs
+     id="defs10" />
   <sodipodi:namedview
-     inkscape:current-layer="svg10"
+     inkscape:current-layer="svg6"
      inkscape:window-maximized="1"
      inkscape:window-y="-9"
      inkscape:window-x="1911"
-     inkscape:cy="6.5"
-     inkscape:cx="6.5"
-     inkscape:zoom="61.667873"
+     inkscape:cy="153.50138"
+     inkscape:cx="200"
+     inkscape:zoom="1.0021029"
      showgrid="false"
-     id="namedview12"
+     id="namedview8"
      inkscape:window-height="1001"
      inkscape:window-width="1920"
      inkscape:pageshadow="2"
@@ -46,22 +49,24 @@
      borderopacity="1"
      bordercolor="#666666"
      pagecolor="#ffffff" />
-  <title
-     id="title2">1228</title>
-  <defs
-     id="defs4" />
   <g
-     style="fill:#000000;fill-opacity:1"
-     id="g8"
-     fill-rule="evenodd"
-     fill="#050300"
-     stroke-width="1"
-     stroke="none">
+     transform="matrix(0.23352013,0,0,0.23352013,-1.4011208,-1.1675995)"
+     id="g845">
     <path
-       style="fill:#000000;fill-opacity:1"
-       id="path6"
-       class="si-glyph-fill"
-       fill="#050300"
-       d="M3.432,6.189 C3.824,5.798 4.455,5.798 4.847,6.189 L6.968,8.31 L13.147,2.131 C13.531,1.747 14.157,1.753 14.548,2.144 L16.67,4.266 C17.06,4.657 17.066,5.284 16.684,5.666 L7.662,14.687 C7.278,15.07 6.651,15.064 6.261,14.673 L1.311,9.723 C0.92,9.333 0.92,8.7 1.311,8.31 L3.432,6.189 Z" />
+       d="m 7,18 5.7093,-5.7093 v 0 c 0.1605,-0.1605 0.1605,-0.4209 0,-0.5814 v 0 L 7,6"
+       stroke="#323232"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path2"
+       style="stroke:#000000;stroke-opacity:1" />
+    <path
+       d="m 12,18 5.7492,-5.7492 v 0 c 0.1385,-0.1385 0.1385,-0.3631 0,-0.5016 v 0 L 12,6"
+       stroke="#323232"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path4"
+       style="stroke:#000000;stroke-width:2.00001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>
