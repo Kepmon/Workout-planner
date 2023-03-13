@@ -41,6 +41,25 @@ export const useUserStore = defineStore('user', {
     },
     signOut() {
       this.isSignedIn = false
+    },
+    async updateProfile(username) {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        const updates = {
+          id: user.id,
+          username,
+          updated_at: new Date()
+        }
+
+        const { error } = await supabase.from('profiles').upsert(updates)
+        if (error) {
+          throw error
+        }
+
+        return true
+      } catch (error) {
+        return false
+      }
     }
   }
 })
