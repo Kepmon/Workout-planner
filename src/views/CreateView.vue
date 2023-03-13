@@ -379,12 +379,12 @@ export default {
     async submitWorkout() {
       if (this.addedExercises.length !== 0) {
         const { data: { user } } = await supabase.auth.getUser()
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('Workouts')
           .insert([
             {
               workout: {
-                workout_name: this.workoutName,
+                name: this.workoutName,
                 exercises: this.addedExercises
               },
               user_id: user.id
@@ -397,7 +397,7 @@ export default {
           setTimeout(() => {
             this.$router.push({ name: 'dashboard' })
           }, 3500)
-        } else if (error) {
+        } else {
           this.isInsertionError = true
         }
       } else {

@@ -18,8 +18,8 @@
             <transition-group name="workout">
               <the-workout
                 v-for="workout in currentWorkout"
-                :key="workout.workout_name"
-                :title="workout.workout_name">
+                :key="workout.name"
+                :title="workout.name">
                   <the-exercise
                     v-for="exercise in workout.exercises"
                     :key="exercise" :img="exercise.img"
@@ -104,7 +104,7 @@ export default {
         const { data } = response
 
         // eslint-disable-next-line max-len
-        this.workouts = data.map(({ workout: { workout_name, exercises } }) => ({ workout_name, exercises }))
+        this.workouts = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
 
         this.isError = false
       } else {

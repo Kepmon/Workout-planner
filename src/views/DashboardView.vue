@@ -11,16 +11,17 @@
 
       <div v-if="isSignedIn" class="flex flex-col items-center">
           <h2
-            v-show="userWorkouts.length !== 0"
+            v-if="userWorkouts.length !== 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
             Hello
             <span class="text-brown-color">{{ userName }}</span>,
             you can see your workouts below
           </h2>
           <h2
-            v-show="userWorkouts.length === 0"
+            v-if="userWorkouts.length === 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
-            {{ startMessage }}
+            <!-- {{ startMessage }} -->
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
           </h2>
           
           <masonry-wall :items="userWorkouts" :column-width="columnWidth" :gap="32">
@@ -35,7 +36,7 @@
                       class="absolute top-3 right-3 w-8 p-2 cursor-pointer"
                     >
                     <the-workout
-                      :title="item.workout_name"
+                      :title="item.name"
                     >
                         <the-exercise
                           v-for="exercise in item.exercises"
@@ -59,7 +60,7 @@
           </masonry-wall>
 
           <router-link :to="{ name: 'create' }">
-            <the-button text="Add new workout" class="self-center mt-12" />
+            <the-button v-if="!isLoading" text="Add new workout" class="self-center mt-12" />
           </router-link>
       </div>
     </div>
@@ -98,9 +99,6 @@ export default {
   },
   computed: {
     ...mapState(useUserStore, ['isSignedIn']),
-    startMessage() {
-      return this.isLoading && this.userWorkouts.length === 0 ? 'Loading' : 'Looks empty here...'
-    },
     toast() {
       if (this.isError) {
         return {
@@ -146,16 +144,6 @@ export default {
   },
   async mounted() {
     if (this.isSignedIn) {
-      const loader = this.$loading.show({
-        backgroundColor: '#F7C873',
-        canCancel: false,
-        color: '#C96211',
-        width: 80,
-        height: 80,
-        opacity: 1,
-        loader: 'dots'
-      })
-
       const { data: { user } } = await supabase.auth.getUser()
 
       const profile = await supabase
@@ -173,17 +161,17 @@ export default {
         .from('Workouts')
         .select()
       
-      const allUserWorkouts = data.filter((item) => item.user_id === this.userID)
-      allUserWorkouts.sort((a, b) => b.id - a.id)
+      const allWorkouts = data.filter((item) => item.user_id === this.userID)
+      allWorkouts.sort((a, b) => b.id - a.id)
 
-      // eslint-disable-next-line max-len
-      this.userWorkouts = allUserWorkouts.map(({ workout: { workout_name, exercises }, id }) => ({ workout_name, exercises, id }))
+      this.userWorkouts = allWorkouts.map(
+        ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
+      )
       
       setTimeout(() => {
         this.columnWidth = 400
       }, 1)
       
-      loader.hide()
       this.isLoading = false
     }
   }
@@ -199,5 +187,61 @@ export default {
 .workout-enter-active,
 .workout-leave-active {
   @apply transition-all duration-500
+}
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #C96211;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
 }
 </style>
