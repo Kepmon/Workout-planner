@@ -46,9 +46,9 @@ export const useUserStore = defineStore('user', {
       try {
         const { data: { user } } = await supabase.auth.getUser()
         const updates = {
-          id: user.id,
+          user_id: user.id,
           username,
-          updated_at: new Date()
+          created_at: new Date()
         }
 
         const { error } = await supabase.from('profiles').upsert(updates)

@@ -197,8 +197,8 @@
 
           <template #buttons>
             <div class="buttons-box">
-              <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
-              <the-button @click.prevent="submitWorkout()" text="Add workout"/>
+              <the-button @click.prevent="handleSumbit" text="Add exercise"/>
+              <the-button @click.prevent="submitWorkout" text="Add workout"/>
             </div>
           </template>
         </the-form>
