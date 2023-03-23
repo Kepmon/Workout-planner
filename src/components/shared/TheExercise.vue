@@ -22,11 +22,27 @@
     </div>
 </template>
 
-<script>
-export default {
-  name: 'TheExercise',
-  props: ['img', 'name', 'sets', 'reps', 'weight', 'rest']
-}
+<script setup lang="ts">
+defineProps({
+  img: {
+    type: String
+  },
+  name: {
+    type: String
+  },
+  sets: {
+    type: Number
+  },
+  reps: {
+    type: Number
+  },
+  weight: {
+    type: Number
+  },
+  rest: {
+    type: String
+  }
+})
 </script>
 
 <style scoped>
