@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isSignedIn" class="flex flex-col items-center justify-center">
+    <div v-if="!userStore.isSignedIn" class="flex flex-col items-center justify-center">
         <h2 class="mb-20 px-4 text-3xl text-center font-bold tracking-wider max-[500px]:text-xl">
           You need to sign in to {{ text }}
         </h2>
@@ -15,21 +15,17 @@
     </div>
 </template>
 
-<script>
-import { mapState } from 'pinia'
+<script setup lang="ts">
 import { useUserStore } from '../../stores/user'
 import TheButton from './TheButton.vue'
 
-export default {
-  name: 'NeedSignIn',
-  props: ['text'],
-  components: {
-    TheButton
-  },
-  computed: {
-    ...mapState(useUserStore, ['isSignedIn'])
+const userStore = useUserStore()
+
+defineProps({
+  text: {
+    type: String
   }
-}
+})
 </script>
 
 <style scoped>
