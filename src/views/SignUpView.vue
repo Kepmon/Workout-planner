@@ -157,7 +157,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signUp']),
+    ...mapActions(useUserStore, ['signUp', 'updateProfile']),
     checkLength(input, minChar, label) {
       if (input === '') {
         return `The "${label}" value is required.`
@@ -225,6 +225,8 @@ export default {
           }, 3500)
         }
       }
+
+      this.updateProfile(this.userData.name)
     },
     showModal() {
       this.isPolicyShown = true
