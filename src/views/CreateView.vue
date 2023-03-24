@@ -197,8 +197,8 @@
 
           <template #buttons>
             <div class="buttons-box">
-              <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
-              <the-button @click.prevent="submitWorkout()" text="Add workout"/>
+              <the-button @click.prevent="handleSumbit" text="Add exercise"/>
+              <the-button @click.prevent="submitWorkout" text="Add workout"/>
             </div>
           </template>
         </the-form>
@@ -313,6 +313,14 @@ export default {
           color: 'bg-toast-info'
         }
       }
+
+      if (this.isInsertionError || this.addedExercises.length === 0) {
+        return {
+          text: 'You need to add at least one exercise.',
+          color: 'bg-toast-error'
+        }
+      }
+
       return {
         text: 'Ooops, something went wrong. Try again.',
         color: 'bg-toast-error'
@@ -369,26 +377,30 @@ export default {
       }
     },
     async submitWorkout() {
-      const { data: { user } } = await supabase.auth.getUser()
-      const { data, error } = await supabase
-        .from('Workouts')
-        .insert([
-          {
-            workout: {
-              workout_name: this.workoutName,
-              exercises: this.addedExercises
-            },
-            user_id: user.id
-          }
-        ])
-        .select()
-  
-      if (data) {
-        this.isInsertionError = false
-        setTimeout(() => {
-          this.$router.push({ name: 'dashboard' })
-        }, 3500)
-      } else if (error) {
+      if (this.addedExercises.length !== 0) {
+        const { data: { user } } = await supabase.auth.getUser()
+        const { data } = await supabase
+          .from('Workouts')
+          .insert([
+            {
+              workout: {
+                name: this.workoutName,
+                exercises: this.addedExercises
+              },
+              user_id: user.id
+            }
+          ])
+          .select()
+    
+        if (data) {
+          this.isInsertionError = false
+          setTimeout(() => {
+            this.$router.push({ name: 'dashboard' })
+          }, 3500)
+        } else {
+          this.isInsertionError = true
+        }
+      } else {
         this.isInsertionError = true
       }
 

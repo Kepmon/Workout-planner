@@ -209,13 +209,13 @@ export default {
 
       if (Object.values(this.errorMessages).every((value) => value === '')) {
         const isSuccessful = await this.signUp(this.userData.email, this.userData.passOne)
-
+        
         this.isToastShown = true
-          
+        
         setTimeout(() => {
           this.isToastShown = false
         }, 3000)
-
+        
         if (isSuccessful !== true) {
           this.isError = true
         } else {

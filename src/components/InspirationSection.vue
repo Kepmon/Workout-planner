@@ -18,7 +18,7 @@
             <transition-group name="workout">
               <the-workout
                 v-for="workout in currentWorkout"
-                :key="workout.id"
+                :key="workout.name"
                 :title="workout.name">
                   <the-exercise
                     v-for="exercise in workout.exercises"
@@ -103,9 +103,7 @@ export default {
       if (response.error === null) {
         const { data } = response
 
-        this.workouts = data.map(
-          ({ workout: { workout_name, exercises }, id }) => ({ name: workout_name, exercises, id })
-        )
+        this.workouts = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
 
         this.isError = false
       } else {
