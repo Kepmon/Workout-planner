@@ -68,12 +68,6 @@
         </div>
     </transition>
 </template>
-  
-<script>
-export default {
-  name: 'PrivacyPolicy'
-}
-</script>
 
 <style scoped>
 .privacy-enter-from,

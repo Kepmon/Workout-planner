@@ -5,18 +5,14 @@
   </p>
 </template>
 
-<script>
-export default {
-  name: 'TheFooter',
-  data() {
-    return {
-      year: ''
-    }
-  },
-  mounted() {
-    this.year = new Date().getFullYear()
-  }
-}
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+const year = ref('')
+
+onMounted(() => {
+  year.value = new Date().getFullYear()
+})
 </script>
 
 <style scoped>
