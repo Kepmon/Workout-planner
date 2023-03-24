@@ -22,7 +22,7 @@
                 :title="workout.name">
                   <the-exercise
                     v-for="exercise in workout.exercises"
-                    :key="exercise" :img="exercise.img"
+                    :key="exercise.name" :img="exercise.img"
                     :name="exercise.name" :sets="exercise.sets"
                     :reps="exercise.reps"
                     :weight="exercise.weight"
@@ -103,7 +103,6 @@ export default {
       if (response.error === null) {
         const { data } = response
 
-        // eslint-disable-next-line max-len
         this.workouts = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
 
         this.isError = false
