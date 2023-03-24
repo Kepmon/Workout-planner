@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const year = ref('')
+const year = ref(0)
 
 onMounted(() => {
   year.value = new Date().getFullYear()
