@@ -2,7 +2,7 @@
     <div class="mb-10 relative">
         <input
           :value="modelValue"
-          @input="$emit('update:modelValue', $event.target.value)"
+          @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
           v-bind="$attrs"
         />
         <transition name="error">
@@ -13,11 +13,30 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'TheInput',
-  props: ['width', 'modelValue', 'value', 'conditions', 'errorText'],
-  emits: ['update:modelValue'],
   inheritAttrs: false
 }
+</script>
+
+<script setup lang="ts">
+defineProps({
+  width: {
+    type: String
+  },
+  modelValue: {
+    type: String
+  },
+  value: {
+    type: String
+  },
+  conditions: {
+    type: Boolean
+  },
+  errorText: {
+    type: String
+  }
+})
+
+defineEmits(['update:modelValue'])
 </script>

@@ -8,12 +8,6 @@
     </form>
 </template>
 
-<script>
-export default {
-  name: 'TheForm'
-}
-</script>
-
 <style scoped>
 form {
     @apply flex flex-col items-center mx-auto py-8 bg-regular-yellow w-[460px] rounded-[32px];
