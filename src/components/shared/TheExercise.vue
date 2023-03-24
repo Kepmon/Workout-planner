@@ -31,13 +31,13 @@ defineProps({
     type: String
   },
   sets: {
-    type: Number
+    type: String
   },
   reps: {
-    type: Number
+    type: String
   },
   weight: {
-    type: Number
+    type: String
   },
   rest: {
     type: String

@@ -4,11 +4,15 @@
   </transition>
 </template>
 
-<script>
-export default {
-  name: 'TheToast',
-  props: ['text', 'background']
-}
+<script setup lang="ts">
+defineProps({
+  background: {
+    type: String
+  },
+  text: {
+    type: String
+  }
+})
 </script>
 
 <style scoped>
