@@ -6,13 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-const year = ref(0)
-
-onMounted(() => {
-  year.value = new Date().getFullYear()
-})
+const year = ref(new Date().getFullYear())
 </script>
 
 <style scoped>

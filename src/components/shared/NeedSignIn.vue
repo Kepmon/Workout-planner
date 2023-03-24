@@ -21,11 +21,7 @@ import TheButton from './TheButton.vue'
 
 const userStore = useUserStore()
 
-defineProps({
-  text: {
-    type: String
-  }
-})
+defineProps<{text: string}>()
 </script>
 
 <style scoped>

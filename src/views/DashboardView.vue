@@ -20,7 +20,6 @@
           <h2
             v-if="userWorkouts.length === 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
-            <!-- {{ startMessage }} -->
             <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
           </h2>
           

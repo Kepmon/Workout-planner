@@ -7,11 +7,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  title: {
-    type: String
-  }
-})
+defineProps<{
+  title: string
+}>()
 </script>
 
 <style scoped>

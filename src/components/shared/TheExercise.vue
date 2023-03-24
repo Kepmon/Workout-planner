@@ -23,26 +23,14 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  img: {
-    type: String
-  },
-  name: {
-    type: String
-  },
-  sets: {
-    type: String
-  },
-  reps: {
-    type: String
-  },
-  weight: {
-    type: String
-  },
-  rest: {
-    type: String
-  }
-})
+defineProps<{
+  name: string,
+  img: string,
+  sets: string,
+  reps: string,
+  weight: string,
+  rest: string
+}>()
 </script>
 
 <style scoped>

@@ -20,23 +20,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-defineProps({
-  width: {
-    type: String
-  },
-  modelValue: {
-    type: String
-  },
-  value: {
-    type: String
-  },
-  conditions: {
-    type: Boolean
-  },
-  errorText: {
-    type: String
-  }
-})
+defineProps<{
+  width: string,
+  modelValue: string,
+  value: string,
+  conditions: string,
+  errorText: string
+}>()
 
 defineEmits(['update:modelValue'])
 </script>

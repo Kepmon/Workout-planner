@@ -5,14 +5,10 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  background: {
-    type: String
-  },
-  text: {
-    type: String
-  }
-})
+defineProps<{
+  background: string,
+  text: string
+}>()
 </script>
 
 <style scoped>
