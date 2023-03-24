@@ -2,8 +2,8 @@
   <main>
     <the-toast
       v-show="isToastShown"
-      text="An error has occurred when fetching exercises. Try again later."
-      background="bg-toast-error"
+      :text="toast.text"
+      :background="toast.color"
     />
 
     <div class="py-12">
@@ -122,7 +122,7 @@
                   <div class="mb-2 relative">
                     <transition name="error">
                       <p
-                        v-show="isFormSubmitted && selectedExercise === ''"
+                        v-show="isExerciseSubmitted && selectedExercise === ''"
                         class="mt-1 ml-2 absolute text-xs text-red-700 font-bold">
                         You need to choose an exercise.
                       </p>
@@ -197,10 +197,8 @@
 
           <template #buttons>
             <div class="buttons-box">
-              <the-button @click.prevent="handleSumbit()" text="Add exercise"/>
-              <router-link :to="{ name: 'dashboard' }">
-                <the-button text="Add workout"/>
-              </router-link>
+              <the-button @click.prevent="handleSumbit" text="Add exercise"/>
+              <the-button @click.prevent="submitWorkout" text="Add workout"/>
             </div>
           </template>
         </the-form>
@@ -252,8 +250,9 @@ export default {
         rest: ''
       },
       addedExercises: [],
-      isFormSubmitted: false,
-      isToastShown: false
+      isExerciseSubmitted: false,
+      isToastShown: false,
+      isInsertionError: false
     }
   },
   computed: {
@@ -286,25 +285,45 @@ export default {
 
       return {
         exerciseName: {
-          conditions: this.isFormSubmitted && this.workoutName === '',
+          conditions: this.isExerciseSubmitted && this.workoutName === '',
           text: getErrorValue('Workout name')
         },
         sets: {
-          conditions: this.isFormSubmitted && this.exerciseData.sets === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.sets === '',
           text: getErrorValue('Sets')
         },
         reps: {
-          conditions: this.isFormSubmitted && this.exerciseData.reps === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.reps === '',
           text: getErrorValue('Reps')
         },
         weight: {
-          conditions: this.isFormSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
+          conditions: this.isExerciseSubmitted && (this.exerciseData.weight === '' || this.exerciseData.unit === ''),
           text: (this.exerciseData.weight === '' ? getErrorValue('Weight') : getErrorValue('Unit'))
         },
         rest: {
-          conditions: this.isFormSubmitted && this.exerciseData.rest === '',
+          conditions: this.isExerciseSubmitted && this.exerciseData.rest === '',
           text: getErrorValue('Rest time')
         }
+      }
+    },
+    toast() {
+      if (!this.isInsertionError) {
+        return {
+          text: "Your workout has been added. Let's see it on your dashboard.",
+          color: 'bg-toast-info'
+        }
+      }
+
+      if (this.isInsertionError || this.addedExercises.length === 0) {
+        return {
+          text: 'You need to add at least one exercise.',
+          color: 'bg-toast-error'
+        }
+      }
+
+      return {
+        text: 'Ooops, something went wrong. Try again.',
+        color: 'bg-toast-error'
       }
     }
   },
@@ -319,7 +338,9 @@ export default {
       this.isNameShown = true
     },
     addExerciseValues(e) {
-      this.exerciseData[e.target.name] = e.target.value
+      if (this.exerciseData[e.target.name]) {
+        this.exerciseData[e.target.name] = e.target.value
+      }
     },
     addExerciseInfo() {
       if (this.selectedExercise !== '') {
@@ -348,12 +369,51 @@ export default {
           unit: this.selectedUnit,
           rest: ''
         }
-        this.isFormSubmitted = false
+        this.isExerciseSubmitted = false
         this.areExercisesDisplayed = false
         this.selectedExercise = ''
       } else {
-        this.isFormSubmitted = true
+        this.isExerciseSubmitted = true
       }
+    },
+    async submitWorkout() {
+      if (this.addedExercises.length !== 0) {
+        const { data: { user } } = await supabase.auth.getUser()
+        const { data } = await supabase
+          .from('Workouts')
+          .insert([
+            {
+              workout: {
+                name: this.workoutName,
+                exercises: this.addedExercises
+              },
+              user_id: user.id
+            }
+          ])
+          .select()
+    
+        if (data) {
+          this.isInsertionError = false
+          setTimeout(() => {
+            this.$router.push({ name: 'dashboard' })
+          }, 3500)
+        } else {
+          this.isInsertionError = true
+        }
+      } else {
+        this.isInsertionError = true
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+
+      this.isToastShown = true
+      
+      setTimeout(() => {
+        this.isToastShown = false
+      }, 3000)
     }
   },
   async mounted() {
@@ -424,7 +484,7 @@ export default {
 }
 
 .exercise-enter-from {
-  @apply opacity-0 translate-y-7;
+  @apply opacity-0 scale-50;
 }
 
 .exercises-enter-from {

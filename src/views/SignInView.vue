@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     async signInUser() {
-      // eslint-disable-next-line max-len
       const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
 
       this.isToastShown = true
@@ -103,19 +102,20 @@ export default {
 
       if (isSuccessful !== true) {
         this.isError = true
-      } else {
-        this.isError = false
-        this.userStore.isSignedIn = true
-        setTimeout(() => {
-          const lastPath = this.$router.options.history.state.back
-
-          if (lastPath === '/create') {
-            this.$router.push({ name: 'create' })
-          } else {
-            this.$router.push({ name: 'dashboard' })
-          }
-        }, 3500)
+        return
       }
+
+      this.isError = false
+      this.userStore.isSignedIn = true
+      setTimeout(() => {
+        const lastPath = this.$router.options.history.state.back
+
+        if (lastPath === '/create') {
+          this.$router.push({ name: 'create' })
+        } else {
+          this.$router.push({ name: 'dashboard' })
+        }
+      }, 3500)
     }
   }
 }

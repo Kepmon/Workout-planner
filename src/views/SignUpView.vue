@@ -157,7 +157,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signUp']),
+    ...mapActions(useUserStore, ['signUp', 'updateProfile']),
     checkLength(input, minChar, label) {
       if (input === '') {
         return `The "${label}" value is required.`
@@ -209,13 +209,13 @@ export default {
 
       if (Object.values(this.errorMessages).every((value) => value === '')) {
         const isSuccessful = await this.signUp(this.userData.email, this.userData.passOne)
-
+        
         this.isToastShown = true
-          
+        
         setTimeout(() => {
           this.isToastShown = false
         }, 3000)
-
+        
         if (isSuccessful !== true) {
           this.isError = true
         } else {
@@ -225,6 +225,8 @@ export default {
           }, 3500)
         }
       }
+
+      this.updateProfile(this.userData.name)
     },
     showModal() {
       this.isPolicyShown = true

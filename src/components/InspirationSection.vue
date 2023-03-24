@@ -5,68 +5,43 @@
             Need some inspiration?
         </h2>
         <p class="mb-8 text-2xl text-center max-[499px]:text-xl">
-            Take a look at other’s workouts below!
+            {{ message }}
         </p>
 
-        <div class="workout-title">
-            <h3 class="mb-8 text-2xl text-dark-violet font-bold max-[499px]:text-xl">
-                Plan's name
-            </h3>
-
-            <the-exercise
-                img="/img/barbell_squat.gif"
-                name="Barbell full squat"
-                muscle="Legs"
-                sets="3"
-                reps="5"
-                weight="45 kg"
-                rest="01:00"
-            />
-            <the-exercise
-                img="/img/b_hip_thrust.gif"
-                name="Barbell hip thrust"
-                muscle="Glutes, Legs"
-                sets="3"
-                reps="8"
-                weight="85 kg"
-                rest="01:00"
-            />
-            <the-exercise
-                img="/img/cable_pullldown.gif"
-                name="Cable pulldown"
-                muscle="Back"
-                sets="3"
-                reps="12"
-                weight="25 kg"
-                rest="01:00"
-            />
-            <the-exercise
-                img="/img/assisted_dips.gif"
-                name="Machine assisted dips"
-                muscle="Chest, Triceps"
-                sets="3"
-                reps="10"
-                weight="25 kg"
-                rest="01:00"
-            />
-            <the-exercise
-                img="/img/calf_raise.gif"
-                name="Calf raises"
-                muscle="Calfs"
-                sets="3"
-                reps="15"
-                weight="75 kg"
-                rest="01:00"
-            />
-            <the-exercise
-                img="/img/ab_wheel.gif"
-                name="Ab-wheel rollout"
-                muscle="Abs"
-                sets="3"
-                reps="10"
-                weight="none"
-                rest="01:00"
-            />
+        <div class="flex justify-between w-full gap-x-10 max-[500px]:gap-6 max-[400px]:gap-4">
+            <img
+              @click="decreaseWorkoutNumber"
+              class="w-8 cursor-pointer max-[500px]:w-5"
+              src="/img/chevrons-left-alt-svgrepo-com.svg"
+              alt="previous workout"
+            >
+            <transition-group name="workout">
+              <the-workout
+                v-for="workout in currentWorkout"
+                :key="workout.name"
+                :title="workout.name">
+                  <the-exercise
+                    v-for="exercise in workout.exercises"
+                    :key="exercise.name" :img="exercise.img"
+                    :name="exercise.name" :sets="exercise.sets"
+                    :reps="exercise.reps"
+                    :weight="exercise.weight"
+                    :rest="exercise.rest">
+                    <span
+                    v-for="muscle in exercise.muscles"
+                    :key="muscle"
+                    class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                    {{ muscle }}
+                    </span>
+                  </the-exercise>
+              </the-workout>
+            </transition-group>
+            <img
+                @click="increaseWorkoutNumber"
+                class="w-8 cursor-pointer max-[500px]:w-5"
+                src="/img/chevrons-right-alt-svgrepo-com.svg"
+                alt="next workout"
+            >
         </div>
 
         <div class="mt-20">
@@ -80,20 +55,77 @@
 
 <script>
 import TheButton from './shared/TheButton.vue'
+import TheWorkout from './shared/TheWorkout.vue'
 import TheExercise from './shared/TheExercise.vue'
+import { supabase } from '../supabase'
 
 export default {
   name: 'InspirationSection',
   components: {
     TheButton,
+    TheWorkout,
     TheExercise
-  }
+  },
+  data() {
+    return {
+      workouts: [],
+      isError: false,
+      workoutNumber: 0
+    }
+  },
+  computed: {
+    message() {
+      return this.isError ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!'
+    },
+    currentWorkout() {
+      return this.workouts.filter((workout) => workout === this.workouts[this.workoutNumber])
+    }
+  },
+  methods: {
+    increaseWorkoutNumber() {
+      this.workoutNumber += 1
 
+      if (!this.workouts[this.workoutNumber]) {
+        this.workoutNumber = 0
+      }
+    },
+    decreaseWorkoutNumber() {
+      this.workoutNumber -= 1
+
+      if (!this.workouts[this.workoutNumber]) {
+        this.workoutNumber = this.workouts.length - 1
+      }
+    }
+  },
+  async mounted() {
+    const fetchWorkouts = async () => {
+      const response = await supabase.from('Workouts').select()
+      if (response.error === null) {
+        const { data } = response
+
+        this.workouts = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
+
+        this.isError = false
+      } else {
+        this.isError = true
+      }
+    }
+
+    await fetchWorkouts()
+  }
 }
 </script>
 
 <style scoped>
 .workout-title {
-    @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
+  @apply flex flex-col items-center py-8 bg-regular-yellow rounded-[32px] max-[499px]:w-full;
+}
+
+.workout-enter-from {
+  @apply translate-x-32 opacity-0;
+}
+
+.workout-enter-active {
+  @apply transition-all duration-500;
 }
 </style>
