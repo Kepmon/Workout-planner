@@ -20,3 +20,14 @@ export interface WorkoutResponse {
     user_id: string,
     workout: Workout
 }
+
+export interface Route {
+    path: { name: string },
+    content: string,
+    protected?: boolean,
+    callback?: undefined
+}
+
+export interface Callback {
+    (): void
+}

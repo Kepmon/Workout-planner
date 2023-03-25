@@ -62,9 +62,3 @@
         </div>
     </main>
 </template>
-  
-<script>
-export default {
-  name: 'PrivacyPolicy'
-}
-</script>

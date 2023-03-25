@@ -17,15 +17,15 @@
                 <li
                     v-on="{ click: callback ? callback : null }"
                     v-for="{ path, content, callback } in navItems"
-                    :key="path"
+                    :key="path.name"
                 >
-                        <router-link
-                            :to="path"
-                            :active-class="content !== 'Sign out' ? 'active' : ''"
-                            class="px-6 py-2">
-                            {{ content }}
-                        </router-link>
-                    </li>
+                    <router-link
+                        :to="path"
+                        :active-class="content !== 'Sign out' ? 'active' : ''"
+                        class="px-6 py-2">
+                        {{ content }}
+                    </router-link>
+                </li>
               </transition-group>
             </ul>
 
@@ -46,7 +46,7 @@
                           <li
                             @click="() => toggleNav(callback)"
                             v-for="{ path, content, callback } in navItems"
-                            :key="path"
+                            :key="path.name"
                           >
                             <router-link
                               :to="path"
@@ -70,79 +70,60 @@
     </nav>
 </template>
 
-<script>
+<script setup lang="ts">
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useScrollLock } from '@vueuse/core'
-import { ref } from 'vue'
-import { mapState, mapActions } from 'pinia'
+import { ref, computed } from 'vue'
 import { useUserStore } from '../stores/user'
+import { Route, Callback } from '../api/types'
 
-export default {
-  name: 'TheNav',
-  data() {
-    return {
-      isNavShown: false,
-      routes: [
-        {
-          path: { name: 'home' },
-          activeCondition: 'home',
-          content: 'Home'
-        },
-        {
-          path: { name: 'create' },
-          activeCondition: 'create',
-          content: 'Create new workout'
-        },
-        {
-          path: { name: 'dashboard' },
-          activeCondition: 'dashboard',
-          content: 'Dashboard'
-        },
-        {
-          path: { name: 'sign-in' },
-          activeCondition: 'sign-in',
-          content: 'Sign in'
-        },
-        {
-          path: { name: 'sign-up' },
-          activeCondition: 'sign-up',
-          content: 'Sign up'
-        },
-        {
-          path: { name: 'home' },
-          activeCondition: false,
-          content: 'Sign out',
-          protected: true,
-          callback: this.signOut
-        }
-      ]
-    }
+const isNavShown = ref(false)
+const userStore = useUserStore()
+const routes = ref<Route[]>([
+  {
+    path: { name: 'home' },
+    content: 'Home'
   },
-  computed: {
-    ...mapState(useUserStore, ['isSignedIn']),
-    navItems() {
-      if (!this.isSignedIn) {
-        return this.routes.filter((route) => route.protected == null)
-      }
-      return this.routes.filter((route) => route.path.name.includes('sign') === false)
-    }
+  {
+    path: { name: 'create' },
+    content: 'Create new workout'
   },
-  methods: {
-    ...mapActions(useUserStore, ['signOut']),
-    toggleNav(cb) {
-      this.isNavShown = !this.isNavShown
-      this.isLocked = this.isNavShown
+  {
+    path: { name: 'dashboard' },
+    content: 'Dashboard'
+  },
+  {
+    path: { name: 'sign-in' },
+    content: 'Sign in'
+  },
+  {
+    path: { name: 'sign-up' },
+    content: 'Sign up'
+  },
+  {
+    path: { name: 'home' },
+    content: 'Sign out',
+    protected: true,
+    callback: userStore.signOut
+  }
+])
 
-      if (cb) {
-        cb()
-      }
-    }
-  },
-  setup() {
-    const el = ref(document.body)
-    const isLocked = useScrollLock(el)
+const navItems = computed(() => {
+  if (!userStore.isSignedIn) {
+    return routes.value.filter((route) => route.protected == null)
+  }
+  return routes.value.filter((route) => route.path.name.includes('sign') === false)
+})
 
-    return { isLocked }
+const el = ref(document.body)
+let isLocked = useScrollLock(el)
+
+const toggleNav = (cb?: Callback) => {
+  isNavShown.value = !isNavShown.value
+  isLocked.value = isNavShown.value
+
+  if (cb) {
+    cb()
   }
 }
 </script>

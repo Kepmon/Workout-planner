@@ -21,11 +21,11 @@ export default {
 
 <script setup lang="ts">
 defineProps<{
-  width: string,
-  modelValue: string,
-  value: string,
-  conditions: string,
-  errorText: string
+  width?: string,
+  modelValue?: string,
+  value?: string,
+  conditions?: string,
+  errorText?: string
 }>()
 
 defineEmits(['update:modelValue'])
