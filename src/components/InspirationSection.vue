@@ -10,7 +10,7 @@
 
         <div class="flex justify-between w-full gap-x-10 max-[500px]:gap-6 max-[400px]:gap-4">
             <img
-              @click="decreaseWorkoutNumber"
+              @click="decreaseSlide"
               class="w-8 cursor-pointer max-[500px]:w-5"
               src="/img/chevrons-left-alt-svgrepo-com.svg"
               alt="previous workout"
@@ -26,6 +26,7 @@
                     :name="exercise.name" :sets="exercise.sets"
                     :reps="exercise.reps"
                     :weight="exercise.weight"
+                    :unit="exercise.unit"
                     :rest="exercise.rest">
                     <span
                     v-for="muscle in exercise.muscles"
@@ -37,7 +38,7 @@
               </the-workout>
             </transition-group>
             <img
-                @click="increaseWorkoutNumber"
+                @click="increaseSlide"
                 class="w-8 cursor-pointer max-[500px]:w-5"
                 src="/img/chevrons-right-alt-svgrepo-com.svg"
                 alt="next workout"
@@ -59,18 +60,21 @@ import TheButton from './shared/TheButton.vue'
 import TheWorkout from './shared/TheWorkout.vue'
 import TheExercise from './shared/TheExercise.vue'
 import { supabase } from '../supabase'
-import { Workout, WorkoutResponse } from '../api/types'
+import { Workout, WorkoutsResponse } from '../api/types'
 
 const workouts = ref<Workout[]>([])
 const isError = ref(false)
-const message = computed(() => isError.value ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!')
+const message = computed(() => isError.value ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : "Take a look at others' workouts below!")
 
 const fetchWorkouts = async () => {
-  const response = await supabase.from('Workouts').select()
-  if (response.error === null) {
-    const { data }: { data: WorkoutResponse[] } = response
+  const response: WorkoutsResponse = await supabase.from('Workouts').select()
 
-    workouts.value = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
+  if (response.error === null) {
+    const { data }: { data: WorkoutsResponse['data'] } = response
+
+    if (data !== null) {
+      workouts.value = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
+    }
 
     isError.value = false
   } else {
@@ -80,22 +84,22 @@ const fetchWorkouts = async () => {
 
 onMounted(fetchWorkouts)
 
-const workoutNumber = ref(0)
-const currentWorkout = computed(() => workouts.value.filter((workout) => workout === workouts.value[workoutNumber.value]))
+const slide = ref(0)
+const currentWorkout = computed(() => workouts.value.filter((workout) => workout === workouts.value[slide.value]))
 
-const increaseWorkoutNumber = () => {
-  workoutNumber.value += 1
+const increaseSlide = () => {
+  slide.value += 1
 
-  if (!workouts.value[workoutNumber.value]) {
-    workoutNumber.value = 0
+  if (!workouts.value[slide.value]) {
+    slide.value = 0
   }
 }
 
-const decreaseWorkoutNumber = () => {
-  workoutNumber.value -= 1
+const decreaseSlide = () => {
+  slide.value -= 1
 
-  if (!workouts.value[workoutNumber.value]) {
-    workoutNumber.value = workouts.value.length - 1
+  if (!workouts.value[slide.value]) {
+    slide.value = workouts.value.length - 1
   }
 }
 </script>

@@ -116,7 +116,7 @@ const navItems = computed(() => {
 })
 
 const el = ref(document.body)
-let isLocked = useScrollLock(el)
+const isLocked = useScrollLock(el)
 
 const toggleNav = (cb?: Callback) => {
   isNavShown.value = !isNavShown.value

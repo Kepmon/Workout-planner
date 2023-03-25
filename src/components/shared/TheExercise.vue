@@ -11,10 +11,10 @@
                         <slot></slot>
                     </div>
                 </div>
-                <div class="flex gap-3 max-[400px]:flex-col max-[500px]:gap-1">
+                <div class="flex gap-2 max-[400px]:flex-col max-[500px]:gap-1">
                     <p class="text-center"><span class="font-bold">Sets: </span>{{ sets }}</p>
                     <p class="text-center"><span class="font-bold">Reps: </span>{{ reps }}</p>
-                    <p class="text-center"><span class="font-bold">Weight: </span>{{ weight }}</p>
+                    <p class="text-center"><span class="font-bold">Weight: </span>{{ weight }} {{ unit }}</p>
                 </div>
                 <p><span class="font-bold">Rest time: </span>{{ rest }}</p>
             </div>
@@ -29,13 +29,14 @@ defineProps<{
   sets: string,
   reps: string,
   weight: string,
+  unit: string,
   rest: string
 }>()
 </script>
 
 <style scoped>
 .exercise {
-    @apply flex justify-between items-center px-12 gap-6 max-[400px]:px-2;
+    @apply flex justify-between items-center px-12 gap-5 max-[400px]:px-2;
     @apply max-[600px]:flex-col max-[500px]:items-center max-[500px]:gap-4 max-[500px]:text-sm;
 }
 </style>

@@ -1,7 +1,7 @@
 export interface Exercise {
     name: string,
     img: string,
-    muscles: string[],
+    muscles?: string[],
     sets: string,
     reps: string,
     weight: string,
@@ -14,11 +14,26 @@ export interface Workout {
     exercises: Exercise[]
 }
 
-export interface WorkoutResponse {
+export interface WholeWorkout {
     created_at: string,
     id: number,
     user_id: string,
     workout: Workout
+}
+
+interface WorkoutError {
+    code: string
+    details: null
+    hint: null
+    message: string
+}
+
+export interface WorkoutsResponse {
+    count: null,
+    data: WholeWorkout[] | null,
+    error: WorkoutError | null,
+    status: number,
+    statusText: ''
 }
 
 export interface Route {
