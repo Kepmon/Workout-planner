@@ -53,65 +53,49 @@
   </section>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import TheButton from './shared/TheButton.vue'
 import TheWorkout from './shared/TheWorkout.vue'
 import TheExercise from './shared/TheExercise.vue'
 import { supabase } from '../supabase'
+import { Workout, WorkoutResponse } from '../api/types'
 
-export default {
-  name: 'InspirationSection',
-  components: {
-    TheButton,
-    TheWorkout,
-    TheExercise
-  },
-  data() {
-    return {
-      workouts: [],
-      isError: false,
-      workoutNumber: 0
-    }
-  },
-  computed: {
-    message() {
-      return this.isError ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!'
-    },
-    currentWorkout() {
-      return this.workouts.filter((workout) => workout === this.workouts[this.workoutNumber])
-    }
-  },
-  methods: {
-    increaseWorkoutNumber() {
-      this.workoutNumber += 1
+const workouts = ref<Workout[]>([])
+const isError = ref(false)
+const message = computed(() => isError.value ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : 'Take a look at other’s workouts below!')
 
-      if (!this.workouts[this.workoutNumber]) {
-        this.workoutNumber = 0
-      }
-    },
-    decreaseWorkoutNumber() {
-      this.workoutNumber -= 1
+const fetchWorkouts = async () => {
+  const response = await supabase.from('Workouts').select()
+  if (response.error === null) {
+    const { data }: { data: WorkoutResponse[] } = response
 
-      if (!this.workouts[this.workoutNumber]) {
-        this.workoutNumber = this.workouts.length - 1
-      }
-    }
-  },
-  async mounted() {
-    const fetchWorkouts = async () => {
-      const response = await supabase.from('Workouts').select()
-      if (response.error === null) {
-        const { data } = response
+    workouts.value = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
 
-        this.workouts = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
+    isError.value = false
+  } else {
+    isError.value = true
+  }
+}
 
-        this.isError = false
-      } else {
-        this.isError = true
-      }
-    }
+onMounted(fetchWorkouts)
 
-    await fetchWorkouts()
+const workoutNumber = ref(0)
+const currentWorkout = computed(() => workouts.value.filter((workout) => workout === workouts.value[workoutNumber.value]))
+
+const increaseWorkoutNumber = () => {
+  workoutNumber.value += 1
+
+  if (!workouts.value[workoutNumber.value]) {
+    workoutNumber.value = 0
+  }
+}
+
+const decreaseWorkoutNumber = () => {
+  workoutNumber.value -= 1
+
+  if (!workouts.value[workoutNumber.value]) {
+    workoutNumber.value = workouts.value.length - 1
   }
 }
 </script>

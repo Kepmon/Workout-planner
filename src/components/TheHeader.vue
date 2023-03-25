@@ -12,12 +12,6 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'TheHeader'
-}
-</script>
-
 <style scoped>
 .header-bg {
   @apply h-400 w-screen bg-[url('/img/gym_photo.png')] bg-center bg-cover bg-fixed;
