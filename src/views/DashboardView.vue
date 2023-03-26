@@ -9,7 +9,7 @@
     <div class="py-12 px-8">
       <need-sign-in text="see your dashboard" />
 
-      <div v-if="isSignedIn" class="flex flex-col items-center">
+      <div v-if="userStore.isSignedIn" class="flex flex-col items-center">
           <h2
             v-if="userWorkouts.length !== 0"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
@@ -67,107 +67,95 @@
   </main>
 </template>
 
-<script>
-import { mapState } from 'pinia'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
 import { handleModal } from '../composables/handleModal'
 import { supabase } from '../supabase'
+import { Workout, WholeWorkout } from '../api/types'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheToast from '../components/shared/TheToast.vue'
 
-export default {
-  name: 'DashboardView',
-  components: {
-    NeedSignIn,
-    TheWorkout,
-    TheExercise,
-    TheButton,
-    TheToast
-  },
-  data() {
+const userWorkouts = ref<Workout[]>([])
+const isError = ref(false)
+
+const toast = computed(() => {
+  if (isError.value) {
     return {
-      userName: '',
-      userID: '',
-      userWorkouts: [],
-      isLoading: true,
-      columnWidth: 0,
-      isToastShown: false,
-      isError: false
-    }
-  },
-  computed: {
-    ...mapState(useUserStore, ['isSignedIn']),
-    toast() {
-      if (this.isError) {
-        return {
-          text: 'Ooops, something went wrong. Try again.',
-          color: 'bg-toast-error'
-        }
-      }
-      return {
-        text: 'The selected workout has been successfully deleted.',
-        color: 'bg-toast-info'
-      }
-    }
-  },
-  methods: {
-    async deleteWorkout(el) {
-      const { data, error } = await supabase
-        .from('Workouts')
-        .delete()
-        .select()
-        .eq('id', el)
-
-      if (data) {
-        this.isError = false
-
-        this.userWorkouts = this.userWorkouts.filter((workout) => workout.id !== el)
-      }
-
-      if (error) {
-        this.isError = true
-      }
-
-      handleModal(isToastShown, true)
-    }
-  },
-  async mounted() {
-    if (this.isSignedIn) {
-      const { data: { user } } = await supabase.auth.getUser()
-
-      const profile = await supabase
-        .from('profiles')
-        .select('username')
-        .eq('user_id', user.id)
-        .single()
-
-      if (!profile.error) {
-        this.userName = profile.data.username
-        this.userID = user.id
-      }
-
-      const { data } = await supabase
-        .from('Workouts')
-        .select()
-      
-      const allWorkouts = data.filter((item) => item.user_id === this.userID)
-      allWorkouts.sort((a, b) => b.id - a.id)
-
-      this.userWorkouts = allWorkouts.map(
-        ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
-      )
-      
-      setTimeout(() => {
-        this.columnWidth = 400
-      }, 1)
-      
-      this.isLoading = false
+      text: 'Ooops, something went wrong. Try again.',
+      color: 'bg-toast-error'
     }
   }
+  return {
+    text: 'The selected workout has been successfully deleted.',
+    color: 'bg-toast-info'
+  }
+})
+
+const isToastShown = ref(false)
+const deleteWorkout = async (el: number) => {
+  const { data, error } = await supabase
+  .from('Workouts')
+  .delete()
+  .select()
+  .eq('id', el)
+  
+  if (data) {
+    isError.value = false
+    
+    userWorkouts.value = userWorkouts.value.filter((workout) => workout.id !== el)
+  }
+  
+  if (error) {
+    isError.value = true
+  }
+  
+  handleModal(isToastShown, true)
 }
+
+const userName = ref('')
+const userID = ref('')
+const isLoading = ref(true)
+const columnWidth = ref(0)
+const userStore = useUserStore()
+const loadUserWorkouts = async () => {
+  if (userStore.isSignedIn) {
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const profile = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!profile.error) {
+      userName.value = profile.data.username
+      userID.value = user.id
+    }
+
+    const { data } = await supabase
+      .from('Workouts')
+      .select()
+    
+    const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
+    allWorkouts.sort((a, b) => b.id - a.id)
+
+    userWorkouts.value = allWorkouts.map(
+      ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
+    )
+    
+    setTimeout(() => {
+      columnWidth.value = 400
+    }, 1)
+    
+    isLoading.value = false
+  }
+}
+
+onMounted(loadUserWorkouts)
 </script>
 
 <style scoped>
