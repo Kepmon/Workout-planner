@@ -53,11 +53,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '../stores/user'
+import { handleModal } from '../composables/handleModal'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheToast from '../components/shared/TheToast.vue'
-import { useUserStore } from '../stores/user'
 
 const userData = ref({
   password: '',
@@ -85,11 +86,7 @@ const toast = computed(() => {
 const signInUser = async () => {
   const isSuccessful = await userStore.signIn(userData.value.email, userData.value.password)
 
-  isToastShown.value = true
-
-  setTimeout(() => {
-    isToastShown.value = false
-  }, 3000)
+  handleModal(isToastShown, true)
 
   if (isSuccessful !== true) {
     isError.value = true

@@ -43,13 +43,14 @@
                           :name="exercise.name" :sets="exercise.sets"
                           :reps="exercise.reps"
                           :weight="exercise.weight"
+                          :unit="exercise.unit"
                           :rest="exercise.rest"
                         >
                           <span
-                          v-for="muscle in exercise.muscles"
-                          :key="muscle"
-                          class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
-                          {{ muscle }}
+                            v-for="muscle in exercise.muscles"
+                            :key="muscle"
+                            class="px-2 mr-1 last:mr-0 text-xs bg-white-color rounded-full">
+                            {{ muscle }}
                           </span>
                         </the-exercise>
                     </the-workout>
@@ -69,12 +70,13 @@
 <script>
 import { mapState } from 'pinia'
 import { useUserStore } from '../stores/user'
+import { handleModal } from '../composables/handleModal'
+import { supabase } from '../supabase'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheToast from '../components/shared/TheToast.vue'
-import { supabase } from '../supabase'
 
 export default {
   name: 'DashboardView',
@@ -129,16 +131,7 @@ export default {
         this.isError = true
       }
 
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
-
-      this.isToastShown = true
-
-      setTimeout(() => {
-        this.isToastShown = false
-      }, 3500)
+      handleModal(isToastShown, true)
     }
   },
   async mounted() {

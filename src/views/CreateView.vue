@@ -210,14 +210,15 @@
 
 <script>
 import { mapState } from 'pinia'
+import { useUserStore } from '../stores/user'
+import { handleModal } from '../composables/handleModal'
+import { supabase } from '../supabase'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheToast from '../components/shared/TheToast.vue'
-import { useUserStore } from '../stores/user'
-import { supabase } from '../supabase'
 
 export default {
   name: 'CreateView',
@@ -404,16 +405,7 @@ export default {
         this.isInsertionError = true
       }
 
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
-
-      this.isToastShown = true
-      
-      setTimeout(() => {
-        this.isToastShown = false
-      }, 3000)
+      handleModal(isToastShown, true)
     }
   },
   async mounted() {

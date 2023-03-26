@@ -24,7 +24,7 @@ defineProps<{
   width?: string,
   modelValue?: string,
   value?: string,
-  conditions?: string,
+  conditions?: boolean,
   errorText?: string
 }>()
 
