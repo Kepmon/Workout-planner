@@ -72,7 +72,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
 import { handleModal } from '../composables/handleModal'
 import { supabase } from '../supabase'
-import { Workout, WholeWorkout } from '../api/types'
+import { Workout, WholeWorkout, WorkoutResponse, UserResponse } from '../api/types'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
@@ -100,8 +100,8 @@ const deleteWorkout = async (el: number) => {
   const { data, error } = await supabase
   .from('Workouts')
   .delete()
-  .select()
-  .eq('id', el)
+  .eq('id', el) 
+  .select() as WorkoutResponse
   
   if (data) {
     isError.value = false
@@ -123,7 +123,7 @@ const columnWidth = ref(0)
 const userStore = useUserStore()
 const loadUserWorkouts = async () => {
   if (userStore.isSignedIn) {
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } }: { data: UserResponse['data'] } = await supabase.auth.getUser() as UserResponse
 
     const profile = await supabase
       .from('profiles')
@@ -138,20 +138,22 @@ const loadUserWorkouts = async () => {
 
     const { data } = await supabase
       .from('Workouts')
-      .select()
+      .select() as WorkoutResponse
     
-    const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
-    allWorkouts.sort((a, b) => b.id - a.id)
-
-    userWorkouts.value = allWorkouts.map(
-      ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
-    )
-    
-    setTimeout(() => {
-      columnWidth.value = 400
-    }, 1)
-    
-    isLoading.value = false
+    if (data !== null) {
+      const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
+      allWorkouts.sort((a, b) => b.id - a.id)
+  
+      userWorkouts.value = allWorkouts.map(
+        ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
+      )
+      
+      setTimeout(() => {
+        columnWidth.value = 400
+      }, 1)
+      
+      isLoading.value = false
+    }
   }
 }
 

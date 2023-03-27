@@ -215,7 +215,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { handleModal } from '../composables/handleModal'
 import { supabase } from '../supabase'
-import { Exercise, ExerciseResponse } from '../api/types'
+import { Exercise, ExerciseResponse, UserResponse } from '../api/types'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
@@ -375,7 +375,7 @@ const handleSumbit = () => {
 const router = useRouter()
 const submitWorkout = async () => {
   if (addedExercises.value.length !== 0) {
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } }: { data: UserResponse['data'] } = await supabase.auth.getUser() as UserResponse
     const { data } = await supabase
       .from('Workouts')
       .insert([
@@ -408,7 +408,7 @@ const submitWorkout = async () => {
 const userStore = useUserStore()
 const fetchExercises = async () => {
   if (userStore.isSignedIn) {
-    const response: ExerciseResponse = await supabase.from('Exercises').select()
+    const response = await supabase.from('Exercises').select() as ExerciseResponse
     
     if (response.error === null) {
       const { data }: { data: ExerciseResponse['data']} = response

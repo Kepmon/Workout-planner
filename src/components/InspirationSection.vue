@@ -67,7 +67,7 @@ const isError = ref(false)
 const message = computed(() => isError.value ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : "Take a look at others' workouts below!")
 
 const fetchWorkouts = async () => {
-  const response: WorkoutResponse = await supabase.from('Workouts').select()
+  const response = await supabase.from('Workouts').select() as WorkoutResponse
 
   if (response.error === null) {
     const { data }: { data: WorkoutResponse['data'] } = response
