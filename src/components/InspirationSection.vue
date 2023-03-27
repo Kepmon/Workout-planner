@@ -10,7 +10,7 @@
 
         <div class="flex justify-between w-full gap-x-10 max-[500px]:gap-6 max-[400px]:gap-4">
             <img
-              @click="decreaseSlide"
+              @click="previousSlide"
               class="w-8 cursor-pointer max-[500px]:w-5"
               src="/img/chevrons-left-alt-svgrepo-com.svg"
               alt="previous workout"
@@ -38,7 +38,7 @@
               </the-workout>
             </transition-group>
             <img
-                @click="increaseSlide"
+                @click="nextSlide"
                 class="w-8 cursor-pointer max-[500px]:w-5"
                 src="/img/chevrons-right-alt-svgrepo-com.svg"
                 alt="next workout"
@@ -60,7 +60,7 @@ import TheButton from './shared/TheButton.vue'
 import TheWorkout from './shared/TheWorkout.vue'
 import TheExercise from './shared/TheExercise.vue'
 import { supabase } from '../supabase'
-import { Workout, WorkoutResponse, WholeWorkout } from '../api/types'
+import { Workout, WorkoutResponse } from '../api/types'
 
 const workouts = ref<Workout[]>([])
 const isError = ref(false)
@@ -84,22 +84,22 @@ const fetchWorkouts = async () => {
 
 onMounted(fetchWorkouts)
 
-const slide = ref(0)
-const currentWorkout = computed(() => workouts.value.filter((workout) => workout === workouts.value[slide.value]))
+const slideIndex = ref(0)
+const currentWorkout = computed(() => workouts.value.filter((workout) => workout === workouts.value[slideIndex.value]))
 
-const increaseSlide = () => {
-  slide.value += 1
+const nextSlide = () => {
+  slideIndex.value += 1
 
-  if (!workouts.value[slide.value]) {
-    slide.value = 0
+  if (!workouts.value[slideIndex.value]) {
+    slideIndex.value = 0
   }
 }
 
-const decreaseSlide = () => {
-  slide.value -= 1
+const previousSlide = () => {
+  slideIndex.value -= 1
 
-  if (!workouts.value[slide.value]) {
-    slide.value = workouts.value.length - 1
+  if (!workouts.value[slideIndex.value]) {
+    slideIndex.value = workouts.value.length - 1
   }
 }
 </script>
