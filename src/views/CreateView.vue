@@ -215,7 +215,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { handleModal } from '../composables/handleModal'
 import { supabase } from '../supabase'
-import { Exercise, ExerciseResponse, UserResponse } from '../api/types'
+import { Exercise, WholeExercise, SupabaseResponse, UserResponse } from '../api/types'
 import TheForm from '../components/shared/TheForm.vue'
 import TheInput from '../components/shared/TheInput.vue'
 import TheButton from '../components/shared/TheButton.vue'
@@ -408,10 +408,10 @@ const submitWorkout = async () => {
 const userStore = useUserStore()
 const fetchExercises = async () => {
   if (userStore.isSignedIn) {
-    const response = await supabase.from('Exercises').select() as ExerciseResponse
+    const response = await supabase.from('Exercises').select() as SupabaseResponse<WholeExercise>
     
     if (response.error === null) {
-      const { data }: { data: ExerciseResponse['data']} = response
+      const { data }: { data: SupabaseResponse<WholeExercise>['data']} = response
 
       if (data !== null) {
         exercises.value = data.map(({ exercise: { muscles, img, name } }) => ({ muscles, img, name }))

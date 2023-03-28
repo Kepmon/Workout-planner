@@ -60,17 +60,17 @@ import TheButton from './shared/TheButton.vue'
 import TheWorkout from './shared/TheWorkout.vue'
 import TheExercise from './shared/TheExercise.vue'
 import { supabase } from '../supabase'
-import { Workout, WorkoutResponse } from '../api/types'
+import { Workout, WholeWorkout, SupabaseResponse } from '../api/types'
 
 const workouts = ref<Workout[]>([])
 const isError = ref(false)
 const message = computed(() => isError.value ? 'Ooops, something went wrong when fetching data. Try refreshing the page.' : "Take a look at others' workouts below!")
 
 const fetchWorkouts = async () => {
-  const response = await supabase.from('Workouts').select() as WorkoutResponse
+  const response = await supabase.from('Workouts').select() as SupabaseResponse<WholeWorkout>
 
   if (response.error === null) {
-    const { data }: { data: WorkoutResponse['data'] } = response
+    const { data }: { data: SupabaseResponse<WholeWorkout>['data'] } = response
 
     if (data !== null) {
       workouts.value = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))

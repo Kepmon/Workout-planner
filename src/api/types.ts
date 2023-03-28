@@ -16,14 +16,6 @@ export interface WholeExercise {
     exercise: Exercise
 }
 
-export interface ExerciseResponse {
-    count: null,
-    data: WholeExercise[] | null,
-    error: SupabaseError | null,
-    status: number,
-    statusText: string
-}
-
 export interface Workout {
     name: string,
     exercises: Exercise[],
@@ -37,9 +29,9 @@ export interface WholeWorkout {
     workout: Workout
 }
 
-export interface WorkoutResponse {
+export interface SupabaseResponse<T> {
     count: null,
-    data: WholeWorkout[] | null,
+    data: T[] | null,
     error: SupabaseError | null,
     status: number,
     statusText: string
@@ -66,7 +58,7 @@ export interface Callback {
 export interface UserResponse {
     data: {
         user: {
-            app_metadata: object,
+            app_metadata: Record<string, unknown>,
             aud: string,
             confirmed_at: string,
             created_at: string,

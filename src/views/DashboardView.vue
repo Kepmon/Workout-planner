@@ -71,7 +71,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '../stores/user'
 import { handleModal } from '../composables/handleModal'
 import { supabase } from '../supabase'
-import { Workout, WholeWorkout, WorkoutResponse, UserResponse } from '../api/types'
+import { Workout, WholeWorkout, UserResponse, SupabaseResponse } from '../api/types'
 import NeedSignIn from '../components/shared/NeedSignIn.vue'
 import TheWorkout from '../components/shared/TheWorkout.vue'
 import TheExercise from '../components/shared/TheExercise.vue'
@@ -100,7 +100,7 @@ const deleteWorkout = async (el: number) => {
   .from('Workouts')
   .delete()
   .eq('id', el) 
-  .select() as WorkoutResponse
+  .select() as SupabaseResponse<WholeWorkout>
   
   if (data) {
     isError.value = false
@@ -144,7 +144,7 @@ const loadUserWorkouts = async () => {
 
     const { data } = await supabase
       .from('Workouts')
-      .select() as WorkoutResponse
+      .select() as SupabaseResponse<WholeWorkout>
     
     if (data !== null) {
       const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
