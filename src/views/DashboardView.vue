@@ -11,14 +11,13 @@
 
       <div v-if="userStore.isSignedIn" class="flex flex-col items-center">
           <h2
-            v-if="userWorkouts.length !== 0"
+            v-if="!isLoading"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
             Hello
-            <span class="text-brown-color">{{ userName }}</span>,
-            you can see your workouts below
+            <span class="text-brown-color">{{ userName }}</span>, {{ message }}
           </h2>
           <h2
-            v-if="userWorkouts.length === 0"
+            v-if="isLoading"
             class="mb-8 text-3xl text-center font-bold tracking-wider">
             <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
           </h2>
@@ -121,6 +120,13 @@ const userID = ref('')
 const isLoading = ref(true)
 const columnWidth = ref(0)
 const userStore = useUserStore()
+
+const message = computed(() => {
+  return userWorkouts.value.length === 0
+  ? "looks like you haven't created any workouts yet"
+  : 'you can see your workouts below'
+})
+
 const loadUserWorkouts = async () => {
   if (userStore.isSignedIn) {
     const { data: { user } }: { data: UserResponse['data'] } = await supabase.auth.getUser() as UserResponse
@@ -142,8 +148,13 @@ const loadUserWorkouts = async () => {
     
     if (data !== null) {
       const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
+      
+      if (allWorkouts.length === 0) {
+        isLoading.value = false
+        return
+      }
+      
       allWorkouts.sort((a, b) => b.id - a.id)
-  
       userWorkouts.value = allWorkouts.map(
         ({ workout: { name, exercises }, id }) => ({ name, exercises, id })
       )
