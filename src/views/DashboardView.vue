@@ -105,7 +105,7 @@ const deleteWorkout = async (el: number) => {
   if (data) {
     isError.value = false
     
-    userWorkouts.value = userWorkouts.value.filter((workout) => workout.id !== el)
+    loadUserWorkouts()
   }
   
   if (error) {
@@ -146,7 +146,7 @@ const loadUserWorkouts = async () => {
       .from('Workouts')
       .select() as SupabaseResponse<WholeWorkout>
     
-    if (data !== null) {
+    if (data) {
       const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
       
       if (allWorkouts.length === 0) {
