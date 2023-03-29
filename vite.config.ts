@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 /* eslint-disable import/no-extraneous-dependencies */
 import { fileURLToPath, URL } from 'node:url'
 
@@ -12,5 +14,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  test: {
+    globals: true,
+    setupFiles: ['./tests/setup.ts']
   }
 })
