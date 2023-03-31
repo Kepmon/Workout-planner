@@ -73,7 +73,7 @@
                 <transition name="exercises">
                   <div v-show="areExercisesDisplayed">
                     <the-input @input="showSelectedExercises(exerciseName)"
-                      v-show="!selectedExercise"
+                      v-show="selectedExercise == null"
                       v-model="exerciseName"
                       type="text"
                       placeholder="Search for exercises..."
@@ -87,11 +87,11 @@
                           v-for="exercise in exercisesToShow"
                           :key="exercise.name"
                           class="exercise-to-select"
-                          :class="{'mt-8': selectedExercise}"
+                          :class="{'mt-8': selectedExercise != null}"
                         >
                           
                           <img
-                            v-show="selectedExercise"
+                            v-show="selectedExercise != null"
                             @click="selectedExercise = null"
                             src="/img/close-square-svgrepo-com.svg"
                             alt="remove this exercise"
@@ -123,7 +123,7 @@
                   <div class="mb-2 relative">
                     <transition name="error">
                       <p
-                        v-show="isExerciseSubmitted && !selectedExercise"
+                        v-show="isExerciseSubmitted && selectedExercise == null"
                         class="mt-1 ml-2 absolute text-xs text-red-700 font-bold">
                         You need to choose an exercise.
                       </p>
@@ -226,7 +226,7 @@ import TheToast from '../components/shared/TheToast.vue'
 const exercises = ref<Exercise[]>([])
 const workoutName = ref('')
 const exerciseName = ref('')
-const selectedExercise: Ref<Exercise> | Ref<null> = ref(null)
+let selectedExercise: Ref<Exercise> | Ref<null> = ref(null)
 const exerciseData = ref<Exercise>({
   name: '',
   img: '',
@@ -255,14 +255,14 @@ const exercisesToShow = computed(() => {
   const selectedExercises = showSelectedExercises(exerciseName.value)
   
   if (exerciseName.value === '') {
-    if (selectedExercise.value) {
+    if (selectedExercise.value != null) {
       return exercises.value.filter((exercise) => selectedExercise.value === exercise)
     }
     
     return exercises.value
   }
   
-  if (selectedExercise.value) {
+  if (selectedExercise.value != null) {
     return exercises.value.filter((exercise) => selectedExercise.value === exercise)
   }
   
@@ -338,7 +338,7 @@ const addExerciseValues = (e: { target: HTMLInputElement }) => {
 }
 
 const addExerciseInfo = () => {
-  if (selectedExercise.value) {
+  if (selectedExercise.value != null) {
     exerciseData.value.name = selectedExercise.value.name
     exerciseData.value.img = selectedExercise.value.img
     exerciseData.value.muscles = selectedExercise.value.muscles
@@ -410,10 +410,10 @@ const fetchExercises = async () => {
   if (userStore.isSignedIn) {
     const response = await supabase.from('Exercises').select() as SupabaseResponse<WholeExercise>
     
-    if (!response.error) {
+    if (response.error == null) {
       const { data }: { data: SupabaseResponse<WholeExercise>['data']} = response
 
-      if (data) {
+      if (data != null) {
         exercises.value = data.map(({ exercise: { muscles, img, name } }) => ({ muscles, img, name }))
         return
       }
