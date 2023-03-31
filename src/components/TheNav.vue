@@ -20,10 +20,12 @@
                     :key="path.name"
                 >
                     <router-link
-                        :to="path"
-                        :active-class="content !== 'Sign out' ? 'active' : ''"
-                        class="px-6 py-2">
-                        {{ content }}
+                      :to="path"
+                      :active-class="content !== 'Sign out' ? 'active' : ''"
+                      class="px-6 py-2"
+                      role="link"
+                    >
+                      {{ content }}
                     </router-link>
                 </li>
               </transition-group>
