@@ -146,7 +146,7 @@ const loadUserWorkouts = async () => {
       .from('Workouts')
       .select() as SupabaseResponse<WholeWorkout>
     
-    if (data) {
+    if (data != null) {
       const allWorkouts: WholeWorkout[] = data.filter((item: WholeWorkout) => item.user_id === userID.value)
       
       if (allWorkouts.length === 0) {

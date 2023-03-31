@@ -69,10 +69,10 @@ const message = computed(() => isError.value ? 'Ooops, something went wrong when
 const fetchWorkouts = async () => {
   const response = await supabase.from('Workouts').select() as SupabaseResponse<WholeWorkout>
 
-  if (!response.error) {
+  if (response.error == null) {
     const { data }: { data: SupabaseResponse<WholeWorkout>['data'] } = response
 
-    if (data) {
+    if (data != null) {
       workouts.value = data.map(({ workout: { name, exercises } }) => ({ name, exercises }))
     }
 
