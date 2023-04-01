@@ -1,5 +1,5 @@
 export interface Exercise {
-    [key: string]: string | string[] | undefined | '' | 'kg' | 'lb',
+    // [key: string]: string | string[] | undefined | '' | 'kg' | 'lb',
     name: string,
     img: string,
     muscles?: string[],
@@ -44,15 +44,14 @@ interface SupabaseError {
     message: string
 }
 
-export interface Route {
+interface Route {
     path: { name: string },
     content: string,
-    protected?: boolean,
-    callback?: Callback
 }
 
-export interface Callback {
-    (): void
+export interface NavRoute extends Route {
+    protected?: boolean,
+    callback?: () => void
 }
 
 export interface UserResponse {
