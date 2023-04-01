@@ -83,11 +83,11 @@
                     <transition-group tag="ul" name="list" mode="out-in"
                     class="px-2 max-h-96 overflow-y-auto">
                         <li
-                          @click.capture="selectedExercise = exercise; addExerciseInfo()"
                           v-for="exercise in exercisesToShow"
                           :key="exercise.name"
                           class="exercise-to-select"
                           :class="{'mt-8': selectedExercise != null}"
+                          @click.capture="selectedExercise = exercise; addExerciseInfo()"
                         >
                           
                           <img
@@ -226,7 +226,7 @@ import TheToast from '../components/shared/TheToast.vue'
 const exercises = ref<Exercise[]>([])
 const workoutName = ref('')
 const exerciseName = ref('')
-let selectedExercise: Ref<Exercise> | Ref<null> = ref(null)
+const selectedExercise: Ref<Exercise | null> = ref(null)
 const exerciseData = ref<Exercise>({
   name: '',
   img: '',

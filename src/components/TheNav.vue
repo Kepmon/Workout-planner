@@ -1,85 +1,93 @@
 <template>
-    <nav class="px-8 bg-dark-yellow relative max-[399px]:px-4">
-        <div class="flex items-center justify-between mx-auto max-w-1200 h-28">
-            <router-link :to="{ name: 'home' }">
-                <div class="flex items-center p-1">
-                    <img
-                      src="/img/training-gym-svgrepo-com.svg"
-                      alt="The company logo"
-                      class="h-20 max-[499px]:h-10"
-                    >
-                    <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
-                </div>
-            </router-link>
+  <nav class="px-8 bg-dark-yellow relative max-[399px]:px-4">
+    <div class="flex items-center justify-between mx-auto max-w-1200 h-28">
+      <router-link :to="{ name: 'home' }">
+        <div class="flex items-center p-1">
+          <img
+            src="/img/training-gym-svgrepo-com.svg"
+            alt="The company logo"
+            class="h-20 max-[499px]:h-10"
+          >
+          <p class="text-3xl font-bold italic max-[499px]:text-xl">
+            SmartGym
+          </p>
+        </div>
+      </router-link>
 
-            <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
-              <transition-group name="nav-desktop">
-                <li
-                    v-on="{ click: callback ? callback : null }"
-                    v-for="{ path, content, callback } in navItems"
-                    :key="path.name"
+      <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
+        <transition-group name="nav-desktop">
+          <li
+            v-for="{ path, content, callback } in navItems"
+            :key="path.name"
+            v-on="{ click: callback ? callback : null }"
+          >
+            <router-link
+              :to="path"
+              :active-class="content !== 'Sign out' ? 'active' : ''"
+              class="px-6 py-2"
+            >
+              {{ content }}
+            </router-link>
+          </li>
+        </transition-group>
+      </ul>
+
+      <div class="cursor-pointer z-10 min-[999px]:hidden">
+        <img
+          src="/img/menu-1-svgrepo-com.svg"
+          alt="The menu icon"
+          class="h-12 max-[499px]:h-10"
+          @click="() => toggleNav()"
+        >
+
+        <transition name="nav">
+          <div
+            v-show="isNavShown"
+            class="absolute inset-0 h-screen bg-dark-yellow text-2xl"
+          >
+            <ul class="nav-items">
+              <li
+                v-for="{ path, content, callback } in navItems"
+                :key="path.name"
+                @click="() => toggleNav(callback)"
+              >
+                <router-link
+                  :to="path"
+                  :active-class="content !== 'Sign out' ? 'active' : ''"
+                  class="px-6 py-2"
                 >
-                    <router-link
-                        :to="path"
-                        :active-class="content !== 'Sign out' ? 'active' : ''"
-                        class="px-6 py-2">
-                        {{ content }}
-                    </router-link>
-                </li>
-              </transition-group>
+                  {{ content }}
+                </router-link>
+              </li>
             </ul>
 
-            <div class="cursor-pointer z-10 min-[999px]:hidden">
-                <img
-                  @click="() => toggleNav()"
-                  src="/img/menu-1-svgrepo-com.svg"
-                  alt="The menu icon"
-                  class="h-12 max-[499px]:h-10"
-                >
-
-                <transition name="nav">
-                    <div
-                      v-show="isNavShown"
-                      class="absolute inset-0 h-screen bg-dark-yellow text-2xl"
-                    >
-                        <ul class="nav-items">
-                          <li
-                            @click="() => toggleNav(callback)"
-                            v-for="{ path, content, callback } in navItems"
-                            :key="path.name"
-                          >
-                            <router-link
-                              :to="path"
-                              :active-class="content !== 'Sign out' ? 'active' : ''"
-                              class="px-6 py-2">
-                              {{ content }}
-                            </router-link>
-                          </li>
-                        </ul>
-
-                        <img
-                          @click="() => toggleNav()"
-                          src="/img/close-square-svgrepo-com.svg"
-                          alt="The close menu icon"
-                          class="close-btn"
-                        >
-                    </div>
-                </transition>
-            </div>
-        </div>
-    </nav>
+            <img
+              src="/img/close-square-svgrepo-com.svg"
+              alt="The close menu icon"
+              class="close-btn"
+              @click="() => toggleNav()"
+            >
+          </div>
+        </transition>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useScrollLock } from '@vueuse/core'
 import { ref, computed } from 'vue'
 import { useUserStore } from '../stores/user'
-import { Route, Callback } from '../api/types'
+import { Route } from '../api/types'
 
 const isNavShown = ref(false)
 const userStore = useUserStore()
-const routes = ref<Route[]>([
+
+interface NavRoute extends Route {
+  callback?: () => void
+}
+
+const routes = ref<NavRoute[]>([
   {
     path: { name: 'home' },
     content: 'Home'
@@ -118,7 +126,7 @@ const navItems = computed(() => {
 const el = ref(document.body)
 const isLocked = useScrollLock(el)
 
-const toggleNav = (cb?: Callback) => {
+const toggleNav = (cb?: any) => {
   isNavShown.value = !isNavShown.value
   isLocked.value = isNavShown.value
 

@@ -48,11 +48,7 @@ export interface Route {
     path: { name: string },
     content: string,
     protected?: boolean,
-    callback?: Callback
-}
 
-export interface Callback {
-    (): void
 }
 
 export interface UserResponse {
