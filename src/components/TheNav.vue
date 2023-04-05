@@ -76,15 +76,10 @@
 import { useScrollLock } from "@vueuse/core";
 import { ref, computed } from "vue";
 import { useUserStore } from "../stores/user";
-import { Route } from "../api/types";
+import { NavRoute } from "../api/types";
 
 const isNavShown = ref(false);
 const userStore = useUserStore();
-
-interface NavRoute extends Route {
-  callback?: () => void;
-}
-
 const routes = ref<NavRoute[]>([
   {
     path: { name: "home" },
@@ -126,7 +121,7 @@ const navItems = computed(() => {
 const el = ref(document.body);
 const isLocked = useScrollLock(el);
 
-const toggleNav = (cb?: any) => {
+const toggleNav = (cb?: NavRoute["callback"]) => {
   isNavShown.value = !isNavShown.value;
   isLocked.value = isNavShown.value;
 

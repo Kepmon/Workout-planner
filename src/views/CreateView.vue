@@ -93,21 +93,18 @@
                       class="px-2 max-h-96 overflow-y-auto"
                     >
                       <li
+                        @click.capture="() => addExerciseInfo(exercise)"
                         v-for="exercise in exercisesToShow"
                         :key="exercise.name"
                         class="exercise-to-select"
                         :class="{ 'mt-8': selectedExercise != null }"
-                        @click.capture="
-                          selectedExercise = exercise;
-                          addExerciseInfo();
-                        "
                       >
                         <img
                           v-show="selectedExercise != null"
+                          @click="selectedExercise = null"
                           src="/img/close-square-svgrepo-com.svg"
                           alt="remove this exercise"
                           class="absolute right-2 h-8"
-                          @click="selectedExercise = null"
                         />
                         <img
                           :src="exercise.img"
@@ -371,19 +368,18 @@ const displayWorkoutTitle = () => {
 };
 
 const addExerciseValues = (e: { target: HTMLInputElement }) => {
-  const key = e.target.name;
-  const value = e.target.value;
-  if (exerciseData.value[key]) {
-    exerciseData.value[key] = value;
+  const key = e.target.name as keyof Exercise;
+  const val = e.target.value;
+  if (key !== "unit" && key !== "muscles") {
+    exerciseData.value[key] = val;
   }
 };
 
-const addExerciseInfo = () => {
-  if (selectedExercise.value != null) {
-    exerciseData.value.name = selectedExercise.value.name;
-    exerciseData.value.img = selectedExercise.value.img;
-    exerciseData.value.muscles = selectedExercise.value.muscles;
-  }
+const addExerciseInfo = (exercise: Exercise) => {
+  selectedExercise.value = exercise;
+  exerciseData.value.name = exercise.name;
+  exerciseData.value.img = exercise.img;
+  exerciseData.value.muscles = exercise.muscles;
 };
 
 const addUnit = () => {
