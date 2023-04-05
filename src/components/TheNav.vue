@@ -7,10 +7,8 @@
             src="/img/training-gym-svgrepo-com.svg"
             alt="The company logo"
             class="h-20 max-[499px]:h-10"
-          >
-          <p class="text-3xl font-bold italic max-[499px]:text-xl">
-            SmartGym
-          </p>
+          />
+          <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
         </div>
       </router-link>
 
@@ -38,7 +36,7 @@
           alt="The menu icon"
           class="h-12 max-[499px]:h-10"
           @click="() => toggleNav()"
-        >
+        />
 
         <transition name="nav">
           <div
@@ -66,7 +64,7 @@
               alt="The close menu icon"
               class="close-btn"
               @click="() => toggleNav()"
-            >
+            />
           </div>
         </transition>
       </div>
@@ -75,65 +73,67 @@
 </template>
 
 <script setup lang="ts">
-import { useScrollLock } from '@vueuse/core'
-import { ref, computed } from 'vue'
-import { useUserStore } from '../stores/user'
-import { Route } from '../api/types'
+import { useScrollLock } from "@vueuse/core";
+import { ref, computed } from "vue";
+import { useUserStore } from "../stores/user";
+import { Route } from "../api/types";
 
-const isNavShown = ref(false)
-const userStore = useUserStore()
+const isNavShown = ref(false);
+const userStore = useUserStore();
 
 interface NavRoute extends Route {
-  callback?: () => void
+  callback?: () => void;
 }
 
 const routes = ref<NavRoute[]>([
   {
-    path: { name: 'home' },
-    content: 'Home'
+    path: { name: "home" },
+    content: "Home",
   },
   {
-    path: { name: 'create' },
-    content: 'Create new workout'
+    path: { name: "create" },
+    content: "Create new workout",
   },
   {
-    path: { name: 'dashboard' },
-    content: 'Dashboard'
+    path: { name: "dashboard" },
+    content: "Dashboard",
   },
   {
-    path: { name: 'sign-in' },
-    content: 'Sign in'
+    path: { name: "sign-in" },
+    content: "Sign in",
   },
   {
-    path: { name: 'sign-up' },
-    content: 'Sign up'
+    path: { name: "sign-up" },
+    content: "Sign up",
   },
   {
-    path: { name: 'home' },
-    content: 'Sign out',
+    path: { name: "home" },
+    content: "Sign out",
     protected: true,
-    callback: userStore.signOut
-  }
-])
+    callback: userStore.signOut,
+  },
+]);
 
 const navItems = computed(() => {
   if (!userStore.isSignedIn) {
-    return routes.value.filter((route) => route.protected == null)
+    return routes.value.filter((route) => route.protected == null);
   }
-  return routes.value.filter((route) => route.path.name.includes('sign') === false)
-})
+  return routes.value.filter(
+    (route) => route.path.name.includes("sign") === false
+  );
+});
 
-const el = ref(document.body)
-const isLocked = useScrollLock(el)
+const el = ref(document.body);
+const isLocked = useScrollLock(el);
 
 const toggleNav = (cb?: any) => {
-  isNavShown.value = !isNavShown.value
-  isLocked.value = isNavShown.value
+  isNavShown.value = !isNavShown.value;
+  isLocked.value = isNavShown.value;
 
   if (cb) {
-    cb()
+    cb();
   }
-}
+};
 </script>
 
 <style scoped>
@@ -161,7 +161,7 @@ const toggleNav = (cb?: any) => {
 
 .nav-desktop-enter-from,
 .nav-desktop-leave-to {
-  @apply opacity-0
+  @apply opacity-0;
 }
 
 .nav-desktop-enter-active {

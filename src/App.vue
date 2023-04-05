@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-nav />
-    
+
     <router-view v-slot="{ Component }">
       <transition name="route" mode="out-in">
         <component :is="Component"></component>
@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import TheNav from './components/TheNav.vue'
-import TheFooter from './components/TheFooter.vue'
+import TheNav from "./components/TheNav.vue";
+import TheFooter from "./components/TheFooter.vue";
 </script>
 
 <style>
