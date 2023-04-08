@@ -1,13 +1,15 @@
 <template>
   <main>
     <the-toast
-    v-show="isToastShown"
-    :text="toast.text"
-    :background="toast.color"
+      v-show="isToastShown"
+      :text="toast.text"
+      :background="toast.color"
     />
 
     <div class="py-12">
-      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign in</h2>
+      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">
+        Sign in
+      </h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
@@ -30,7 +32,7 @@
 
         <template #buttons>
           <div class="flex justify-center">
-            <the-button @click.prevent="signInUser" text="Sign in" />
+            <the-button text="Sign in" @click.prevent="signInUser" />
           </div>
         </template>
 
@@ -38,8 +40,10 @@
           <div class="px-6 text-center">
             <p class="mt-8 text-sm">
               Don't have an account?
-              <router-link :to="{ name: 'sign-up'}"
-              class="border-b-brown-color border-b-2 text-brown-color font-bold">
+              <router-link
+                :to="{ name: 'sign-up' }"
+                class="border-b-brown-color border-b-2 text-brown-color font-bold"
+              >
                 Create one
               </router-link>
             </p>
@@ -50,73 +54,66 @@
   </main>
 </template>
 
-<script>
-import TheForm from '../components/shared/TheForm.vue'
-import TheInput from '../components/shared/TheInput.vue'
-import TheButton from '../components/shared/TheButton.vue'
-import TheToast from '../components/shared/TheToast.vue'
-import { useUserStore } from '../stores/user'
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
+import { handleModal } from "../composables/handleModal";
+import TheForm from "../components/shared/TheForm.vue";
+import TheInput from "../components/shared/TheInput.vue";
+import TheButton from "../components/shared/TheButton.vue";
+import TheToast from "../components/shared/TheToast.vue";
 
-export default {
-  name: 'SignInView',
-  components: {
-    TheForm,
-    TheInput,
-    TheButton,
-    TheToast
-  },
-  data() {
+const userData = ref({
+  password: "",
+  email: "",
+});
+const isToastShown = ref(false);
+const isError = ref(false);
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const toast = computed(() => {
+  if (!isError.value) {
     return {
-      userData: {
-        password: '',
-        email: ''
-      },
-      isToastShown: false,
-      isError: true,
-      userStore: useUserStore()
-    }
-  },
-  computed: {
-    toast() {
-      if (!this.isError) {
-        return {
-          text: this.$router.options.history.state.back === '/create' ? "You've signed in successfully. Let's create some workout." : "You've signed in successfully. Let's see your dashboard.",
-          color: 'bg-toast-info'
-        }
-      }
-      return {
-        text: 'The entered data are incorrect. Try again.',
-        color: 'bg-toast-error'
-      }
-    }
-  },
-  methods: {
-    async signInUser() {
-      const isSuccessful = await this.userStore.signIn(this.userData.email, this.userData.password)
-
-      this.isToastShown = true
-      
-      setTimeout(() => {
-        this.isToastShown = false
-      }, 3000)
-
-      if (isSuccessful !== true) {
-        this.isError = true
-        return
-      }
-
-      this.isError = false
-      this.userStore.isSignedIn = true
-      setTimeout(() => {
-        const lastPath = this.$router.options.history.state.back
-
-        if (lastPath === '/create') {
-          this.$router.push({ name: 'create' })
-        } else {
-          this.$router.push({ name: 'dashboard' })
-        }
-      }, 3500)
-    }
+      text:
+        router.options.history.state.back === "/create"
+          ? "You've signed in successfully. Let's create some workout."
+          : "You've signed in successfully. Let's see your dashboard.",
+      color: "bg-toast-info",
+    };
   }
-}
+  return {
+    text: "The entered data are incorrect. Try again.",
+    color: "bg-toast-error",
+  };
+});
+
+const signInUser = async () => {
+  const isSuccessful = await userStore.signIn(
+    userData.value.email,
+    userData.value.password
+  );
+
+  handleModal(isToastShown, true);
+
+  if (isSuccessful !== true) {
+    isError.value = true;
+    return;
+  }
+
+  isError.value = false;
+  userStore.isSignedIn = true;
+
+  setTimeout(() => {
+    const lastPath = router.options.history.state.back;
+
+    if (lastPath === "/create") {
+      router.push({ name: "create" });
+    } else {
+      router.push({ name: "dashboard" });
+    }
+  }, 3500);
+};
 </script>

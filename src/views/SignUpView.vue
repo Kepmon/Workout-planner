@@ -1,78 +1,78 @@
 <template>
   <main class="relative">
     <the-toast
-    v-show="isToastShown"
-    :text="toast.text"
-    :background="toast.color"
+      v-show="isToastShown"
+      :text="toast.text"
+      :background="toast.color"
     />
     <privacy-policy v-show="isPolicyShown" @click="isPolicyShown = false" />
 
     <div class="py-12">
-      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">Sign up</h2>
+      <h2 class="mb-8 text-3xl text-center font-bold tracking-wider">
+        Sign up
+      </h2>
       <the-form>
         <template #inputs>
           <div class="flex flex-col px-6">
             <the-input
-            v-model="userData.name"
-            type="text"
-            placeholder="User name"
-            class="text w-full"
-            :conditions="isFormSubmitted && errorMessages.nameError !== ''"
-            :errorText="errorMessages.nameError"
+              v-model="userData.name"
+              type="text"
+              placeholder="User name"
+              class="text w-full"
+              :condition="isFormSubmitted && errorMessages.nameError !== ''"
+              :error-text="errorMessages.nameError"
             >
             </the-input>
             <the-input
-            v-model="userData.passOne"
-            type="password"
-            placeholder="Password"
-            class="text w-full"
-            :conditions="isFormSubmitted && errorMessages.passOneError !== ''"
-            :errorText="errorMessages.passOneError"
+              v-model="userData.passOne"
+              type="password"
+              placeholder="Password"
+              class="text w-full"
+              :condition="isFormSubmitted && errorMessages.passOneError !== ''"
+              :error-text="errorMessages.passOneError"
             >
             </the-input>
             <the-input
-            v-model="userData.passTwo"
-            type="password"
-            placeholder="Repeat password"
-            class="text w-full"
-            :conditions="isFormSubmitted && errorMessages.passTwoError !== ''"
-            :errorText="errorMessages.passTwoError"
+              v-model="userData.passTwo"
+              type="password"
+              placeholder="Repeat password"
+              class="text w-full"
+              :condition="isFormSubmitted && errorMessages.passTwoError !== ''"
+              :error-text="errorMessages.passTwoError"
             >
             </the-input>
             <the-input
-            v-model="userData.email"
-            type="email"
-            placeholder="Email"
-            class="text w-full"
-            :conditions="isFormSubmitted && errorMessages.emailError !== ''"
-            :errorText="errorMessages.emailError"
+              v-model="userData.email"
+              type="email"
+              placeholder="Email"
+              class="text w-full"
+              :condition="isFormSubmitted && errorMessages.emailError !== ''"
+              :error-text="errorMessages.emailError"
             >
             </the-input>
           </div>
         </template>
-        
+
         <template #buttons>
           <div class="flex justify-center">
-            <the-button @click.prevent="signUpUser" text="Sign up" />
+            <the-button text="Sign up" @click.prevent="signUpUser" />
           </div>
         </template>
-        
+
         <template #others>
           <div class="flex justify-evenly px-6 mt-8 text-center">
             <label v-if="$route.name === 'sign-up'" class="flex text-sm">
               <the-input
-                @input.capture="isCheckboxChecked = !isCheckboxChecked"
                 type="checkbox"
                 class="checkbox"
+                @input.capture="isCheckboxChecked = !isCheckboxChecked"
               />
-                <span>
-                  By clicking here, I state that I have read and understood the
-                  <span
-                    @click="showModal"
-                    class="privacy">
-                    Privacy Policy.
-                  </span>
+              <span>
+                By clicking here, I state that I have read and understood the
+                <span class="privacy" @click="showModal">
+                  Privacy Policy.
                 </span>
+              </span>
             </label>
           </div>
 
@@ -90,8 +90,7 @@
           <div class="px-6 text-center">
             <p class="mt-8 text-sm">
               Already have an account?
-              <router-link :to="{ name: 'sign-in'}"
-              class="sign-in">
+              <router-link :to="{ name: 'sign-in' }" class="sign-in">
                 Sign in
               </router-link>
             </p>
@@ -102,141 +101,159 @@
   </main>
 </template>
 
-<script>
-import { mapActions } from 'pinia'
-import { useUserStore } from '../stores/user'
-import TheForm from '../components/shared/TheForm.vue'
-import TheInput from '../components/shared/TheInput.vue'
-import TheButton from '../components/shared/TheButton.vue'
-import TheToast from '../components/shared/TheToast.vue'
-import PrivacyPolicy from '../components/PrivacyPolicy.vue'
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
+import { handleModal } from "../composables/handleModal";
+import TheForm from "../components/shared/TheForm.vue";
+import TheInput from "../components/shared/TheInput.vue";
+import TheButton from "../components/shared/TheButton.vue";
+import TheToast from "../components/shared/TheToast.vue";
+import PrivacyPolicy from "../components/PrivacyPolicy.vue";
 
-export default {
-  name: 'SignUpView',
-  components: {
-    TheForm,
-    TheInput,
-    TheButton,
-    TheToast,
-    PrivacyPolicy
-  },
-  data() {
+const isError = ref(false);
+
+const userData = ref({
+  name: "",
+  passOne: "",
+  passTwo: "",
+  email: "",
+});
+
+const errorMessages = ref({
+  nameError: "",
+  passOneError: "",
+  passTwoError: "",
+  emailError: "",
+  checkboxError: "",
+});
+
+const toast = computed(() => {
+  if (!isError.value) {
     return {
-      userData: {
-        name: '',
-        passOne: '',
-        passTwo: '',
-        email: ''
-      },
-      errorMessages: {
-        nameError: '',
-        passOneError: '',
-        passTwoError: '',
-        emailError: '',
-        checkboxError: ''
-      },
-      isCheckboxChecked: false,
-      isFormSubmitted: false,
-      isError: false,
-      isToastShown: false,
-      isPolicyShown: false
-    }
-  },
-  computed: {
-    toast() {
-      if (!this.isError) {
-        return {
-          text: "You've signed up successfully. Now, you may sign in into your account.",
-          color: 'bg-toast-info'
-        }
-      }
-      return {
-        text: 'Ooops, something went wrong. Try again.',
-        color: 'bg-toast-error'
-      }
-    }
-  },
-  methods: {
-    ...mapActions(useUserStore, ['signUp', 'updateProfile']),
-    checkLength(input, minChar, label) {
-      if (input === '') {
-        return `The "${label}" value is required.`
-      }
-
-      if (input !== '' && input.length < minChar) {
-        return `${label} must have at least ${minChar} characters.`
-      }
-
-      return ''
-    },
-    checkName() {
-      this.errorMessages.nameError = this.checkLength(this.userData.name, 5, 'User name')
-    },
-    checkPassword() {
-      this.errorMessages.passOneError = this.checkLength(this.userData.passOne, 8, 'Password')
-      this.errorMessages.passTwoError = this.checkLength(this.userData.passTwo, 0, 'Repeat password')
-
-      if (this.userData.passOne !== '' && this.userData.passTwo !== '' && this.userData.passOne !== this.userData.passTwo) {
-        this.errorMessages.passTwoError = "Passwords don't match."
-      }
-    },
-    checkEmail() {
-      this.errorMessages.emailError = this.checkLength(this.userData.email, 0, 'Email')
-      const emailConditions = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-
-      if (this.userData.email !== '' && !emailConditions.test(this.userData.email)) {
-        this.errorMessages.emailError = 'The provided input is not a valid email address.'
-      }
-
-      return this.errorMessages.emailError
-    },
-    checkBox() {
-      if (!this.isCheckboxChecked) {
-        this.errorMessages.checkboxError = 'You need to accept the Privacy Policy.'
-      } else {
-        this.errorMessages.checkboxError = ''
-      }
-    },
-    checkForm() {
-      this.isFormSubmitted = true
-      this.checkName()
-      this.checkPassword()
-      this.checkEmail()
-      this.checkBox()
-    },
-    async signUpUser() {
-      this.checkForm()
-
-      if (Object.values(this.errorMessages).every((value) => value === '')) {
-        const isSuccessful = await this.signUp(this.userData.email, this.userData.passOne)
-        
-        this.isToastShown = true
-        
-        setTimeout(() => {
-          this.isToastShown = false
-        }, 3000)
-        
-        if (isSuccessful !== true) {
-          this.isError = true
-        } else {
-          this.isError = false
-          setTimeout(() => {
-            this.$router.push({ name: 'sign-in' })
-          }, 3500)
-        }
-      }
-
-      this.updateProfile(this.userData.name)
-    },
-    showModal() {
-      this.isPolicyShown = true
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      })
-    }
+      text: "You've signed up successfully. Now, you may sign in into your account.",
+      color: "bg-toast-info",
+    };
   }
-}
+  return {
+    text: "Ooops, something went wrong. Try again.",
+    color: "bg-toast-error",
+  };
+});
+
+const checkLength = (input: string, minChar: number, label: string) => {
+  if (input === "") {
+    return `The "${label}" value is required.`;
+  }
+
+  if (input !== "" && input.length < minChar) {
+    return `${label} must have at least ${minChar} characters.`;
+  }
+
+  return "";
+};
+
+const checkName = () => {
+  errorMessages.value.nameError = checkLength(
+    userData.value.name,
+    5,
+    "User name"
+  );
+};
+
+const checkPassword = () => {
+  errorMessages.value.passOneError = checkLength(
+    userData.value.passOne,
+    8,
+    "Password"
+  );
+  errorMessages.value.passTwoError = checkLength(
+    userData.value.passTwo,
+    0,
+    "Repeat password"
+  );
+
+  if (
+    userData.value.passOne !== "" &&
+    userData.value.passTwo !== "" &&
+    userData.value.passOne !== userData.value.passTwo
+  ) {
+    errorMessages.value.passTwoError = "Passwords don't match.";
+  }
+};
+
+const checkEmail = () => {
+  errorMessages.value.emailError = checkLength(
+    userData.value.email,
+    0,
+    "Email"
+  );
+  const emailConditions =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+  if (
+    userData.value.email !== "" &&
+    !emailConditions.test(userData.value.email)
+  ) {
+    errorMessages.value.emailError =
+      "The provided input is not a valid email address.";
+  }
+
+  return errorMessages.value.emailError;
+};
+
+const isCheckboxChecked = ref(false);
+const checkBox = () => {
+  if (!isCheckboxChecked.value) {
+    errorMessages.value.checkboxError =
+      "You need to accept the Privacy Policy.";
+  } else {
+    errorMessages.value.checkboxError = "";
+  }
+};
+
+const isFormSubmitted = ref(false);
+const checkForm = () => {
+  isFormSubmitted.value = true;
+  checkName();
+  checkPassword();
+  checkEmail();
+  checkBox();
+};
+
+const userStore = useUserStore();
+const router = useRouter();
+const isToastShown = ref(false);
+const signUpUser = async () => {
+  checkForm();
+
+  if (Object.values(errorMessages.value).every((value) => value === "")) {
+    const isSuccessful: boolean = await userStore.signUp(
+      userData.value.email,
+      userData.value.passOne
+    );
+
+    handleModal(isToastShown, true);
+
+    if (isSuccessful !== true) {
+      isError.value = true;
+      return;
+    }
+
+    userStore.updateProfile(userData.value.name);
+    isError.value = false;
+
+    setTimeout(() => {
+      router.push({ name: "sign-in" });
+    }, 3500);
+  }
+};
+
+const isPolicyShown = ref(false);
+const showModal = () => {
+  handleModal(isPolicyShown, false);
+};
 </script>
 
 <style scoped>

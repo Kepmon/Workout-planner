@@ -1,23 +1,29 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true
-  },
   extends: [
-    'plugin:vue/vue3-essential',
-    'airbnb-base'
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-recommended",
+    "prettier",
+    "plugin:promise/recommended",
   ],
+  parser: "vue-eslint-parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module'
+    parser: "@typescript-eslint/parser",
+    sourceType: "module",
   },
-  plugins: [
-    'vue'
-  ],
+  plugins: ["@typescript-eslint", "prettier", "promise"],
+  root: true,
   rules: {
-    semi: ['error', 'never'],
-    'no-trailing-spaces': ['error', { skipBlankLines: true }],
-    'comma-dangle': ['error', 'never'],
-    'linebreak-style': ['error', 'windows']
-  }
-}
+    "prettier/prettier": 2,
+    "no-warning-comments": [1, { terms: ["todo", "fixme"] }],
+  },
+  reportUnusedDisableDirectives: true,
+  ignorePatterns: ["node_modules", "/dist", "/client/dist"],
+  overrides: [
+    {
+      files: ["src/pages/**/*.vue"],
+      rules: {
+        "vue/multi-word-component-names": "off",
+      },
+    },
+  ],
+};

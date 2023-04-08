@@ -4,11 +4,8 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: 'TheButton',
-  props: ['text']
-}
+<script setup lang="ts">
+defineProps<{ text: string }>();
 </script>
 
 <style scoped>

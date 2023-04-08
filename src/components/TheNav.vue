@@ -1,150 +1,134 @@
 <template>
-    <nav class="px-8 bg-dark-yellow relative max-[399px]:px-4">
-        <div class="flex items-center justify-between mx-auto max-w-1200 h-28">
-            <router-link :to="{ name: 'home' }">
-                <div class="flex items-center p-1">
-                    <img
-                      src="/img/training-gym-svgrepo-com.svg"
-                      alt="The company logo"
-                      class="h-20 max-[499px]:h-10"
-                    >
-                    <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
-                </div>
-            </router-link>
+  <nav class="px-8 bg-dark-yellow relative max-[399px]:px-4">
+    <div class="flex items-center justify-between mx-auto max-w-1200 h-28">
+      <router-link :to="{ name: 'home' }">
+        <div class="flex items-center p-1">
+          <img
+            src="/img/training-gym-svgrepo-com.svg"
+            alt="The company logo"
+            class="h-20 max-[499px]:h-10"
+          />
+          <p class="text-3xl font-bold italic max-[499px]:text-xl">SmartGym</p>
+        </div>
+      </router-link>
 
-            <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
-              <transition-group name="nav-desktop">
-                <li
-                    v-on="{ click: callback ? callback : null }"
-                    v-for="{ path, content, callback } in navItems"
-                    :key="path"
+      <ul class="flex max-[1200px]:text-sm max-[999px]:hidden">
+        <transition-group name="nav-desktop">
+          <li
+            v-for="{ path, content, callback } in navItems"
+            :key="path.name"
+            v-on="{ click: callback ? callback : null }"
+          >
+            <router-link
+              :to="path"
+              :active-class="content !== 'Sign out' ? 'active' : ''"
+              class="px-6 py-2"
+            >
+              {{ content }}
+            </router-link>
+          </li>
+        </transition-group>
+      </ul>
+
+      <div class="cursor-pointer z-10 min-[999px]:hidden">
+        <img
+          src="/img/menu-1-svgrepo-com.svg"
+          alt="The menu icon"
+          class="h-12 max-[499px]:h-10"
+          @click="() => toggleNav()"
+        />
+
+        <transition name="nav">
+          <div
+            v-show="isNavShown"
+            class="absolute inset-0 h-screen bg-dark-yellow text-2xl"
+          >
+            <ul class="nav-items">
+              <li
+                v-for="{ path, content, callback } in navItems"
+                :key="path.name"
+                @click="() => toggleNav(callback)"
+              >
+                <router-link
+                  :to="path"
+                  :active-class="content !== 'Sign out' ? 'active' : ''"
+                  class="px-6 py-2"
                 >
-                        <router-link
-                            :to="path"
-                            :active-class="content !== 'Sign out' ? 'active' : ''"
-                            class="px-6 py-2">
-                            {{ content }}
-                        </router-link>
-                    </li>
-              </transition-group>
+                  {{ content }}
+                </router-link>
+              </li>
             </ul>
 
-            <div class="cursor-pointer z-10 min-[999px]:hidden">
-                <img
-                  @click="() => toggleNav()"
-                  src="/img/menu-1-svgrepo-com.svg"
-                  alt="The menu icon"
-                  class="h-12 max-[499px]:h-10"
-                >
-
-                <transition name="nav">
-                    <div
-                      v-show="isNavShown"
-                      class="absolute inset-0 h-screen bg-dark-yellow text-2xl"
-                    >
-                        <ul class="nav-items">
-                          <li
-                            @click="() => toggleNav(callback)"
-                            v-for="{ path, content, callback } in navItems"
-                            :key="path"
-                          >
-                            <router-link
-                              :to="path"
-                              :active-class="content !== 'Sign out' ? 'active' : ''"
-                              class="px-6 py-2">
-                              {{ content }}
-                            </router-link>
-                          </li>
-                        </ul>
-
-                        <img
-                          @click="() => toggleNav()"
-                          src="/img/close-square-svgrepo-com.svg"
-                          alt="The close menu icon"
-                          class="close-btn"
-                        >
-                    </div>
-                </transition>
-            </div>
-        </div>
-    </nav>
+            <img
+              src="/img/close-square-svgrepo-com.svg"
+              alt="The close menu icon"
+              class="close-btn"
+              @click="() => toggleNav()"
+            />
+          </div>
+        </transition>
+      </div>
+    </div>
+  </nav>
 </template>
 
-<script>
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { useScrollLock } from '@vueuse/core'
-import { ref } from 'vue'
-import { mapState, mapActions } from 'pinia'
-import { useUserStore } from '../stores/user'
+<script setup lang="ts">
+import { useScrollLock } from "@vueuse/core";
+import { ref, computed } from "vue";
+import { useUserStore } from "../stores/user";
+import { NavRoute } from "../api/types";
 
-export default {
-  name: 'TheNav',
-  data() {
-    return {
-      isNavShown: false,
-      routes: [
-        {
-          path: { name: 'home' },
-          activeCondition: 'home',
-          content: 'Home'
-        },
-        {
-          path: { name: 'create' },
-          activeCondition: 'create',
-          content: 'Create new workout'
-        },
-        {
-          path: { name: 'dashboard' },
-          activeCondition: 'dashboard',
-          content: 'Dashboard'
-        },
-        {
-          path: { name: 'sign-in' },
-          activeCondition: 'sign-in',
-          content: 'Sign in'
-        },
-        {
-          path: { name: 'sign-up' },
-          activeCondition: 'sign-up',
-          content: 'Sign up'
-        },
-        {
-          path: { name: 'home' },
-          activeCondition: false,
-          content: 'Sign out',
-          protected: true,
-          callback: this.signOut
-        }
-      ]
-    }
+const isNavShown = ref(false);
+const userStore = useUserStore();
+const routes = ref<NavRoute[]>([
+  {
+    path: { name: "home" },
+    content: "Home",
   },
-  computed: {
-    ...mapState(useUserStore, ['isSignedIn']),
-    navItems() {
-      if (!this.isSignedIn) {
-        return this.routes.filter((route) => route.protected == null)
-      }
-      return this.routes.filter((route) => route.path.name.includes('sign') === false)
-    }
+  {
+    path: { name: "create" },
+    content: "Create new workout",
   },
-  methods: {
-    ...mapActions(useUserStore, ['signOut']),
-    toggleNav(cb) {
-      this.isNavShown = !this.isNavShown
-      this.isLocked = this.isNavShown
+  {
+    path: { name: "dashboard" },
+    content: "Dashboard",
+  },
+  {
+    path: { name: "sign-in" },
+    content: "Sign in",
+  },
+  {
+    path: { name: "sign-up" },
+    content: "Sign up",
+  },
+  {
+    path: { name: "home" },
+    content: "Sign out",
+    protected: true,
+    callback: userStore.signOut,
+  },
+]);
 
-      if (cb) {
-        cb()
-      }
-    }
-  },
-  setup() {
-    const el = ref(document.body)
-    const isLocked = useScrollLock(el)
-
-    return { isLocked }
+const navItems = computed(() => {
+  if (!userStore.isSignedIn) {
+    return routes.value.filter((route) => route.protected == null);
   }
-}
+  return routes.value.filter(
+    (route) => route.path.name.includes("sign") === false
+  );
+});
+
+const el = ref(document.body);
+const isLocked = useScrollLock(el);
+
+const toggleNav = (cb?: NavRoute["callback"]) => {
+  isNavShown.value = !isNavShown.value;
+  isLocked.value = isNavShown.value;
+
+  if (cb) {
+    cb();
+  }
+};
 </script>
 
 <style scoped>
@@ -172,7 +156,7 @@ export default {
 
 .nav-desktop-enter-from,
 .nav-desktop-leave-to {
-  @apply opacity-0
+  @apply opacity-0;
 }
 
 .nav-desktop-enter-active {
