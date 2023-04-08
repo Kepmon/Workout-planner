@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import TheHeader from '../components/TheHeader.vue'
-import WhySection from '../components/WhySection.vue'
-import InspirationSection from '../components/InspirationSection.vue'
+import TheHeader from "../components/TheHeader.vue";
+import WhySection from "../components/WhySection.vue";
+import InspirationSection from "../components/InspirationSection.vue";
 </script>

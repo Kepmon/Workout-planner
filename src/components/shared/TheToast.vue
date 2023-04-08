@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 defineProps<{
-  background: string,
-  text: string
-}>()
+  background: string;
+  text: string;
+}>();
 </script>
 
 <style scoped>
