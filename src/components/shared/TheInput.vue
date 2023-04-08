@@ -9,7 +9,7 @@
     />
     <transition name="error">
       <p
-        v-show="conditions"
+        v-show="condition"
         class="mt-1 ml-2 absolute text-xs text-red-700 font-bold"
       >
         {{ errorText }}
@@ -29,7 +29,7 @@ defineProps<{
   width?: string;
   modelValue?: string;
   value?: string;
-  conditions?: boolean;
+  condition?: boolean;
   errorText?: string;
 }>();
 

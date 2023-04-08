@@ -38,11 +38,11 @@
 defineProps<{
   name: string;
   img: string;
-  sets: string | undefined;
-  reps: string | undefined;
-  weight: string | undefined;
-  unit: string | undefined;
-  rest: string | undefined;
+  sets?: string;
+  reps?: string;
+  weight?: string;
+  unit?: string;
+  rest?: string;
 }>();
 </script>
 

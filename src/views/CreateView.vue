@@ -23,7 +23,7 @@
                 type="text"
                 placeholder="Workout name"
                 class="text w-full"
-                :conditions="errors.exerciseName.conditions"
+                :condition="errors.exerciseName.conditions"
                 :error-text="errors.exerciseName.text"
                 @focusout="displayWorkoutTitle"
               />
@@ -93,18 +93,18 @@
                       class="px-2 max-h-96 overflow-y-auto"
                     >
                       <li
-                        @click.capture="() => addExerciseInfo(exercise)"
                         v-for="exercise in exercisesToShow"
                         :key="exercise.name"
                         class="exercise-to-select"
                         :class="{ 'mt-8': selectedExercise != null }"
+                        @click.capture="() => addExerciseInfo(exercise)"
                       >
                         <img
                           v-show="selectedExercise != null"
-                          @click="selectedExercise = null"
                           src="/img/close-square-svgrepo-com.svg"
                           alt="remove this exercise"
                           class="absolute right-2 h-8"
+                          @click="selectedExercise = null"
                         />
                         <img
                           :src="exercise.img"
@@ -151,7 +151,7 @@
                   placeholder="Sets"
                   name="sets"
                   class="text w-full"
-                  :conditions="errors.sets.conditions"
+                  :condition="errors.sets.conditions"
                   :error-text="errors.sets.text"
                 />
                 <the-input
@@ -160,7 +160,7 @@
                   placeholder="Reps"
                   name="reps"
                   class="text w-full"
-                  :conditions="errors.reps.conditions"
+                  :condition="errors.reps.conditions"
                   :error-text="errors.reps.text"
                 />
               </div>
@@ -172,7 +172,7 @@
                   placeholder="Weight"
                   name="weight"
                   class="text w-[290px] max-[500px]:w-28"
-                  :conditions="errors.weight.conditions"
+                  :condition="errors.weight.conditions"
                   :error-text="errors.weight.text"
                 />
 
@@ -213,7 +213,7 @@
                 type="text"
                 placeholder="Rest time"
                 class="text w-full"
-                :conditions="errors.rest.conditions"
+                :condition="errors.rest.conditions"
                 :error-text="errors.rest.text"
               />
             </div>

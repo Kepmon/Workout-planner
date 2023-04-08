@@ -3,7 +3,6 @@ import { supabase } from "../supabase";
 import { ref } from "vue";
 import { UserResponse } from "../api/types";
 
-// eslint-disable-next-line import/prefer-default-export
 export const useUserStore = defineStore("user", () => {
   const isSignedIn = ref(false);
 
