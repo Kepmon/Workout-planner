@@ -19,7 +19,7 @@
               type="text"
               placeholder="User name"
               class="text w-full"
-              :conditions="isFormSubmitted && errorMessages.nameError !== ''"
+              :condition="isFormSubmitted && errorMessages.nameError !== ''"
               :error-text="errorMessages.nameError"
             >
             </the-input>
@@ -28,7 +28,7 @@
               type="password"
               placeholder="Password"
               class="text w-full"
-              :conditions="isFormSubmitted && errorMessages.passOneError !== ''"
+              :condition="isFormSubmitted && errorMessages.passOneError !== ''"
               :error-text="errorMessages.passOneError"
             >
             </the-input>
@@ -37,7 +37,7 @@
               type="password"
               placeholder="Repeat password"
               class="text w-full"
-              :conditions="isFormSubmitted && errorMessages.passTwoError !== ''"
+              :condition="isFormSubmitted && errorMessages.passTwoError !== ''"
               :error-text="errorMessages.passTwoError"
             >
             </the-input>
@@ -46,7 +46,7 @@
               type="email"
               placeholder="Email"
               class="text w-full"
-              :conditions="isFormSubmitted && errorMessages.emailError !== ''"
+              :condition="isFormSubmitted && errorMessages.emailError !== ''"
               :error-text="errorMessages.emailError"
             >
             </the-input>
