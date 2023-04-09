@@ -29,22 +29,22 @@ There are still some minor UX aspects in this website that should be improved, h
 ➡ addition of more exercises (currently, only ~40 exercises has been added to the website as exemplary ones)  
 
 ## 💻 Technologies
-<img src="https://img.shields.io/badge/Vue-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="vue" />
-<img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="tailwind-css" />
-<img src="https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="typescript" /> 
-<img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="supabase" />
+![Vue](https://img.shields.io/badge/Vue-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white)
+![Tailwind-css](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Typescript](https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 
 ## 🎁 Packages
-<img src="https://img.shields.io/npm/v/eslint?label=eslint&style=plastic" alt="eslint package" />
-<img src="https://img.shields.io/npm/v/@gradin/tailwindcss-scrollbar?label=%40gradin%2Ftailwindcss-scrollbar&style=plastic" alt="tailwindcss-scrollbar package" />
-<img src="https://img.shields.io/npm/v/@yeger/vue-masonry-wall?label=%40yeger%2Fvue-masonry-wall&style=plastic" alt="vue-masonry-wall package" />
-<img src="https://img.shields.io/npm/v/@vueuse/core?label=%40vueuse%2Fcore&style=plastic" alt="vueuse package" />
+![Eslint package](https://img.shields.io/npm/v/eslint?label=eslint&style=plastic)
+![Tailwindcss-scrollbar package](https://img.shields.io/npm/v/@gradin/tailwindcss-scrollbar?label=%40gradin%2Ftailwindcss-scrollbar&style=plastic)
+![Vue-masonry-wall package](https://img.shields.io/npm/v/@yeger/vue-masonry-wall?label=%40yeger%2Fvue-masonry-wall&style=plastic)
+![Vueuse package](https://img.shields.io/npm/v/@vueuse/core?label=%40vueuse%2Fcore&style=plastic)
 
 ## 🔔 Others
-<img src="https://img.shields.io/github/actions/workflow/status/Kepmon/Workout-planner/deploy.yml?branch=main&style=plastic" alt="build status" />
-<img src="https://img.shields.io/github/languages/code-size/Kepmon/Workout-planner?style=plastic" alt="code size" />
-<img src="https://img.shields.io/github/commit-activity/m/Kepmon/Workout-planner?style=plastic" alt="commit activity per month" />
-<img src="https://img.shields.io/github/issues-pr-closed/Kepmon/Workout-planner?style=plastic" alt="the number of closed pull requests" />
+![Build status](https://img.shields.io/github/actions/workflow/status/Kepmon/Workout-planner/deploy.yml?branch=main&style=plastic)
+![Code size](https://img.shields.io/github/languages/code-size/Kepmon/Workout-planner?style=plastic)
+![Commit activity per month](https://img.shields.io/github/commit-activity/m/Kepmon/Workout-planner?style=plastic)
+![The number of closed pull requests](https://img.shields.io/github/issues-pr-closed/Kepmon/Workout-planner?style=plastic)
 
 ## 📁 Sources
 
